@@ -294,9 +294,7 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
         cell?.detailTextLabel?.numberOfLines =  1
         cell?.textLabel?.textColor = UIColor.mpBlackColor()
         cell?.detailTextLabel?.textColor = UIColor.mpLightGrayColor()
-        cell?.detailTextLabel?.font = UIFont.mpRegularFontWith(size: 13)
-        
-        
+        cell?.detailTextLabel?.font = UIFont.mpRegularFontWith(size: 13) 
         cell?.selectionStyle = .default
         cell?.textLabel?.font = UIFont.mpBoldFontWith(size: 16)
         
@@ -304,10 +302,15 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
         
         let firstName = athlete["firstName"] as! String
         let lastName = athlete["lastName"] as! String
+        let fullName = firstName + " " + lastName
         let schoolFullName = athlete["schoolFormattedName"] as! String
         let careerId = athlete["careerId"] as! String
         
-        cell?.textLabel?.text = firstName + " " + lastName
+        // Cap the name to 19 characters
+        let trimToCharacter = 19
+        let shortString = String(fullName.prefix(trimToCharacter))
+        
+        cell?.textLabel?.text = shortString
         
         // Get the sportYears
         let sportYears = athlete["sportYears"] as! Array<Dictionary<String,Any>>
@@ -318,7 +321,7 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
         cell?.detailTextLabel?.text = schoolFullName
         
         // Add a year label on the right side of the cell
-        let yearLabel = UILabel(frame: CGRect(x: (tableView.frame.size.width - 16.0) / 2.0, y: 11, width: (tableView.frame.size.width - 16.0) / 2.0, height: 16.0))
+        let yearLabel = UILabel(frame: CGRect(x: ((tableView.frame.size.width - 32.0) / 2.0) + 16, y: 10, width: (tableView.frame.size.width - 32.0) / 2.0, height: 16.0))
         yearLabel.tag = 200 + indexPath.row
         yearLabel.textColor = UIColor.mpLightGrayColor()
         yearLabel.font = UIFont.mpRegularFontWith(size: 13)

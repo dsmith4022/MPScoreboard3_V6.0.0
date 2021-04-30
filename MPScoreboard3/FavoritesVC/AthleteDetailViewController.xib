@@ -52,9 +52,9 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G06-Je-t4v">
-                            <rect key="frame" x="365" y="39" width="40" height="40"/>
+                            <rect key="frame" x="365" y="40" width="40" height="40"/>
                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
-                            <state key="normal" image="FavoritesIconWhite"/>
+                            <state key="normal" image="SaveFavoriteIcon"/>
                             <connections>
                                 <action selector="saveFavoriteButtonTouched:" destination="-1" eventType="touchUpInside" id="rwX-Ma-ia4"/>
                             </connections>
@@ -70,7 +70,7 @@
     </objects>
     <resources>
         <image name="BackArrowWhite" width="27.5" height="21"/>
-        <image name="FavoritesIconWhite" width="26" height="24"/>
+        <image name="SaveFavoriteIcon" width="28" height="24"/>
         <namedColor name="MPLightGrayColor">
             <color red="0.65098039215686276" green="0.66274509803921566" blue="0.67843137254901964" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
