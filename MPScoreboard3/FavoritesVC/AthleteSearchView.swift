@@ -7,8 +7,15 @@
 
 import UIKit
 
-class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDelegate
+protocol AthleteSearchViewDelegate: AnyObject
 {
+    func athleteSearchDidSelectAthlete(selectedAthlete: Athlete, showFavoriteButton: Bool)
+}
+
+class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource
+{
+    weak var delegate: AthleteSearchViewDelegate?
+    
     private var sportContainerView: UIView?
     private var sportPlaceholderLabel: UILabel?
     private var downArrowImageView: UIImageView?
@@ -27,36 +34,36 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
     private var filteredAthletesArray = Array<Dictionary<String,Any>>()
     private var favoriteAthletesIdentifierArray = [] as Array
     
+    let kDefaultFilterState = "All States"
+    
     // MARK: - Filter Athletes
     
     private func filterAthletes()
     {
         filteredAthletesArray.removeAll()
         
-        /*
         // All States case
-        if (filterButton.titleLabel?.text == String(format: kDefaultFilterButtonTitle, kDefaultFilterState))
+        if (filterButton.titleLabel?.text == kDefaultFilterState)
         {
             filteredAthletesArray = allAthletesArray
+            searchTableView.isHidden = false
             searchTableView.reloadData()
         }
         else
         {
-            //
+            // Only gather athletes from the matching state
             for athlete in allAthletesArray
             {
                 let state = athlete["schoolState"] as! String
-                let stateWithFormattedName = String(format: kDefaultFilterButtonTitle, state)
                 
-                if (filterButton.titleLabel?.text == stateWithFormattedName)
+                if (filterButton.titleLabel?.text == state)
                 {
                     filteredAthletesArray.append(athlete)
                 }
             }
-            
+            searchTableView.isHidden = false
             searchTableView.reloadData()
         }
-        */
     }
     
     // MARK: - Search for Athlete
@@ -64,6 +71,7 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
     private func searchForAthlete()
     {
         self.allAthletesArray = []
+        searchTableView.isHidden = true
         self.searchTableView.reloadData()
         
         // Show the busy indicator
@@ -174,7 +182,7 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
             downArrowImageView?.isHidden = true
             sportLabel?.isHidden = false
             sportIconImageView?.isHidden = false
-            sportContainerView?.isHidden = false
+            searchContainerView?.isHidden = false
             
             sportLabel?.text = title
             
@@ -190,6 +198,7 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
             
             allAthletesArray.removeAll()
             filteredAthletesArray.removeAll()
+            searchTableView.isHidden = true
             searchTableView.reloadData()
         }
         else
@@ -207,6 +216,180 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
         
     }
     
+    // MARK: - TableView Delegates
+    
+    func numberOfSections(in tableView: UITableView) -> Int
+    {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
+        return filteredAthletesArray.count
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
+    {
+        return 56.0
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
+    {
+        return 44.0
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
+    {
+        return 0.1
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
+    {
+
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 44))
+        view.backgroundColor = UIColor.mpWhiteColor()
+        
+        let label = UILabel(frame: CGRect(x: 16, y: 14, width: tableView.frame.size.width - 40, height: 30))
+        label.font = UIFont.mpRegularFontWith(size: 14)
+        label.backgroundColor = UIColor.clear
+        label.textColor = UIColor.mpLightGrayColor()
+        label.text = "RESULTS"
+        view.addSubview(label)
+            
+        // Add the filterButton that were created at init
+        filterButton.frame = CGRect(x: tableView.frame.size.width - 106, y: 14, width: 90, height: 30)
+        view.addSubview(filterButton)
+            
+        return view
+        
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView?
+    {
+        return nil
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+    {
+        var cell = tableView.dequeueReusableCell(withIdentifier: "Cell")
+        
+        if (cell == nil)
+        {
+            cell = UITableViewCell(style: .subtitle, reuseIdentifier: "Cell")
+        }
+        
+        // Remove the star image
+        for view in cell!.contentView.subviews
+        {
+            if (view.tag >= 100)
+            {
+                view.removeFromSuperview()
+            }
+        }
+        
+        cell?.contentView.backgroundColor = UIColor.mpWhiteColor()
+        cell?.selectionStyle = .none
+        cell?.textLabel?.text = ""
+        cell?.detailTextLabel?.text = ""
+        cell?.detailTextLabel?.numberOfLines =  1
+        cell?.textLabel?.textColor = UIColor.mpBlackColor()
+        cell?.detailTextLabel?.textColor = UIColor.mpLightGrayColor()
+        cell?.detailTextLabel?.font = UIFont.mpRegularFontWith(size: 13)
+        
+        
+        cell?.selectionStyle = .default
+        cell?.textLabel?.font = UIFont.mpBoldFontWith(size: 16)
+        
+        let athlete = filteredAthletesArray[indexPath.row]
+        
+        let firstName = athlete["firstName"] as! String
+        let lastName = athlete["lastName"] as! String
+        let schoolFullName = athlete["schoolFormattedName"] as! String
+        let careerId = athlete["careerId"] as! String
+        
+        cell?.textLabel?.text = firstName + " " + lastName
+        
+        // Get the sportYears
+        let sportYears = athlete["sportYears"] as! Array<Dictionary<String,Any>>
+        let firstSport = sportYears.first!
+        let years = firstSport["years"] as! Array<String>
+        let joinedYears = years.joined(separator: ", ")
+        
+        cell?.detailTextLabel?.text = schoolFullName
+        
+        // Add a year label on the right side of the cell
+        let yearLabel = UILabel(frame: CGRect(x: (tableView.frame.size.width - 16.0) / 2.0, y: 11, width: (tableView.frame.size.width - 16.0) / 2.0, height: 16.0))
+        yearLabel.tag = 200 + indexPath.row
+        yearLabel.textColor = UIColor.mpLightGrayColor()
+        yearLabel.font = UIFont.mpRegularFontWith(size: 13)
+        yearLabel.textAlignment = .right
+        yearLabel.text = joinedYears
+        cell?.contentView.addSubview(yearLabel)
+        
+        // Add a star if the athlete is already a favorite
+        let result = favoriteAthletesIdentifierArray.filter { $0 as! String == careerId }
+        if (!result.isEmpty)
+        {
+            let star = UIImageView(frame: CGRect(x: tableView.frame.size.width - 30, y: 30, width: 14, height: 14))
+            star.tag = 100 + indexPath.row
+            star.image = UIImage(named: "ActiveFavorites")
+            cell?.contentView.addSubview(star)
+            cell?.selectionStyle = .none
+        }
+        
+        return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
+    {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+
+        // Refactor the athlete dictionary sinto an Athlete object
+        
+        let athlete = filteredAthletesArray[indexPath.row]
+        
+        let firstName = athlete["firstName"] as! String
+        let lastName = athlete["lastName"] as! String
+        let schoolName = athlete["schoolName"] as! String
+        let schoolId = athlete["schoolId"] as! String
+        let schoolColor1 = athlete["schoolColor1"] as! String
+        let schoolMascotUrl = athlete["schoolMascotUrl"] as! String
+        let schoolCity = athlete["schoolCity"] as! String
+        let schoolState = athlete["schoolState"] as! String
+        let careerId = athlete["careerId"] as! String
+        let photoUrl = ""
+        
+        let selectedAthlete = Athlete(firstName: firstName, lastName: lastName, schoolName: schoolName, schoolState: schoolState, schoolCity: schoolCity, schoolId: schoolId, schoolColor: schoolColor1, schoolMascotUrl: schoolMascotUrl, careerId: careerId, photoUrl: photoUrl)
+        
+        var showFavoriteButton = false
+        
+        // Check to see if the athlete is already a favorite
+        let result = favoriteAthletesIdentifierArray.filter { $0 as! String == careerId }
+        
+        if (result.isEmpty == false)
+        {
+            showFavoriteButton = false
+        }
+        else
+        {
+            // Two paths depending on wheteher the user is logged in or not
+            let userId = kUserDefaults.value(forKey: kUserIdKey) as! String
+            
+            if (userId != kTestDriveUserId)
+            {
+                showFavoriteButton = true
+            }
+            else
+            {
+                showFavoriteButton = false
+            }
+        }
+        
+        self.delegate?.athleteSearchDidSelectAthlete(selectedAthlete: selectedAthlete, showFavoriteButton: showFavoriteButton)
+        
+    }
+    
     // MARK: - Button Methods
     
     @objc func sportSelectorButtonTouched()
@@ -216,6 +399,19 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
         picker.toolbarButtonColor = UIColor.mpWhiteColor()
         picker.toolbarTintColor = UIColor.mpLightGrayColor()
         picker.titlesForComponents = [kSearchGenderSportsArray]
+        picker.show()
+    }
+    
+    @objc func filterButtonTouched(_ sender: UIButton)
+    {
+        var stateList = kStateShortNamesArray
+        stateList.insert(kDefaultFilterState, at: 0)
+        
+        let picker = IQActionSheetPickerView(title: "", delegate: self)
+        picker.tag = 101
+        picker.toolbarButtonColor = UIColor.mpWhiteColor()
+        picker.toolbarTintColor = UIColor.mpLightGrayColor()
+        picker.titlesForComponents = [stateList]
         picker.show()
     }
     
@@ -231,8 +427,8 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
         super.init(frame: frame)
         
         // Build the sportContainerView
-        sportContainerView = UIView(frame: CGRect(x: 20, y: 20, width: CGFloat(kDeviceWidth - 40), height: 40))
-        sportContainerView?.backgroundColor = UIColor.mpOffWhiteNavColor()
+        sportContainerView = UIView(frame: CGRect(x: 16, y: 20, width: CGFloat(kDeviceWidth - 32), height: 40))
+        sportContainerView?.backgroundColor = UIColor.mpWhiteColor()
         self.addSubview(sportContainerView!)
         
         sportPlaceholderLabel = UILabel(frame: CGRect(x: 16, y: 11, width: (sportContainerView?.frame.size.width)! / 2.0, height: 18))
@@ -262,16 +458,16 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
         
         
         // Build the searchContainerView
-        sportContainerView = UIView(frame: CGRect(x: 20, y: 68, width: CGFloat(kDeviceWidth - 40), height: 40))
-        sportContainerView?.backgroundColor = UIColor.mpOffWhiteNavColor()
-        self.addSubview(sportContainerView!)
-        sportContainerView?.isHidden = true
+        searchContainerView = UIView(frame: CGRect(x: 16, y: 68, width: CGFloat(kDeviceWidth - 32), height: 40))
+        searchContainerView?.backgroundColor = UIColor.mpWhiteColor()
+        self.addSubview(searchContainerView!)
+        searchContainerView?.isHidden = true
         
         searchIconImageView = UIImageView(frame: CGRect(x: 16, y: 12, width: 16, height: 16))
         searchIconImageView?.image = UIImage(named: "SmallSearchIconGray")
-        sportContainerView?.addSubview(searchIconImageView!)
+        searchContainerView?.addSubview(searchIconImageView!)
         
-        searchTextField = UITextField(frame: CGRect(x: 40, y: 3, width: (sportContainerView?.frame.size.width)! - 56, height: 34))
+        searchTextField = UITextField(frame: CGRect(x: 40, y: 3, width: (searchContainerView?.frame.size.width)! - 56, height: 34))
         searchTextField?.delegate = self
         searchTextField?.textColor = UIColor.mpBlackColor()
         searchTextField?.font = UIFont.mpRegularFontWith(size: 15)
@@ -285,7 +481,7 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
         searchTextField?.smartDashesType = .no
         searchTextField?.smartInsertDeleteType = .no
         searchTextField?.spellCheckingType = .no
-        sportContainerView?.addSubview(searchTextField!)
+        searchContainerView?.addSubview(searchTextField!)
         
         let accessoryView = UIView(frame: CGRect(x: 0, y: 0, width: kDeviceWidth, height: 40))
         accessoryView.backgroundColor = UIColor.mpLightGrayColor()
@@ -300,11 +496,39 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
         
         searchTextField!.inputAccessoryView = accessoryView
         
+        
+        // Make a filter button that will be used in the header
+        filterButton = UIButton(type: .custom)
+        filterButton.setTitle(kDefaultFilterState, for: .normal)
+        filterButton.setTitleColor(UIColor.mpBlueColor(), for: .normal)
+        filterButton.titleLabel?.font = UIFont.mpRegularFontWith(size: 14)
+        filterButton.contentHorizontalAlignment = .right
+        filterButton.setImage(UIImage(named: "SmallBlueFilter"), for: .normal)
+        filterButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -4, bottom: 0, right: 4)
+        filterButton.addTarget(self, action: #selector(filterButtonTouched), for: .touchUpInside)
+        
         // Add the tableView
-        
-        filterButton = UIButton()
-        
         searchTableView = UITableView()
+        searchTableView.frame = CGRect(x: 0, y: (searchContainerView?.frame.origin.y)! + (searchContainerView?.frame.size.height)!, width: frame.size.width, height: frame.size.height - (searchContainerView?.frame.origin.y)! - (searchContainerView?.frame.size.height)!)
+        searchTableView.delegate = self
+        searchTableView.dataSource = self
+        self.addSubview(searchTableView)
+        searchTableView.isHidden = true
+        
+        // Build the favorite athlete identifier array so a star can be put next to each favorite team
+        favoriteAthletesIdentifierArray.removeAll()
+        
+        // Get the favorite athletes
+        if let favoriteAthletes = kUserDefaults.array(forKey: kUserFavoriteAthletesArrayKey)
+        {
+            for favoriteAthlete in favoriteAthletes
+            {
+                let item = favoriteAthlete  as! Dictionary<String, Any>
+                let careerProfileId = item["careerProfileId"] as! String
+                            
+                favoriteAthletesIdentifierArray.append(careerProfileId)
+            }
+        }
         
     }
 

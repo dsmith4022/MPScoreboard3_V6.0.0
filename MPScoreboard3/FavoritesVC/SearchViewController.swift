@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SearchViewController: UIViewController, ThreeSegmentControlViewDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, IQActionSheetPickerViewDelegate
+class SearchViewController: UIViewController, ThreeSegmentControlViewDelegate, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, IQActionSheetPickerViewDelegate, AthleteSearchViewDelegate
 {    
     private var teamSelectorVC: TeamSelectorViewController?
     private var localSchools = Array<School>()
@@ -654,7 +654,18 @@ class SearchViewController: UIViewController, ThreeSegmentControlViewDelegate, U
         }
     }
     
-    // MARK: - ThreeSegmentControl Delgate
+    // MARK: - AthleteSearchView Delegate
+    
+    func athleteSearchDidSelectAthlete(selectedAthlete: Athlete, showFavoriteButton: Bool)
+    {
+        let athleteDetailVC = AthleteDetailViewController(nibName: "AthleteDetailViewController", bundle: nil)
+        athleteDetailVC.selectedAthlete = selectedAthlete
+        athleteDetailVC.showSaveFavoriteButton = showFavoriteButton
+        
+        self.navigationController?.pushViewController(athleteDetailVC, animated: true)
+    }
+    
+    // MARK: - ThreeSegmentControl Delegate
     
     func segmentChanged()
     {
@@ -782,6 +793,7 @@ class SearchViewController: UIViewController, ThreeSegmentControlViewDelegate, U
         
         // Add the athleteSearchView on top of the searchTableView and searchTextFieldBackground
         athleteSearchView = AthleteSearchView(frame: CGRect(x: 0, y: fakeStatusBar.frame.size.height + navView.frame.size.height, width: CGFloat(kDeviceWidth), height: CGFloat(kDeviceHeight) - navView.frame.size.height - fakeStatusBar.frame.size.height - CGFloat(SharedData.bottomSafeAreaHeight) - bottomTabBarPad))
+        athleteSearchView.delegate = self
         athleteSearchView.backgroundColor = UIColor.mpWhiteColor()
         self.view.addSubview(athleteSearchView)
         athleteSearchView.isHidden = true
@@ -836,12 +848,8 @@ class SearchViewController: UIViewController, ThreeSegmentControlViewDelegate, U
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         
         setNeedsStatusBarAppearanceUpdate()
-        
-        
-        
-        // Build the favorite team identifier array so a star can be put next to each favorite team
-        // Fill the favorite team identifier array
-        
+                
+        // Build the favorite athlete identifier array so a star can be put next to each favorite team
         favoriteAthletesIdentifierArray.removeAll()
         
         // Get the favorite athletes
@@ -855,9 +863,6 @@ class SearchViewController: UIViewController, ThreeSegmentControlViewDelegate, U
                 favoriteAthletesIdentifierArray.append(careerProfileId)
             }
         }
-        
-        
-            
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle
