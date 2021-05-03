@@ -13,7 +13,8 @@ class TeamSelectorViewController: UIViewController, UITableViewDelegate, UITable
     var selectedTeam : Team?
     var favoriteSaved = false
     
-    private var teamDetailVC: TeamDetailViewController!
+    private var cellFullSize = false
+    private var selectedCellIndex = -1
     
     private var favorites = [] as Array
     private var varsityTeams = [] as Array
@@ -25,6 +26,7 @@ class TeamSelectorViewController: UIViewController, UITableViewDelegate, UITable
     private var favoriteTeamIdentifierArray = [] as Array
     
     private var threeSegmentControl : ThreeSegmentControlView?
+    private var teamDetailVC: TeamDetailViewController!
     
     @IBOutlet weak var navView: UIView!
     @IBOutlet weak var fakeStatusBar: UIView!
@@ -251,50 +253,6 @@ class TeamSelectorViewController: UIViewController, UITableViewDelegate, UITable
         }
     }
     
-    // MARK: - Save User Favorite
-    
-    private func saveUserFavoriteTeam(_ favorite: Dictionary<String,Any>)
-    {
-        MBProgressHUD.showAdded(to: self.view, animated: true)
-        
-        NewFeeds.saveUserFavoriteTeam(favorite){ (error) in
- 
-            if error == nil
-            {
-                // Get the user favorites so the prefs get updated
-                NewFeeds.getUserFavoriteTeams(completionHandler: { error in
-                    
-                    // Hide the busy indicator
-                    DispatchQueue.main.async
-                    {
-                        MBProgressHUD.hide(for: self.view, animated: true)
-                    }
-                    
-                    if (error == nil)
-                    {
-                        self.navigationController?.popViewController(animated: true)
-                    }
-                    else
-                    {
-                        print("Download user favorites error")
-                    }
-                })
-                
-                self.navigationController?.popViewController(animated: true)
-            }
-            else
-            {
-                print("Download user favorites error")
-                
-                // Hide the busy indicator
-                DispatchQueue.main.async
-                {
-                    MBProgressHUD.hide(for: self.view, animated: true)
-                }
-            }
-        }
-    }
-    
     // MARK: - TableView Delegates
     
     func numberOfSections(in tableView: UITableView) -> Int
@@ -346,12 +304,19 @@ class TeamSelectorViewController: UIViewController, UITableViewDelegate, UITable
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
-        return 50.0
+        if ((selectedCellIndex == indexPath.row) && cellFullSize == true)
+        {
+            return 170.0
+        }
+        else
+        {
+            return 44.0
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
     {
-        return 32.0
+        return 44.0
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
@@ -367,34 +332,34 @@ class TeamSelectorViewController: UIViewController, UITableViewDelegate, UITable
         {
             if (section == 0)
             {
-                title = "BOYS SPORTS"
+                title = "BOYS"
             }
             else
             {
-                title = "GIRLS SPORTS"
+                title = "GIRLS"
             }
         }
         else if (boysTeamsArray.count > 0) && (girlsTeamsArray.count == 0)
         {
-            title = "BOYS SPORTS";
+            title = "BOYS";
         }
         else if (boysTeamsArray.count == 0) && (girlsTeamsArray.count > 0)
         {
-            title = "GIRLS SPORTS"
+            title = "GIRLS"
         }
         else
         {
             return nil
         }
         
-        let label = UILabel(frame: CGRect(x: 16, y: 0, width: tableView.frame.size.width - 40, height: 32))
-        label.font = UIFont.mpBoldFontWith(size: 14)
+        let label = UILabel(frame: CGRect(x: 20, y: 12, width: tableView.frame.size.width - 40, height: 32))
+        label.font = UIFont.mpRegularFontWith(size: 14)
         label.backgroundColor = UIColor.clear
-        label.textColor = UIColor.mpDarkGrayColor()
+        label.textColor = UIColor.mpLightGrayColor()
         label.text = title
         
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 32))
-        view.backgroundColor = UIColor.mpHeaderBackgroundColor()
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 44))
+        view.backgroundColor = UIColor.mpWhiteColor()
         view.addSubview(label)
 
         return view
@@ -407,31 +372,39 @@ class TeamSelectorViewController: UIViewController, UITableViewDelegate, UITable
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        var cell = tableView.dequeueReusableCell(withIdentifier: "Cell")
+        var cell = tableView.dequeueReusableCell(withIdentifier: "TeamSelectorTableViewCell") as? TeamSelectorTableViewCell
         
         if (cell == nil)
         {
-            cell = UITableViewCell(style: .subtitle, reuseIdentifier: "Cell")
+            let nib = Bundle.main.loadNibNamed("TeamSelectorTableViewCell", owner: self, options: nil)
+            cell = nib![0] as? TeamSelectorTableViewCell
         }
         
-        cell?.contentView.backgroundColor = UIColor.mpWhiteColor()
-        cell?.accessoryType = .none
-        cell?.textLabel?.font = UIFont.mpSemiBoldFontWith(size: 17)
-        cell?.textLabel?.adjustsFontSizeToFitWidth = true
-        cell?.textLabel?.minimumScaleFactor = 0.9
-        cell?.textLabel?.textColor = UIColor.mpBlackColor()
-        cell?.detailTextLabel?.font = UIFont.mpRegularFontWith(size: 14)
-        cell?.detailTextLabel?.textColor = UIColor.mpGrayColor()
-        cell?.selectionStyle = .gray
+        //cell?.contentView.backgroundColor = UIColor.mpWhiteColor()
+        //cell?.accessoryType = .none
+        //cell?.textLabel?.font = UIFont.mpSemiBoldFontWith(size: 17)
+        //cell?.textLabel?.adjustsFontSizeToFitWidth = true
+        //cell?.textLabel?.minimumScaleFactor = 0.9
+        //cell?.textLabel?.textColor = UIColor.mpBlackColor()
+        //cell?.detailTextLabel?.font = UIFont.mpRegularFontWith(size: 14)
+        //cell?.detailTextLabel?.textColor = UIColor.mpGrayColor()
+        cell?.selectionStyle = .none
+        cell?.titleLabel.text = ""
+        cell?.seasonLabel.text = ""
+        cell?.sportImageView.image = nil
         
-        // Remove the star image
-        for view in cell!.contentView.subviews
-        {
-            if (view.tag >= 100)
-            {
-                view.removeFromSuperview()
-            }
-        }
+        let teamColor = ColorHelper.color(fromHexString: self.selectedTeam?.teamColor)
+        cell?.varsityStarImageView.tintColor = teamColor
+        cell?.jvStarImageView.tintColor = teamColor
+        cell?.freshmanStarImageView.tintColor = teamColor
+        
+        cell?.varsityStarImageView.isHidden = true
+        cell?.jvStarImageView.isHidden = true
+        cell?.freshmanStarImageView.isHidden = true
+        cell?.jvLabel.alpha = 0.33
+        cell?.freshmanLabel.alpha = 0.33
+        cell?.jvChevronImageView.isHidden = true
+        cell?.freshmanChevronImageView.isHidden = true
         
         let schoolId = (self.selectedTeam?.schoolId)!
         
@@ -446,19 +419,23 @@ class TeamSelectorViewController: UIViewController, UITableViewDelegate, UITable
                 let teamLevel = item[kNewLevelKey] as! String
                 let season = item[kNewSeasonKey] as! String
                 
-                cell?.textLabel?.text = sport
-                cell?.detailTextLabel?.text = season
+                cell?.titleLabel?.text = sport
+                cell?.seasonLabel.text = season
+                cell?.sportImageView.image = MiscHelper.getImageForSport(sport)
                 
                 let identifier = String(format: "%@_%@_%@_%@_%@", schoolId, gender, sport, teamLevel, season)
                 
                 let result = favoriteTeamIdentifierArray.filter { $0 as! String == identifier }
                 if (!result.isEmpty)
                 {
-                    let star = UIImageView(frame: CGRect(x: tableView.frame.size.width - 36, y: 14, width: 20, height: 20))
+                    cell?.varsityStarImageView.isHidden = false
+                    /*
+                    let star = UIImageView(frame: CGRect(x: 20, y: 14, width: 20, height: 20))
                     star.tag = 100 + indexPath.row
                     star.image = UIImage(named: "ActiveFavorites")
                     cell?.contentView.addSubview(star)
                     cell?.selectionStyle = .none
+                    */
                 }
             }
             else
@@ -470,19 +447,23 @@ class TeamSelectorViewController: UIViewController, UITableViewDelegate, UITable
                 let teamLevel = item[kNewLevelKey] as! String
                 let season = item[kNewSeasonKey] as! String
                 
-                cell?.textLabel?.text = sport
-                cell?.detailTextLabel?.text = season
+                cell?.titleLabel?.text = sport
+                cell?.seasonLabel.text = season
+                cell?.sportImageView.image = MiscHelper.getImageForSport(sport)
                 
                 let identifier = String(format: "%@_%@_%@_%@_%@", schoolId, gender, sport, teamLevel, season)
                 
                 let result = favoriteTeamIdentifierArray.filter { $0 as! String == identifier }
                 if (!result.isEmpty)
                 {
+                    cell?.varsityStarImageView.isHidden = false
+                    /*
                     let star = UIImageView(frame: CGRect(x: tableView.frame.size.width - 36, y: 17, width: 20, height: 20))
                     star.tag = 200 + indexPath.row
                     star.image = UIImage(named: "ActiveFavorites")
                     cell?.contentView.addSubview(star)
                     cell?.selectionStyle = .none
+                    */
                 }
             }
         }
@@ -497,19 +478,23 @@ class TeamSelectorViewController: UIViewController, UITableViewDelegate, UITable
                 let teamLevel = item[kNewLevelKey] as! String
                 let season = item[kNewSeasonKey] as! String
                 
-                cell?.textLabel?.text = sport
-                cell?.detailTextLabel?.text = season
+                cell?.titleLabel?.text = sport
+                cell?.seasonLabel.text = season
+                cell?.sportImageView.image = MiscHelper.getImageForSport(sport)
                 
                 let identifier = String(format: "%@_%@_%@_%@_%@", schoolId, gender, sport, teamLevel, season)
                 
                 let result = favoriteTeamIdentifierArray.filter { $0 as! String == identifier }
                 if (!result.isEmpty)
                 {
+                    cell?.varsityStarImageView.isHidden = false
+                    /*
                     let star = UIImageView(frame: CGRect(x: tableView.frame.size.width - 36, y: 17, width: 20, height: 20))
                     star.tag = 100 + indexPath.row
                     star.image = UIImage(named: "ActiveFavorites")
                     cell?.contentView.addSubview(star)
                     cell?.selectionStyle = .none
+                    */
                 }
             }
         }
@@ -524,28 +509,30 @@ class TeamSelectorViewController: UIViewController, UITableViewDelegate, UITable
                 let teamLevel = item[kNewLevelKey] as! String
                 let season = item[kNewSeasonKey] as! String
                 
-                cell?.textLabel?.text = sport
-                cell?.detailTextLabel?.text = season
+                cell?.titleLabel?.text = sport
+                cell?.seasonLabel.text = season
+                cell?.sportImageView.image = MiscHelper.getImageForSport(sport)
                 
                 let identifier = String(format: "%@_%@_%@_%@_%@", schoolId, gender, sport, teamLevel, season)
                 
                 let result = favoriteTeamIdentifierArray.filter { $0 as! String == identifier }
                 if (!result.isEmpty)
                 {
+                    cell?.varsityStarImageView.isHidden = false
+                    /*
                     let star = UIImageView(frame: CGRect(x: tableView.frame.size.width - 36, y: 17, width: 20, height: 20))
                     star.tag = 100 + indexPath.row
                     star.image = UIImage(named: "ActiveFavorites")
                     cell?.contentView.addSubview(star)
                     cell?.selectionStyle = .none
+                    */
                 }
             }
         }
         else
         {
-            cell?.textLabel?.text = "No Sports Found"
-            cell?.textLabel?.font = UIFont.italicSystemFont(ofSize: 19)
-            cell?.selectionStyle = .none
-            cell?.detailTextLabel?.text = ""
+            cell?.titleLabel?.text = "No Sports Found"
+            cell?.seasonLabel?.text = ""
         }
         
         return cell!
@@ -553,7 +540,27 @@ class TeamSelectorViewController: UIViewController, UITableViewDelegate, UITable
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
-        tableView.deselectRow(at: indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: false)
+        
+        if (selectedCellIndex == indexPath.row)
+        {
+            if (cellFullSize == false)
+            {
+                cellFullSize = true
+            }
+            else
+            {
+                cellFullSize = false
+            }
+        }
+        else
+        {
+            cellFullSize = true
+        }
+        
+        selectedCellIndex = indexPath.row
+        tableView.reloadRows(at: [indexPath], with: .automatic)
+        
         /*
         let schoolId = (self.selectedTeam?.schoolId)!
         let schoolState = (self.selectedTeam?.schoolState)!
@@ -564,6 +571,7 @@ class TeamSelectorViewController: UIViewController, UITableViewDelegate, UITable
         let mascotUrlString = (self.selectedTeam?.mascotUrl)!
         */
         
+        /*
         var team = [:] as Dictionary<String, Any>
         
         if (boysTeamsArray.count > 0) && (girlsTeamsArray.count > 0)
@@ -644,6 +652,7 @@ class TeamSelectorViewController: UIViewController, UITableViewDelegate, UITable
         teamDetailVC.userRole = "Follower"
         
         self.navigationController?.pushViewController(teamDetailVC, animated: true)
+        */
     }
     
     // MARK: - ThreeSegmentControl Delgate
@@ -710,7 +719,6 @@ class TeamSelectorViewController: UIViewController, UITableViewDelegate, UITable
         // Size the fakeStatusBar, navBar, and tableView
         fakeStatusBar.frame = CGRect(x: 0, y: 0, width: Int(kDeviceWidth), height: kStatusBarHeight + SharedData.topNotchHeight)
         navView.frame = CGRect(x: 0, y: fakeStatusBar.frame.size.height, width: kDeviceWidth, height: navView.frame.size.height)
-        
         
         // Add the ThreeSegmentControlView to the navView
         threeSegmentControl = ThreeSegmentControlView(frame: CGRect(x: 0, y: navView.frame.size.height - 40, width: navView.frame.size.width, height: 40), buttonOneTitle: "VARSITY", buttonTwoTitle: "JV", buttonThreeTitle: "FRESHMAN", lightTheme: true)

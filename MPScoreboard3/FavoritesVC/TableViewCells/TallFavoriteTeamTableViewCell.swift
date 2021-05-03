@@ -64,16 +64,15 @@ class TallFavoriteTeamTableViewCell: UITableViewCell
     {
         super.awakeFromNib()
 
-        self.contentView.backgroundColor = UIColor.mpWhiteColor()
+        self.contentView.backgroundColor = UIColor.mpHeaderBackgroundColor()
         
         // Round the edges
         self.containerView.layer.cornerRadius = 8
+        self.containerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         self.containerView.clipsToBounds = true
+        
         self.mascotContainerView.layer.cornerRadius = self.mascotContainerView.frame.size.width / 2.0
         self.mascotContainerView.clipsToBounds = true
- 
-        
-        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool)

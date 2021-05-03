@@ -56,8 +56,8 @@
 		4A5DD05325CC6C8B00D7540B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5DD05225CC6C8B00D7540B /* Extensions.swift */; };
 		4A6538B425E4651E0015641E /* ImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A6538B325E4651E0015641E /* ImageHelper.m */; };
 		4A6D675E25D5BA3900A3E9DB /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6D675D25D5BA3900A3E9DB /* Team.swift */; };
-		4A6D676325D5C23900A3E9DB /* FavoriteTeamTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6D676125D5C23900A3E9DB /* FavoriteTeamTableViewCell.swift */; };
-		4A6D676425D5C23900A3E9DB /* FavoriteTeamTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A6D676225D5C23900A3E9DB /* FavoriteTeamTableViewCell.xib */; };
+		4A6D676325D5C23900A3E9DB /* TeamSelectorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A6D676125D5C23900A3E9DB /* TeamSelectorTableViewCell.swift */; };
+		4A6D676425D5C23900A3E9DB /* TeamSelectorTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A6D676225D5C23900A3E9DB /* TeamSelectorTableViewCell.xib */; };
 		4A730EC02603E3E600B3FECE /* NewFeeds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A730EBF2603E3E600B3FECE /* NewFeeds.swift */; };
 		4A74A28A25E5907600DCBF1E /* NotificationEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A74A28825E5907600DCBF1E /* NotificationEditorViewController.swift */; };
 		4A74A28B25E5907600DCBF1E /* NotificationEditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A74A28925E5907600DCBF1E /* NotificationEditorViewController.xib */; };
@@ -378,7 +378,6 @@
 		4AFB769325C9D6C100C6B6FC /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFB769125C9D6C100C6B6FC /* SettingsViewController.swift */; };
 		4AFB769425C9D6C100C6B6FC /* SettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4AFB769225C9D6C100C6B6FC /* SettingsViewController.xib */; };
 		4AFF754C25C8D19A009B6CF4 /* NewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFF754B25C8D19A009B6CF4 /* NewsViewController.swift */; };
-		4AFF755225C8D202009B6CF4 /* OldFavoriteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFF754F25C8D202009B6CF4 /* OldFavoriteViewController.swift */; };
 		4AFF755725C8D354009B6CF4 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFF755625C8D354009B6CF4 /* TabBarController.swift */; };
 /* End PBXBuildFile section */
 
@@ -452,8 +451,8 @@
 		4A6538B225E4651E0015641E /* ImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageHelper.h; sourceTree = "<group>"; };
 		4A6538B325E4651E0015641E /* ImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageHelper.m; sourceTree = "<group>"; };
 		4A6D675D25D5BA3900A3E9DB /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
-		4A6D676125D5C23900A3E9DB /* FavoriteTeamTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteTeamTableViewCell.swift; sourceTree = "<group>"; };
-		4A6D676225D5C23900A3E9DB /* FavoriteTeamTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FavoriteTeamTableViewCell.xib; sourceTree = "<group>"; };
+		4A6D676125D5C23900A3E9DB /* TeamSelectorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamSelectorTableViewCell.swift; sourceTree = "<group>"; };
+		4A6D676225D5C23900A3E9DB /* TeamSelectorTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TeamSelectorTableViewCell.xib; sourceTree = "<group>"; };
 		4A730EBF2603E3E600B3FECE /* NewFeeds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFeeds.swift; sourceTree = "<group>"; };
 		4A74A28825E5907600DCBF1E /* NotificationEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEditorViewController.swift; sourceTree = "<group>"; };
 		4A74A28925E5907600DCBF1E /* NotificationEditorViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationEditorViewController.xib; sourceTree = "<group>"; };
@@ -1065,7 +1064,6 @@
 		4AFB769125C9D6C100C6B6FC /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		4AFB769225C9D6C100C6B6FC /* SettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsViewController.xib; sourceTree = "<group>"; };
 		4AFF754B25C8D19A009B6CF4 /* NewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsViewController.swift; sourceTree = "<group>"; };
-		4AFF754F25C8D202009B6CF4 /* OldFavoriteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldFavoriteViewController.swift; sourceTree = "<group>"; };
 		4AFF755625C8D354009B6CF4 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1304,8 +1302,8 @@
 				4AEA6CA9262E10290054B811 /* ShortFavoriteTeamTableViewCell.xib */,
 				4A28BE8D262F8A9800AFFCE2 /* TallFavoriteTeamTableViewCell.swift */,
 				4A28BE8E262F8A9900AFFCE2 /* TallFavoriteTeamTableViewCell.xib */,
-				4A6D676125D5C23900A3E9DB /* FavoriteTeamTableViewCell.swift */,
-				4A6D676225D5C23900A3E9DB /* FavoriteTeamTableViewCell.xib */,
+				4A6D676125D5C23900A3E9DB /* TeamSelectorTableViewCell.swift */,
+				4A6D676225D5C23900A3E9DB /* TeamSelectorTableViewCell.xib */,
 			);
 			path = TableViewCells;
 			sourceTree = "<group>";
@@ -2235,7 +2233,6 @@
 			isa = PBXGroup;
 			children = (
 				4A25D848262DD9DC0032E61F /* FavoriteViewController.swift */,
-				4AFF754F25C8D202009B6CF4 /* OldFavoriteViewController.swift */,
 				4AEA6CAC262E34A40054B811 /* TeamDetailViewController.swift */,
 				4AEA6CAD262E34A40054B811 /* TeamDetailViewController.xib */,
 				4A2881A12633405700465A75 /* AthleteDetailViewController.swift */,
@@ -2409,7 +2406,7 @@
 				4AB0053A25FC1933006D0DC0 /* MPDAAIcon.png in Resources */,
 				4A40FB9B26125236003CEE4B /* siro-bold.otf in Resources */,
 				4AEF5E0625DEDB550077327E /* LoginHomeViewController.xib in Resources */,
-				4A6D676425D5C23900A3E9DB /* FavoriteTeamTableViewCell.xib in Resources */,
+				4A6D676425D5C23900A3E9DB /* TeamSelectorTableViewCell.xib in Resources */,
 				4AB0054725FC1933006D0DC0 /* MPMutedBtn@2x.png in Resources */,
 				4AEC3CBC261E449C00C5A4E7 /* BassFishing@2x.png in Resources */,
 				4AEC3CCF261E449C00C5A4E7 /* WaterPolo@2x.png in Resources */,
@@ -2536,7 +2533,6 @@
 				4AB005B125FC1933006D0DC0 /* NSDate+MPAdditions.m in Sources */,
 				4AB0058F25FC1933006D0DC0 /* MRVideoPlayerManager.m in Sources */,
 				4AB0057225FC1933006D0DC0 /* MPInlineAdAdapter+Internal.m in Sources */,
-				4AFF755225C8D202009B6CF4 /* OldFavoriteViewController.swift in Sources */,
 				4AB005C325FC1933006D0DC0 /* MPVASTAd.m in Sources */,
 				4AB0055F25FC1933006D0DC0 /* MPAdServerKeys.m in Sources */,
 				4AB0055425FC1933006D0DC0 /* MPViewableButton.m in Sources */,
@@ -2613,7 +2609,7 @@
 				4AB0053125FC1933006D0DC0 /* MPImpressionData.m in Sources */,
 				4AEF5E1625DF0EB00077327E /* VideoSettingsViewController.swift in Sources */,
 				4A2881A626336C2A00465A75 /* Athlete.swift in Sources */,
-				4A6D676325D5C23900A3E9DB /* FavoriteTeamTableViewCell.swift in Sources */,
+				4A6D676325D5C23900A3E9DB /* TeamSelectorTableViewCell.swift in Sources */,
 				4AB005E625FC1933006D0DC0 /* MPRewardedVideo.m in Sources */,
 				4AB005AC25FC1933006D0DC0 /* MPIdentityProvider.m in Sources */,
 				4A5A54A625E03DA100541097 /* ProfileViewController.swift in Sources */,
@@ -2858,7 +2854,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 210429;
+				CURRENT_PROJECT_VERSION = 210503;
 				DEVELOPMENT_TEAM = DF5A7UVUA8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2902,7 +2898,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 210429;
+				CURRENT_PROJECT_VERSION = 210503;
 				DEVELOPMENT_TEAM = DF5A7UVUA8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

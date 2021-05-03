@@ -317,7 +317,7 @@ class SearchViewController: UIViewController, ThreeSegmentControlViewDelegate, U
         cell?.detailTextLabel?.font = UIFont.mpRegularFontWith(size: 14)
         
         cell?.selectionStyle = .default
-        cell?.textLabel?.font = UIFont.mpSemiBoldFontWith(size: 16)
+        cell?.textLabel?.font = UIFont.mpBoldFontWith(size: 16)
         
         if (searchTextField.text!.count > 0)
         {

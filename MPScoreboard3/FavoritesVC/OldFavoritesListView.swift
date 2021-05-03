@@ -327,14 +327,15 @@ class OldFavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        var cell = tableView.dequeueReusableCell(withIdentifier: "FavoriteTeamTableViewCell") as? FavoriteTeamTableViewCell
+        
+        var cell = tableView.dequeueReusableCell(withIdentifier: "TeamSelectorTableViewCell") as? TeamSelectorTableViewCell
         
         if (cell == nil)
         {
-            let nib = Bundle.main.loadNibNamed("FavoriteTeamTableViewCell", owner: self, options: nil)
-            cell = nib![0] as? FavoriteTeamTableViewCell
+            let nib = Bundle.main.loadNibNamed("TeamSelectorTableViewCell", owner: self, options: nil)
+            cell = nib![0] as? TeamSelectorTableViewCell
         }
-        
+        /*
         cell?.selectionStyle = .none
                 
         if (indexPath.section == 0)
@@ -517,7 +518,7 @@ class OldFavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
                 cell?.teamFirstLetterLabel.textColor = color
             }
         }
-        
+        */
         return cell!
     }
     

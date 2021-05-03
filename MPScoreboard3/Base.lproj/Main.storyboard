@@ -219,9 +219,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="75w-Te-mLw">
                                         <rect key="frame" x="360" y="4" width="44" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" name="MPBlackColor"/>
                                         <state key="normal">
-                                            <imageReference key="image" image="SearchIconGray" symbolScale="large"/>
+                                            <imageReference key="image" image="magnifyingglass" catalog="system" symbolScale="large" renderingMode="template"/>
                                         </state>
                                         <connections>
                                             <action selector="searchButtonTouched:" destination="zJY-xE-HtN" eventType="touchUpInside" id="VRf-24-kS6"/>
@@ -235,9 +235,9 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dsq-hq-Wg9">
-                                        <rect key="frame" x="320" y="2" width="40" height="40"/>
+                                        <rect key="frame" x="320" y="3" width="40" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" image="FavoritesIconGray"/>
+                                        <state key="normal" image="SortIcon"/>
                                         <connections>
                                             <action selector="favoritesButtonTouched:" destination="zJY-xE-HtN" eventType="touchUpInside" id="6gd-Ph-cSH"/>
                                         </connections>
@@ -363,12 +363,12 @@
         </scene>
     </scenes>
     <resources>
-        <image name="FavoritesIconGray" width="26" height="24"/>
         <image name="FollowingIcon" width="19" height="23"/>
         <image name="LatestIcon" width="21" height="18"/>
         <image name="NoFavsImage" width="350" height="330"/>
         <image name="ScoresIcon" width="24" height="16"/>
-        <image name="SearchIconGray" width="20" height="20"/>
+        <image name="SortIcon" width="24" height="22"/>
+        <image name="magnifyingglass" catalog="system" width="128" height="115"/>
         <namedColor name="MPBlackColor">
             <color red="0.12549019607843137" green="0.12941176470588237" blue="0.12941176470588237" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

@@ -126,7 +126,7 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
         
     }
     
-    // MARK: TextField Delegates
+    // MARK: - TextField Delegates
     
     func textFieldDidBeginEditing(_ textField: UITextField)
     {
@@ -307,6 +307,8 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
         let state = athlete["schoolState"] as! String
         //let schoolFullName = athlete["schoolFormattedName"] as! String
         let careerId = athlete["careerId"] as! String
+        //let schoolColorHex = athlete["schoolColor1"] as! String
+        //let schoolColor = ColorHelper.color(fromHexString: schoolColorHex)
         
         // Cap the name to 19 characters
         let trimToCharacter = 19
@@ -344,6 +346,7 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
             let star = UIImageView(frame: CGRect(x: tableView.frame.size.width - 30, y: 30, width: 14, height: 14))
             star.tag = 100 + indexPath.row
             star.image = UIImage(named: "ActiveFavorites")
+            star.tintColor = UIColor.mpBlueColor()
             cell?.contentView.addSubview(star)
             cell?.selectionStyle = .none
         }
@@ -431,6 +434,18 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
         searchTextField!.resignFirstResponder()
     }
     
+    // MARK: - ScrollView Delegate
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView)
+    {
+        let yScroll = Int(scrollView.contentOffset.y)
+        
+        if (yScroll < 0)
+        {
+            scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+        }
+    }
+    
     // MARK: - Init Method
     
     override init(frame: CGRect)
@@ -438,7 +453,7 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
         super.init(frame: frame)
         
         // Build the sportContainerView
-        sportContainerView = UIView(frame: CGRect(x: 16, y: 20, width: CGFloat(kDeviceWidth - 32), height: 40))
+        sportContainerView = UIView(frame: CGRect(x: 0, y: 20, width: CGFloat(kDeviceWidth), height: 40))
         sportContainerView?.backgroundColor = UIColor.mpWhiteColor()
         self.addSubview(sportContainerView!)
         
@@ -469,7 +484,7 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
         
         
         // Build the searchContainerView
-        searchContainerView = UIView(frame: CGRect(x: 16, y: 68, width: CGFloat(kDeviceWidth - 32), height: 40))
+        searchContainerView = UIView(frame: CGRect(x: 0, y: 68, width: CGFloat(kDeviceWidth), height: 40))
         searchContainerView?.backgroundColor = UIColor.mpWhiteColor()
         self.addSubview(searchContainerView!)
         searchContainerView?.isHidden = true

@@ -631,6 +631,38 @@ class TeamDetailViewController: UIViewController, UIScrollViewDelegate, IQAction
 
     }
     
+    @objc private func contributeButtonTouched()
+    {
+        let adminRoles = kUserDefaults.dictionary(forKey: kUserAdminRolesDictionaryKey)
+        let schoolId = self.selectedTeam?.schoolId
+        let allSeasonId = self.selectedTeam?.allSeasonId
+        let roleKey = schoolId! + "_" + allSeasonId!
+        
+        var message = "Standard user content is added from this button."
+        var title = "Standard User"
+        
+        if (adminRoles![roleKey] != nil)
+        {
+            let adminRole = adminRoles![roleKey] as! Dictionary<String,String>
+            let roleName = adminRole[kRoleNameKey]
+            
+            if ((roleName == "Head Coach") || (roleName == "Assistant Coach") || (roleName == "Statistician"))
+            {
+                message = "Admin user content is added from this button."
+                title = "Admin User"
+            }
+            else if (roleName == "Team Community")
+            {
+                message = "Team member content is added from this button."
+                title = "Team Member"
+            }
+        }
+        
+        MiscHelper.showAlert(in: self, withActionNames: ["Ok"], title: title, message: message, lastItemCancelType: false) { tag in
+            
+        }
+    }
+    
     // MARK: - ScrollView Delegate
     
     func scrollViewDidScroll(_ scrollView: UIScrollView)
@@ -722,22 +754,28 @@ class TeamDetailViewController: UIViewController, UIScrollViewDelegate, IQAction
         browserHeight = Int(kDeviceHeight) - navViewHeight - itemScrollViewHeight - SharedData.bottomSafeAreaHeight - bottomTabBarPad
         
         
-        // Add the + button to the lower right corner
-        contributeButton = UIButton(type: .custom)
-        contributeButton.frame = CGRect(x: Int(kDeviceWidth) - 76, y: navViewHeight + itemScrollViewHeight + browserHeight - 76, width: 60, height: 60)
-        contributeButton.layer.cornerRadius = contributeButton.frame.size.width / 2
-        contributeButton.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.33).cgColor
-        contributeButton.layer.shadowOffset = CGSize(width: 0.0, height: 5.0)
-        contributeButton.layer.shadowOpacity = 1.0
-        contributeButton.layer.shadowRadius = 4.0
-        contributeButton.clipsToBounds = false
-        contributeButton.backgroundColor = currentTeamColor
-        contributeButton.setTitle("+", for: .normal)
-        contributeButton.setTitleColor(.white, for: .normal)
-        contributeButton.titleLabel?.font = UIFont.mpRegularFontWith(size: 42) //.systemFont(ofSize: 42)
-        contributeButton.titleEdgeInsets = UIEdgeInsets(top: -3, left: 0, bottom: 3, right: 0)
-        contributeButton.contentHorizontalAlignment = .center
-        self.view.addSubview(contributeButton)
+        // Add the + button to the lower right corner if logged in
+        let userId = kUserDefaults.string(forKey: kUserIdKey)
+        
+        if (userId != kTestDriveUserId)
+        {
+            contributeButton = UIButton(type: .custom)
+            contributeButton.frame = CGRect(x: Int(kDeviceWidth) - 76, y: navViewHeight + itemScrollViewHeight + browserHeight - 76, width: 60, height: 60)
+            contributeButton.layer.cornerRadius = contributeButton.frame.size.width / 2
+            contributeButton.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.33).cgColor
+            contributeButton.layer.shadowOffset = CGSize(width: 0.0, height: 5.0)
+            contributeButton.layer.shadowOpacity = 1.0
+            contributeButton.layer.shadowRadius = 4.0
+            contributeButton.clipsToBounds = false
+            contributeButton.backgroundColor = currentTeamColor
+            contributeButton.setTitle("+", for: .normal)
+            contributeButton.setTitleColor(.white, for: .normal)
+            contributeButton.titleLabel?.font = UIFont.mpRegularFontWith(size: 42) //.systemFont(ofSize: 42)
+            contributeButton.titleEdgeInsets = UIEdgeInsets(top: -3, left: 0, bottom: 3, right: 0)
+            contributeButton.contentHorizontalAlignment = .center
+            contributeButton.addTarget(self, action: #selector(contributeButtonTouched), for: .touchUpInside)
+            self.view.addSubview(contributeButton)
+        }
         
         if (self.showSaveFavoriteButton == true)
         {

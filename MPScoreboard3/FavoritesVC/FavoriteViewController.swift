@@ -28,6 +28,7 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
     
     private var favoriteTeamsArray = [] as Array
     private var favoriteAthletesArray = [] as Array
+    private var detailedFavoritesArray = [] as Array
     private var bottomTabBarPad = 0
     
     private var searchVC: SearchViewController!
@@ -36,6 +37,154 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
     private var teamDetailVC: TeamDetailViewController!
     private var profileVC: ProfileViewController!
     private var favoritesListView: FavoritesListView!
+    
+    // MARK: - Get Team Detail Card Data
+    
+    private func getTeamDetailCardData()
+    {
+        // Extract the schoolId and allSeasonId from the favorites
+        detailedFavoritesArray.removeAll()
+        
+        var postData = [] as Array<Dictionary<String,String>>
+        
+        for favorite in favoriteTeamsArray
+        {
+            let item = favorite  as! Dictionary<String, Any>
+            let schoolId = item[kNewSchoolIdKey] as! String
+            let allSeasonId = item[kNewAllSeasonIdKey] as! String
+            let postDictionary = ["teamId": schoolId, "allSeasonId": allSeasonId]
+            postData.append(postDictionary)
+        }
+        
+        NewFeeds.getDetailCardDataForTeams(postData) { [self] resultData, error in
+            
+            if (error == nil)
+            {
+                print("Team Detail Success")
+                
+                self.detailedFavoritesArray = resultData!
+                /*
+                [
+                        {
+                            "teamId": "d9622df1-9a90-49e7-b219-d6c380c566fe",
+                            "allSeasonId": "22e2b335-334e-4d4d-9f67-a0f716bb1ccd",
+                            "cardItems": [
+                                {
+                                    "type": "Record",
+                                    "data": {
+                                        "overallStanding": {
+                                            "winningPercentage": 0.000,
+                                            "overallWinLossTies": "0-0",
+                                            "homeWinLossTies": "0-0",
+                                            "awayWinLossTies": "0-0",
+                                            "neutralWinLossTies": "0-0",
+                                            "points": 0,
+                                            "pointsAgainst": 0,
+                                            "streak": 0,
+                                            "streakResult": "0"
+                                        },
+                                        "leagueStanding": {
+                                            "leagueName": "Foothill Valley",
+                                            "canonicalUrl": "https://z.maxpreps.com/league/vIKP_ANcBEeRvG9E5Ztn4Q/standings-foothill-valley.htm",
+                                            "conferenceWinningPercentage": 0.000,
+                                            "conferenceWinLossTies": "0-0",
+                                            "conferenceStandingPlacement": "1st"
+                                        }
+                                    }
+                                },
+                                {
+                                    "type": "Schedule",
+                                    "data": [
+                                        {
+                                            "hasResult": false,
+                                            "resultString": "",
+                                            "dateString": "3/19",
+                                            "timeString": "7:00 PM",
+                                            "opponentMascotUrl": "https://d1yf833igi2o06.cloudfront.net/fit-in/1024x1024/school-mascot/6/1/5/61563c75-3efb-427f-8329-767978b469df.gif?version=636520747200000000",
+                                            "opponentName": "Rio Linda",
+                                            "opponentNameAcronym": "RLHS",
+                                            "opponentUrl": "https://dev.maxpreps.com/high-schools/rio-linda-knights-(rio-linda,ca)/football/home.htm",
+                                            "homeAwayType": "Home",
+                                            "contestIsLive": false,
+                                            "canonicalUrl": "https://dev.maxpreps.com/games/3-19-21/football-fall-20/ponderosa-vs-rio-linda.htm?c=OIRYlXxgWEaHfK7OipEITQ"
+                                        },
+                                        {
+                                            "hasResult": false,
+                                            "resultString": "",
+                                            "dateString": "3/25",
+                                            "timeString": "12:00 PM",
+                                            "opponentMascotUrl": "https://d1yf833igi2o06.cloudfront.net/fit-in/1024x1024/school-mascot/6/1/5/61563c75-3efb-427f-8329-767978b469df.gif?version=636520747200000000",
+                                            "opponentName": "Rio Linda",
+                                            "opponentNameAcronym": "RLHS",
+                                            "opponentUrl": "https://dev.maxpreps.com/high-schools/rio-linda-knights-(rio-linda,ca)/football/home.htm",
+                                            "homeAwayType": "Neutral",
+                                            "contestIsLive": false,
+                                            "canonicalUrl": "https://dev.maxpreps.com/games/3-25-21/football-fall-20/ponderosa-vs-rio-linda.htm?c=ZLpSnJTDFUSEscaGO3BsYQ"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "Latest",
+                                    "data": [
+                                        {
+                                            "type": "Article",
+                                            "title": "State officials, CIF, coaches meet",
+                                            "text": "Dr. Mark Ghaly enters discussion; California coaches group calls meeting 'cooperative,  positive, and open,' but student-athletes are running out of time. ",
+                                            "thumbnailUrl": "https://images.maxpreps.com/editorial/article/c/b/8/cb8ee48f-fe58-44dc-baec-f00d7ccf7692/3a4ed84d-c366-eb11-80ce-a444a33a3a97_original.jpg?version=637481180400000000",
+                                            "thumbnailWidth": null,
+                                            "thumbnailHeight": null,
+                                            "canonicalUrl": "https://dev.maxpreps.com/news/j-SOy1j-3ES67PANfM92kg/california-high-school-sports--state-officials,-cif,-coaches-find-common-ground,-talks-to-resume-next-week.htm"
+                                        },
+                                        {
+                                            "type": "Article",
+                                            "title": "New hope for California sports",
+                                            "text": "Teams slotted in purple tier now allowed to compete; four Sac-Joaquin Section cross country teams ran in Monday meet.",
+                                            "thumbnailUrl": "https://images.maxpreps.com/editorial/article/5/0/7/507b80b1-d75a-4909-b52c-474eef259269/e618f53f-745f-eb11-80ce-a444a33a3a97_original.jpg?version=637471932600000000",
+                                            "thumbnailWidth": null,
+                                            "thumbnailHeight": null,
+                                            "canonicalUrl": "https://dev.maxpreps.com/news/sYB7UFrXCUm1LEdO7yWSaQ/new-hope-for-california-high-school-sports-after-stay-home-orders-lifted.htm"
+                                        },
+                                        {
+                                            "type": "Article",
+                                            "title": "SJS releases new play for Season 1 in 2021",
+                                            "text": "State's second-largest section will forego traditional postseason to allow schools chance to participate in more games. ",
+                                            "thumbnailUrl": "https://images.maxpreps.com/editorial/article/d/2/9/d298908e-0c1c-46aa-861c-96e4fa76ffad/07b358d0-8941-eb11-80ce-a444a33a3a97_original.jpg?version=637439061000000000",
+                                            "thumbnailWidth": null,
+                                            "thumbnailHeight": null,
+                                            "canonicalUrl": "https://dev.maxpreps.com/news/jpCY0hwMqkaGHJbk-nb_rQ/sac-joaquin-section-releases-new-plan-for-season-1-in-2021.htm"
+                                        },
+                                        {
+                                            "type": "Article",
+                                            "title": "Video: When will California sports return?",
+                                            "text": "Health and Human Services agency provides an update as state grapples with COVID-19 guidelines, tiers.",
+                                            "thumbnailUrl": "https://images.maxpreps.com/editorial/article/a/9/a/a9a554a4-6e1b-4835-828a-4b989d7a79a9/2cf9a134-d723-eb11-80ce-a444a33a3a97_original.jpg?version=637409524200000000",
+                                            "thumbnailWidth": null,
+                                            "thumbnailHeight": null,
+                                            "canonicalUrl": "https://dev.maxpreps.com/news/pFSlqRtuNUiCikuYnXp5qQ/video--when-will-california-high-school-and-youth-sports-return.htm"
+                                        },
+                                        {
+                                            "type": "Article",
+                                            "title": "Map: Where NFL QBs went to high school",
+                                            "text": "Patrick Mahomes, Kyler Murray join 18 other quarterbacks who played high school football in Texas.",
+                                            "thumbnailUrl": "https://images.maxpreps.com/editorial/article/a/e/0/ae0a7fa5-86bc-4082-91e3-4cf67d094940/29d89c6e-d17d-ea11-80ce-a444a33a3a97_original.jpg?version=637223926200000000",
+                                            "thumbnailWidth": null,
+                                            "thumbnailHeight": null,
+                                            "canonicalUrl": "https://dev.maxpreps.com/news/pX8KrryGgkCR40z2fQlJQA/map--where-every-nfl-quarterback-drafted-in-the-past-10-years-played-high-school-football.htm"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }]
+                        */
+            }
+            else
+            {
+                print("Team Detail Fail")
+            }
+        }
+    }
+    
+    
     
     // MARK: - Favorites List View Delegate
     
@@ -79,6 +228,12 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
             {
                 favoritesTableView.isScrollEnabled = true
             }
+        }
+        
+        // Get card details if the favorite tema count is 1, 2, or 3
+        if (favoriteTeamsArray.count > 0) && (favoriteTeamsArray.count <= 3)
+        {
+            self.getTeamDetailCardData()
         }
         
     }
@@ -155,7 +310,14 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
-        return 60.0
+        if (favoriteTeamsArray.count > 3)
+        {
+            return 60.0
+        }
+        else
+        {
+            return 356.0
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
@@ -273,20 +435,6 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        var cell = tableView.dequeueReusableCell(withIdentifier: "ShortFavoriteTeamTableViewCell") as? ShortFavoriteTeamTableViewCell
-        
-        if (cell == nil)
-        {
-            let nib = Bundle.main.loadNibNamed("ShortFavoriteTeamTableViewCell", owner: self, options: nil)
-            cell = nib![0] as? ShortFavoriteTeamTableViewCell
-        }
-        
-        cell?.selectionStyle = .none
-        
-        cell?.teamFirstLetterLabel.isHidden = false
-        cell?.adminContainerView.isHidden = true
-        cell?.memberContainerView.isHidden = true
-
         let favorite = favoriteTeamsArray[indexPath.row] as! Dictionary<String, Any>
         
         let name = favorite[kNewSchoolNameKey] as! String
@@ -297,125 +445,235 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
         let level = favorite[kNewLevelKey] as!String
         let schoolId = favorite[kNewSchoolIdKey] as!String
         let allSeasonId = favorite[kNewAllSeasonIdKey] as! String
-        //let season = favorite[kNewSeasonKey] as! String
         
         let genderSportLevel = MiscHelper.genderSportLevelFrom(gender: gender, sport: sport, level: level)
         
-        // Show the season for soccer
-        //if (sport == "Soccer")
-        //{
-            //cell?.subtitleLabel.text =  String(format: "%@ (%@)", genderSportLevel.uppercased(), season)
-        //}
-        //else
-        //{
-            cell?.subtitleLabel.text =  genderSportLevel.uppercased()
-        //}
-        
-        cell?.titleLabel.text = name
-        cell?.teamFirstLetterLabel.text = initial
-        
-        // Look at the roles dictionary for a match if a logged in user
-        let userId = kUserDefaults.string(forKey: kUserIdKey)
-        
-        if (userId != kTestDriveUserId)
+        // Different cells depending on the favorites count
+        if (favoriteTeamsArray.count > 3)
         {
-            let adminRoles = kUserDefaults.dictionary(forKey: kUserAdminRolesDictionaryKey)
-            let roleKey = schoolId + "_" + allSeasonId
+            // Short Cell
+            var cell = tableView.dequeueReusableCell(withIdentifier: "ShortFavoriteTeamTableViewCell") as? ShortFavoriteTeamTableViewCell
             
-            if (adminRoles![roleKey] != nil)
+            if (cell == nil)
             {
-                let adminRole = adminRoles![roleKey] as! Dictionary<String,String>
-                let roleName = adminRole[kRoleNameKey]
+                let nib = Bundle.main.loadNibNamed("ShortFavoriteTeamTableViewCell", owner: self, options: nil)
+                cell = nib![0] as? ShortFavoriteTeamTableViewCell
+            }
+            
+            cell?.selectionStyle = .none
+            
+            cell?.teamFirstLetterLabel.isHidden = false
+            cell?.adminContainerView.isHidden = true
+            cell?.memberContainerView.isHidden = true
+
+            cell?.subtitleLabel.text =  genderSportLevel.uppercased()
+            cell?.titleLabel.text = name
+            cell?.teamFirstLetterLabel.text = initial
+            
+            // Look at the roles dictionary for a match if a logged in user
+            let userId = kUserDefaults.string(forKey: kUserIdKey)
+            
+            if (userId != kTestDriveUserId)
+            {
+                let adminRoles = kUserDefaults.dictionary(forKey: kUserAdminRolesDictionaryKey)
+                let roleKey = schoolId + "_" + allSeasonId
                 
-                if ((roleName == "Head Coach") || (roleName == "Assistant Coach") || (roleName == "Statistician"))
+                if (adminRoles![roleKey] != nil)
                 {
-                    cell?.adminContainerView.isHidden = false
-                }
-                else if (roleName == "Team Community")
-                {
-                    cell?.memberContainerView.isHidden = false
+                    let adminRole = adminRoles![roleKey] as! Dictionary<String,String>
+                    let roleName = adminRole[kRoleNameKey]
+                    
+                    if ((roleName == "Head Coach") || (roleName == "Assistant Coach") || (roleName == "Statistician"))
+                    {
+                        cell?.adminContainerView.isHidden = false
+                    }
+                    else if (roleName == "Team Community")
+                    {
+                        cell?.memberContainerView.isHidden = false
+                    }
                 }
             }
-        }
-        
-        // Look for a mascot
-        if let schoolsInfo = kUserDefaults.dictionary(forKey: kNewSchoolInfoDictionaryKey)
-        {
-            if let schoolInfo = schoolsInfo[schoolId] as? Dictionary<String, String>
+            
+            // Look for a mascot
+            if let schoolsInfo = kUserDefaults.dictionary(forKey: kNewSchoolInfoDictionaryKey)
             {
-                // Set the cell's fill color
-                let hexColorString = schoolInfo[kNewSchoolInfoColor1Key]!
-                let color = ColorHelper.color(fromHexString: hexColorString)
-                //cell?.addShapeLayers(color: color!)
-                
-                let mascotUrl = schoolInfo[kNewSchoolInfoMascotUrlKey]
-                let url = URL(string: mascotUrl!)
-
-                if (mascotUrl!.count > 0)
+                if let schoolInfo = schoolsInfo[schoolId] as? Dictionary<String, String>
                 {
-                    // Get the data and make an image
-                    MiscHelper.getData(from: url!) { data, response, error in
-                        guard let data = data, error == nil else { return }
-                        //print("Download Finished")
-                        DispatchQueue.main.async()
-                        {
-                            let image = UIImage(data: data)
-                            
-                            if (image != nil)
+                    // Set the cell's fill color
+                    let hexColorString = schoolInfo[kNewSchoolInfoColor1Key]!
+                    let color = ColorHelper.color(fromHexString: hexColorString)
+                    //cell?.addShapeLayers(color: color!)
+                    
+                    let mascotUrl = schoolInfo[kNewSchoolInfoMascotUrlKey]
+                    let url = URL(string: mascotUrl!)
+
+                    if (mascotUrl!.count > 0)
+                    {
+                        // Get the data and make an image
+                        MiscHelper.getData(from: url!) { data, response, error in
+                            guard let data = data, error == nil else { return }
+                            //print("Download Finished")
+                            DispatchQueue.main.async()
                             {
-                                let scaledWidth = cell?.teamMascotImageView.frame.size.height
-                                let scaledImage = ImageHelper.image(with: image, scaledTo: CGSize(width: scaledWidth!, height: scaledWidth!))
+                                let image = UIImage(data: data)
                                 
-                                cell?.teamFirstLetterLabel.isHidden = true
-                                
-                                // Clip the image to a round circle if the corners are not white or clear
-                                let cornerColor = image!.getColorIfCornersMatch()
-                                
-                                if (cornerColor != nil)
+                                if (image != nil)
                                 {
-                                    //print ("Corner Color match")
-
-                                    var red: CGFloat = 0
-                                    var green: CGFloat = 0
-                                    var blue: CGFloat = 0
-                                    var alpha: CGFloat = 0
-
-                                    // Use the scaled image if the color is white or the alpha is zero
-                                    cornerColor!.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+                                    let scaledWidth = cell?.teamMascotImageView.frame.size.height
+                                    let scaledImage = ImageHelper.image(with: image, scaledTo: CGSize(width: scaledWidth!, height: scaledWidth!))
                                     
-                                    if (((red == 1) && (green == 1) && (blue == 1)) || (alpha == 0))
+                                    cell?.teamFirstLetterLabel.isHidden = true
+                                    
+                                    // Clip the image to a round circle if the corners are not white or clear
+                                    let cornerColor = image!.getColorIfCornersMatch()
+                                    
+                                    if (cornerColor != nil)
                                     {
-                                        cell?.teamMascotImageView.image = scaledImage
+                                        //print ("Corner Color match")
+
+                                        var red: CGFloat = 0
+                                        var green: CGFloat = 0
+                                        var blue: CGFloat = 0
+                                        var alpha: CGFloat = 0
+
+                                        // Use the scaled image if the color is white or the alpha is zero
+                                        cornerColor!.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+                                        
+                                        if (((red == 1) && (green == 1) && (blue == 1)) || (alpha == 0))
+                                        {
+                                            cell?.teamMascotImageView.image = scaledImage
+                                        }
+                                        else
+                                        {
+                                            let roundedImage = UIImage.maskRoundedImage(image: scaledImage!, radius: scaledWidth! / 2.0)
+                                            cell?.teamMascotImageView.image = roundedImage
+                                        }
                                     }
                                     else
                                     {
-                                        let roundedImage = UIImage.maskRoundedImage(image: scaledImage!, radius: scaledWidth! / 2.0)
-                                        cell?.teamMascotImageView.image = roundedImage
+                                        print("Corner Color Mismatch")
+                                        cell?.teamMascotImageView.image = scaledImage
                                     }
                                 }
                                 else
                                 {
-                                    print("Corner Color Mismatch")
-                                    cell?.teamMascotImageView.image = scaledImage
+                                    // Set the first letter color
+                                    cell?.teamFirstLetterLabel.textColor = color
                                 }
-                            }
-                            else
-                            {
-                                // Set the first letter color
-                                cell?.teamFirstLetterLabel.textColor = color
                             }
                         }
                     }
-                }
-                else
-                {
-                    // Set the first letter color
-                    cell?.teamFirstLetterLabel.textColor = color
+                    else
+                    {
+                        // Set the first letter color
+                        cell?.teamFirstLetterLabel.textColor = color
+                    }
                 }
             }
+            
+            return cell!
+        }
+        else
+        {
+            // Tall Cell
+            var cell = tableView.dequeueReusableCell(withIdentifier: "TallFavoriteTeamTableViewCell") as? TallFavoriteTeamTableViewCell
+            
+            if (cell == nil)
+            {
+                let nib = Bundle.main.loadNibNamed("TallFavoriteTeamTableViewCell", owner: self, options: nil)
+                cell = nib![0] as? TallFavoriteTeamTableViewCell
+            }
+            
+            cell?.selectionStyle = .none
+            
+            cell?.teamFirstLetterLabel.isHidden = false
+
+            cell?.subtitleLabel.text =  genderSportLevel.uppercased()
+            cell?.titleLabel.text = name
+            cell?.teamFirstLetterLabel.text = initial
+            cell?.sportIconImageView.image = MiscHelper.getImageForSport(sport)
+            
+            // Look for a mascot
+            if let schoolsInfo = kUserDefaults.dictionary(forKey: kNewSchoolInfoDictionaryKey)
+            {
+                if let schoolInfo = schoolsInfo[schoolId] as? Dictionary<String, String>
+                {
+                    // Set the cell's fill color
+                    let hexColorString = schoolInfo[kNewSchoolInfoColor1Key]!
+                    let color = ColorHelper.color(fromHexString: hexColorString)
+                    cell?.addShapeLayers(color: color!)
+                    
+                    let mascotUrl = schoolInfo[kNewSchoolInfoMascotUrlKey]
+                    let url = URL(string: mascotUrl!)
+
+                    if (mascotUrl!.count > 0)
+                    {
+                        // Get the data and make an image
+                        MiscHelper.getData(from: url!) { data, response, error in
+                            guard let data = data, error == nil else { return }
+                            //print("Download Finished")
+                            DispatchQueue.main.async()
+                            {
+                                let image = UIImage(data: data)
+                                
+                                if (image != nil)
+                                {
+                                    let scaledWidth = cell?.teamMascotImageView.frame.size.height
+                                    let scaledImage = ImageHelper.image(with: image, scaledTo: CGSize(width: scaledWidth!, height: scaledWidth!))
+                                    
+                                    cell?.teamFirstLetterLabel.isHidden = true
+                                    
+                                    // Clip the image to a round circle if the corners are not white or clear
+                                    let cornerColor = image!.getColorIfCornersMatch()
+                                    
+                                    if (cornerColor != nil)
+                                    {
+                                        //print ("Corner Color match")
+
+                                        var red: CGFloat = 0
+                                        var green: CGFloat = 0
+                                        var blue: CGFloat = 0
+                                        var alpha: CGFloat = 0
+
+                                        // Use the scaled image if the color is white or the alpha is zero
+                                        cornerColor!.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+                                        
+                                        if (((red == 1) && (green == 1) && (blue == 1)) || (alpha == 0))
+                                        {
+                                            cell?.teamMascotImageView.image = scaledImage
+                                        }
+                                        else
+                                        {
+                                            let roundedImage = UIImage.maskRoundedImage(image: scaledImage!, radius: scaledWidth! / 2.0)
+                                            cell?.teamMascotImageView.image = roundedImage
+                                        }
+                                    }
+                                    else
+                                    {
+                                        print("Corner Color Mismatch")
+                                        cell?.teamMascotImageView.image = scaledImage
+                                    }
+                                }
+                                else
+                                {
+                                    // Set the first letter color
+                                    cell?.teamFirstLetterLabel.textColor = color
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Set the first letter color
+                        cell?.teamFirstLetterLabel.textColor = color
+                    }
+                }
+            }
+            
+            return cell!
         }
         
-        return cell!
+        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
@@ -878,8 +1136,17 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
             noFavoriteContainerView.isHidden = true
             editFavoritesButton.isHidden = false
             
+            var contentHeight = 0
+            
             // Disable scrolling if the content height is less than the tableView's frame
-            let contentHeight = (favoriteAthletesArray.count * 50) + (favoriteTeamsArray.count * 58)
+            if (favoriteTeamsArray.count > 0) && (favoriteTeamsArray.count <= 3)
+            {
+                contentHeight = (favoriteAthletesArray.count * 50) + (favoriteTeamsArray.count * 356)
+            }
+            else
+            {
+                contentHeight = (favoriteAthletesArray.count * 50) + (favoriteTeamsArray.count * 58)
+            }
             
             if (contentHeight < Int(favoritesTableView.frame.size.height))
             {
@@ -889,6 +1156,12 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
             {
                 favoritesTableView.isScrollEnabled = true
             }
+        }
+        
+        // Get card details if the favorite tema count is 1, 2, or 3
+        if (favoriteTeamsArray.count > 0) && (favoriteTeamsArray.count <= 3)
+        {
+            self.getTeamDetailCardData()
         }
     }
     

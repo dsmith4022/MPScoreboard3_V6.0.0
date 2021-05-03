@@ -290,6 +290,11 @@ let kAthleteSearchHostProduction = "https://stag.api.maxpreps.com/gateways/app/r
 let kAthleteSearchHostStaging = "https://stag.api.maxpreps.com/gateways/app/roster-athlete-search/v1?term=%@&gender=%@&sport=%@" // optional "&maxresults=%@&state=%@&year=%@"
 let kAthleteSearchHostDev = "https://dev.api.maxpreps.com/gateways/app/roster-athlete-search/v1?term=%@&gender=%@&sport=%@" // optional "&maxresults=%@&state=%@&year=%@"
 
+// URLs for getting team detail for the tall and medium height cards
+let kGetTeamDetailCardHostProduction = "https://dev.api.maxpreps.com/gateways/app/team-cards/v1?scheduleCount=2&latestCount=5"
+let kGetTeamDetailCardHostStaging = "https://dev.api.maxpreps.com/gateways/app/team-cards/v1?scheduleCount=2&latestCount=5"
+let kGetTeamDetailCardHostDev = "https://dev.api.maxpreps.com/gateways/app/team-cards/v1?scheduleCount=2&latestCount=5"
+
 
 // User Profile URLs
 let kMemberProfileHostProduction = "https://secure.maxpreps.com/m/member/default.aspx"

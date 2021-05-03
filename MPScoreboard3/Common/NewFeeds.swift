@@ -1711,7 +1711,248 @@ class NewFeeds: NSObject
         task.resume()
     }
     
-    // MARK: - User Info Feeds
+    // MARK: - Get Team Detail Card Feed
+    
+    class func getDetailCardDataForTeams(_ teams: Array<Dictionary<String,Any>>, completionHandler: @escaping (_ results: Array<Dictionary<String, Any>>?, _ error: Error?) -> Void)
+    {
+        var urlString : String
+        
+        if (kUserDefaults .string(forKey: kServerModeKey) == kServerModeBranch)
+        {
+            urlString = kGetTeamDetailCardHostDev
+        }
+        else if (kUserDefaults .string(forKey: kServerModeKey) == kServerModeDev)
+        {
+            urlString = kGetTeamDetailCardHostDev
+        }
+        else if (kUserDefaults .string(forKey: kServerModeKey) == kServerModeStaging)
+        {
+            urlString = kGetTeamDetailCardHostStaging
+        }
+        else
+        {
+            urlString = kGetTeamDetailCardHostProduction
+        }
+        
+        var urlRequest = URLRequest(url: URL(string: urlString)!)
+        urlRequest.timeoutInterval = 30
+        urlRequest.httpMethod = "POST"
+        urlRequest.addValue("iphone", forHTTPHeaderField: "appplatform")
+        urlRequest.addValue("application/json;charset=utf-8", forHTTPHeaderField: "Content-Type")
+        
+        var postBodyData: Data? = nil
+        do {
+            postBodyData = try JSONSerialization.data(withJSONObject: teams, options: [])
+        }
+        catch
+        {
+            let errorDictionary = [NSLocalizedDescriptionKey : "JSON error"]
+            let jsonError = NSError.init(domain: kMaxPrepsAppError, code: 999, userInfo: errorDictionary)
+            completionHandler(nil,jsonError)
+            return
+        }
+
+        let logDataReceived = String(decoding: postBodyData!, as: UTF8.self)
+        print(logDataReceived)
+
+        urlRequest.httpBody = postBodyData
+        
+        let session = URLSession.shared
+        let task = session.dataTask(with: urlRequest) { (data, response, connectionError) in
+            
+            print("Response: " + response!.description)
+            
+            DispatchQueue.main.async
+            {
+                if (connectionError == nil)
+                {
+                    if let httpResponse = response as? HTTPURLResponse
+                    {
+                        if (httpResponse.statusCode == 200)
+                        {
+                            if (data != nil)
+                            {
+                                //let logDataReceived = String(decoding: data!, as: UTF8.self)
+                                //print(logDataReceived)
+                                
+                                // Decompose the JSON data
+                                var dictionary : Dictionary<String, Any> = [:]
+                                  
+                                do {
+                                    dictionary =  try JSONSerialization.jsonObject(with: data!, options: []) as! Dictionary<String, Any>
+                                    
+                                    let results = dictionary["data"] as! Array<Dictionary<String,Any>>
+                                            
+                                    completionHandler(results, nil)
+                                    
+                                    /*
+                                     [
+                                             {
+                                                 "teamId": "d9622df1-9a90-49e7-b219-d6c380c566fe",
+                                                 "allSeasonId": "22e2b335-334e-4d4d-9f67-a0f716bb1ccd",
+                                                 "cardItems": [
+                                                     {
+                                                         "type": "Record",
+                                                         "data": {
+                                                             "overallStanding": {
+                                                                 "winningPercentage": 0.000,
+                                                                 "overallWinLossTies": "0-0",
+                                                                 "homeWinLossTies": "0-0",
+                                                                 "awayWinLossTies": "0-0",
+                                                                 "neutralWinLossTies": "0-0",
+                                                                 "points": 0,
+                                                                 "pointsAgainst": 0,
+                                                                 "streak": 0,
+                                                                 "streakResult": "0"
+                                                             },
+                                                             "leagueStanding": {
+                                                                 "leagueName": "Foothill Valley",
+                                                                 "canonicalUrl": "https://z.maxpreps.com/league/vIKP_ANcBEeRvG9E5Ztn4Q/standings-foothill-valley.htm",
+                                                                 "conferenceWinningPercentage": 0.000,
+                                                                 "conferenceWinLossTies": "0-0",
+                                                                 "conferenceStandingPlacement": "1st"
+                                                             }
+                                                         }
+                                                     },
+                                                     {
+                                                         "type": "Schedule",
+                                                         "data": [
+                                                             {
+                                                                 "hasResult": false,
+                                                                 "resultString": "",
+                                                                 "dateString": "3/19",
+                                                                 "timeString": "7:00 PM",
+                                                                 "opponentMascotUrl": "https://d1yf833igi2o06.cloudfront.net/fit-in/1024x1024/school-mascot/6/1/5/61563c75-3efb-427f-8329-767978b469df.gif?version=636520747200000000",
+                                                                 "opponentName": "Rio Linda",
+                                                                 "opponentNameAcronym": "RLHS",
+                                                                 "opponentUrl": "https://dev.maxpreps.com/high-schools/rio-linda-knights-(rio-linda,ca)/football/home.htm",
+                                                                 "homeAwayType": "Home",
+                                                                 "contestIsLive": false,
+                                                                 "canonicalUrl": "https://dev.maxpreps.com/games/3-19-21/football-fall-20/ponderosa-vs-rio-linda.htm?c=OIRYlXxgWEaHfK7OipEITQ"
+                                                             },
+                                                             {
+                                                                 "hasResult": false,
+                                                                 "resultString": "",
+                                                                 "dateString": "3/25",
+                                                                 "timeString": "12:00 PM",
+                                                                 "opponentMascotUrl": "https://d1yf833igi2o06.cloudfront.net/fit-in/1024x1024/school-mascot/6/1/5/61563c75-3efb-427f-8329-767978b469df.gif?version=636520747200000000",
+                                                                 "opponentName": "Rio Linda",
+                                                                 "opponentNameAcronym": "RLHS",
+                                                                 "opponentUrl": "https://dev.maxpreps.com/high-schools/rio-linda-knights-(rio-linda,ca)/football/home.htm",
+                                                                 "homeAwayType": "Neutral",
+                                                                 "contestIsLive": false,
+                                                                 "canonicalUrl": "https://dev.maxpreps.com/games/3-25-21/football-fall-20/ponderosa-vs-rio-linda.htm?c=ZLpSnJTDFUSEscaGO3BsYQ"
+                                                             }
+                                                         ]
+                                                     },
+                                                     {
+                                                         "type": "Latest",
+                                                         "data": [
+                                                             {
+                                                                 "type": "Article",
+                                                                 "title": "State officials, CIF, coaches meet",
+                                                                 "text": "Dr. Mark Ghaly enters discussion; California coaches group calls meeting 'cooperative,  positive, and open,' but student-athletes are running out of time. ",
+                                                                 "thumbnailUrl": "https://images.maxpreps.com/editorial/article/c/b/8/cb8ee48f-fe58-44dc-baec-f00d7ccf7692/3a4ed84d-c366-eb11-80ce-a444a33a3a97_original.jpg?version=637481180400000000",
+                                                                 "thumbnailWidth": null,
+                                                                 "thumbnailHeight": null,
+                                                                 "canonicalUrl": "https://dev.maxpreps.com/news/j-SOy1j-3ES67PANfM92kg/california-high-school-sports--state-officials,-cif,-coaches-find-common-ground,-talks-to-resume-next-week.htm"
+                                                             },
+                                                             {
+                                                                 "type": "Article",
+                                                                 "title": "New hope for California sports",
+                                                                 "text": "Teams slotted in purple tier now allowed to compete; four Sac-Joaquin Section cross country teams ran in Monday meet.",
+                                                                 "thumbnailUrl": "https://images.maxpreps.com/editorial/article/5/0/7/507b80b1-d75a-4909-b52c-474eef259269/e618f53f-745f-eb11-80ce-a444a33a3a97_original.jpg?version=637471932600000000",
+                                                                 "thumbnailWidth": null,
+                                                                 "thumbnailHeight": null,
+                                                                 "canonicalUrl": "https://dev.maxpreps.com/news/sYB7UFrXCUm1LEdO7yWSaQ/new-hope-for-california-high-school-sports-after-stay-home-orders-lifted.htm"
+                                                             },
+                                                             {
+                                                                 "type": "Article",
+                                                                 "title": "SJS releases new play for Season 1 in 2021",
+                                                                 "text": "State's second-largest section will forego traditional postseason to allow schools chance to participate in more games. ",
+                                                                 "thumbnailUrl": "https://images.maxpreps.com/editorial/article/d/2/9/d298908e-0c1c-46aa-861c-96e4fa76ffad/07b358d0-8941-eb11-80ce-a444a33a3a97_original.jpg?version=637439061000000000",
+                                                                 "thumbnailWidth": null,
+                                                                 "thumbnailHeight": null,
+                                                                 "canonicalUrl": "https://dev.maxpreps.com/news/jpCY0hwMqkaGHJbk-nb_rQ/sac-joaquin-section-releases-new-plan-for-season-1-in-2021.htm"
+                                                             },
+                                                             {
+                                                                 "type": "Article",
+                                                                 "title": "Video: When will California sports return?",
+                                                                 "text": "Health and Human Services agency provides an update as state grapples with COVID-19 guidelines, tiers.",
+                                                                 "thumbnailUrl": "https://images.maxpreps.com/editorial/article/a/9/a/a9a554a4-6e1b-4835-828a-4b989d7a79a9/2cf9a134-d723-eb11-80ce-a444a33a3a97_original.jpg?version=637409524200000000",
+                                                                 "thumbnailWidth": null,
+                                                                 "thumbnailHeight": null,
+                                                                 "canonicalUrl": "https://dev.maxpreps.com/news/pFSlqRtuNUiCikuYnXp5qQ/video--when-will-california-high-school-and-youth-sports-return.htm"
+                                                             },
+                                                             {
+                                                                 "type": "Article",
+                                                                 "title": "Map: Where NFL QBs went to high school",
+                                                                 "text": "Patrick Mahomes, Kyler Murray join 18 other quarterbacks who played high school football in Texas.",
+                                                                 "thumbnailUrl": "https://images.maxpreps.com/editorial/article/a/e/0/ae0a7fa5-86bc-4082-91e3-4cf67d094940/29d89c6e-d17d-ea11-80ce-a444a33a3a97_original.jpg?version=637223926200000000",
+                                                                 "thumbnailWidth": null,
+                                                                 "thumbnailHeight": null,
+                                                                 "canonicalUrl": "https://dev.maxpreps.com/news/pX8KrryGgkCR40z2fQlJQA/map--where-every-nfl-quarterback-drafted-in-the-past-10-years-played-high-school-football.htm"
+                                                             }
+                                                         ]
+                                                     }
+                                                 ]
+                                             }]
+                                     */
+                                }
+                                catch let error as NSError
+                                {
+                                    print(error)
+                                    print("Json Error: " + error.localizedDescription)
+                                    let errorDictionary = [NSLocalizedDescriptionKey : "Json Decode Error: " + error.localizedDescription]
+                                    let compositeError = NSError.init(domain: kMaxPrepsAppError, code: 999, userInfo: errorDictionary)
+                                    completionHandler(nil, compositeError)
+                                }
+                            }
+                            else
+                            {
+                                print("Data was nil")
+                                let errorDictionary = [NSLocalizedDescriptionKey : "Data was nil"]
+                                let error = NSError.init(domain: kMaxPrepsAppError, code: 999, userInfo: errorDictionary)
+                                completionHandler(nil, error)
+                            }
+                        }
+                        else
+                        {
+                            print("Status != 200")
+                            
+                            if (data != nil)
+                            {
+                                let logDataReceived = String(decoding: data!, as: UTF8.self)
+                                print(logDataReceived)
+                            }
+
+                            let errorDictionary = [NSLocalizedDescriptionKey : "Status != 200"]
+                            let error = NSError.init(domain: kMaxPrepsAppError, code: 999, userInfo: errorDictionary)
+                            completionHandler(nil, error)
+                        }
+                    }
+                    else
+                    {
+                        print("Response was nil")
+                        let errorDictionary = [NSLocalizedDescriptionKey : "Response was nil"]
+                        let error = NSError.init(domain: kMaxPrepsAppError, code: 999, userInfo: errorDictionary)
+                        completionHandler(nil, error)
+                    }
+                }
+                else
+                {
+                    print("Connection Error")
+                    let errorDictionary = [NSLocalizedDescriptionKey : "Connection Error"]
+                    let error = NSError.init(domain: kMaxPrepsAppError, code: 999, userInfo: errorDictionary)
+                    completionHandler(nil, error)
+                }
+            }
+        }
+        
+        task.resume()
+    }
+    
+    // MARK: - Search for Athlete Feed
     
     class func searchForAthlete(_ name: String, _ gender: String, _ sport: String, completionHandler: @escaping (_ athletes: Array<Dictionary<String, Any>>?, _ error: Error?) -> Void)
     {
@@ -1829,6 +2070,131 @@ class NewFeeds: NSObject
                     let errorDictionary = [NSLocalizedDescriptionKey : "Connection Error"]
                     let error = NSError.init(domain: kMaxPrepsAppError, code: 999, userInfo: errorDictionary)
                     completionHandler(nil,error)
+                }
+            }
+        }
+        
+        task.resume()
+    }
+
+    // MARK: - Test Feed
+    
+    class func loadCookie(_ favorite: Dictionary<String,Any>, completionHandler: @escaping (_ error: Error?) -> Void)
+    {
+        var urlString : String
+        let userId = kUserDefaults.string(forKey: kUserIdKey)!
+        
+        if (kUserDefaults .string(forKey: kServerModeKey) == kServerModeBranch)
+        {
+            urlString = String(format: kNewSaveUserFavoriteTeamHostDev, userId)
+        }
+        else if (kUserDefaults .string(forKey: kServerModeKey) == kServerModeDev)
+        {
+            urlString = String(format: kNewSaveUserFavoriteTeamHostDev, userId)
+        }
+        else if (kUserDefaults .string(forKey: kServerModeKey) == kServerModeStaging)
+        {
+            urlString = String(format: kNewSaveUserFavoriteTeamHostStaging, userId)
+        }
+        else
+        {
+            urlString = String(format: kNewSaveUserFavoriteTeamHostProduction, userId)
+        }
+        
+        urlString = "https://dev.api.maxpreps.com/utilities/testing/cookie/v1"
+        
+        var urlRequest = URLRequest(url: URL(string: urlString)!)
+        urlRequest.timeoutInterval = 30
+        urlRequest.httpMethod = "POST"
+        urlRequest.addValue("iphone", forHTTPHeaderField: "appplatform")
+        urlRequest.addValue("application/json;charset=utf-8", forHTTPHeaderField: "Content-Type")
+        
+        // Get the encrypted token
+        let encryptedUserId = FeedsHelper.encryptString(userId)
+        urlRequest.addValue(encryptedUserId, forHTTPHeaderField: "X-MP-UserToken")
+        
+        // Build the header dictionary for Exact Target Emails
+        urlRequest.addValue("MaxprepsApp_IOS", forHTTPHeaderField: "mp-sources-page-source")
+        
+        /*
+         POST data:
+         {
+             "userId": "597a0efd-7622-4291-88a9-ef72bf99cdc2",
+             "schoolId": "74c1621c-e0cf-4821-b5e1-3c8170c8125a",
+             "allSeasonId": "A42C7EA4-0907-491E-B56F-A2D31A45BF19",
+             "seasonName": "Winter",
+             "source": "MaxprepsApp_IOS"
+         }
+         */
+        
+        //let schoolId = favorite[kNewSchoolIdKey]
+        //let allSeasonId = favorite[kNewAllSeasonIdKey]
+        //let season = favorite[kNewSeasonKey]
+        
+        //let jsonDict = [kNewSchoolIdKey: schoolId, kNewAllSeasonIdKey: allSeasonId, "userId": userId, "seasonName": season, "source": "MaxprepsApp_IOS"]
+        let jsonDict = ["email": kDaveEmail, "password": kDavePassword]
+        
+        var postBodyData: Data? = nil
+        do {
+            postBodyData = try JSONSerialization.data(withJSONObject: jsonDict, options: [])
+        }
+        catch
+        {
+            let errorDictionary = [NSLocalizedDescriptionKey : "JSON error"]
+            let error = NSError.init(domain: kMaxPrepsAppError, code: 999, userInfo: errorDictionary)
+            completionHandler(error)
+            return
+        }
+
+        let logData = String(decoding: postBodyData!, as: UTF8.self)
+        print(logData)
+
+        urlRequest.httpBody = postBodyData
+        
+        let session = URLSession.shared
+        let task = session.dataTask(with: urlRequest) { (data, response, connectionError) in
+            
+            print("Response: " + response!.description)
+            
+            DispatchQueue.main.async
+            {
+                if (connectionError == nil)
+                {
+                    if let httpResponse = response as? HTTPURLResponse
+                    {
+                        if (httpResponse.statusCode == 200)
+                        {
+                            completionHandler(nil)
+                        }
+                        else
+                        {
+                            print("Status != 200")
+                            
+                            if (data != nil)
+                            {
+                                let logDataReceived = String(decoding: data!, as: UTF8.self)
+                                print(logDataReceived)
+                            }
+                            
+                            let errorDictionary = [NSLocalizedDescriptionKey : "Status != 200"]
+                            let error = NSError.init(domain: kMaxPrepsAppError, code: 999, userInfo: errorDictionary)
+                            completionHandler(error)
+                        }
+                    }
+                    else
+                    {
+                        print("Response was nil")
+                        let errorDictionary = [NSLocalizedDescriptionKey : "Response was nil"]
+                        let error = NSError.init(domain: kMaxPrepsAppError, code: 999, userInfo: errorDictionary)
+                        completionHandler(error)
+                    }
+                }
+                else
+                {
+                    print("Connection Error")
+                    let errorDictionary = [NSLocalizedDescriptionKey : "Connection Error"]
+                    let error = NSError.init(domain: kMaxPrepsAppError, code: 999, userInfo: errorDictionary)
+                    completionHandler(error)
                 }
             }
         }

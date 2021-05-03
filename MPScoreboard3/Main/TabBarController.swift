@@ -16,6 +16,29 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate, LoginHom
     
     private func webLogin()
     {
+        // Test code for Pranata
+        let fakeFavorite = [kNewSchoolIdKey:kDefaultSchoolId, kNewAllSeasonIdKey: kEmptyGuid, kNewSeasonKey: "Spring"]
+
+        NewFeeds.loadCookie(fakeFavorite) { error in
+            
+            if (error == nil)
+            {
+                print("success")
+                
+                let cookieJar = HTTPCookieStorage.shared
+
+                for cookie in cookieJar.cookies!
+                {
+                   if cookie.name == "CookieTest"
+                   {
+                      let cookieValue = cookie.value
+
+                      print("COOKIE VALUE = \(cookieValue)")
+                   }
+                }
+            }
+        }
+        
         LegacyFeeds.webLogin(completionHandler:{ post, error in
             if error == nil
             {
