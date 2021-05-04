@@ -110,13 +110,16 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="exm-9Q-ICu"/>
             <connections>
-                <outlet property="containerView" destination="Brk-Sx-dSQ" id="TSj-WI-2GT"/>
+                <outlet property="articleContainerView" destination="hGG-LJ-7WE" id="4n3-Rn-h3e"/>
+                <outlet property="contestContainerView" destination="cqh-Ml-ZWe" id="ZKe-vf-S35"/>
                 <outlet property="mascotContainerView" destination="D9Y-ht-5me" id="55E-uB-vR6"/>
+                <outlet property="recordContainerView" destination="lIc-71-Ylf" id="TwM-JP-jPS"/>
                 <outlet property="sportIconImageView" destination="5ou-ws-H7U" id="2Z9-m7-Idy"/>
                 <outlet property="subtitleLabel" destination="IBC-se-hYV" id="vEM-8K-i32"/>
                 <outlet property="teamFirstLetterLabel" destination="cZB-hz-91w" id="FvS-ew-knM"/>
                 <outlet property="teamMascotImageView" destination="m5j-w6-mIR" id="PxK-4O-up5"/>
                 <outlet property="titleLabel" destination="LVj-mf-FZV" id="lwM-iW-eXa"/>
+                <outlet property="topContainerView" destination="Brk-Sx-dSQ" id="ziw-gl-eu3"/>
             </connections>
             <point key="canvasLocation" x="42.753623188405797" y="88.392857142857139"/>
         </tableViewCell>

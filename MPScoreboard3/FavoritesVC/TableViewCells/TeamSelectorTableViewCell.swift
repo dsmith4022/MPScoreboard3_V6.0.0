@@ -13,15 +13,7 @@ class TeamSelectorTableViewCell: UITableViewCell
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var seasonLabel: UILabel!
     @IBOutlet weak var sportImageView: UIImageView!
-    @IBOutlet weak var varsityStarImageView: UIImageView!
-    @IBOutlet weak var jvStarImageView: UIImageView!
-    @IBOutlet weak var freshmanStarImageView: UIImageView!
-    @IBOutlet weak var varsityLabel: UILabel!
-    @IBOutlet weak var jvLabel: UILabel!
-    @IBOutlet weak var freshmanLabel: UILabel!
-    @IBOutlet weak var varsityChevronImageView: UIImageView!
-    @IBOutlet weak var jvChevronImageView: UIImageView!
-    @IBOutlet weak var freshmanChevronImageView: UIImageView!
+    @IBOutlet weak var starImageView: UIImageView!
     
     override func awakeFromNib()
     {

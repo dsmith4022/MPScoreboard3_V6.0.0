@@ -449,8 +449,8 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
         let genderSportLevel = MiscHelper.genderSportLevelFrom(gender: gender, sport: sport, level: level)
         
         // Different cells depending on the favorites count
-        if (favoriteTeamsArray.count > 3)
-        {
+        //if (favoriteTeamsArray.count > 3)
+        //{
             // Short Cell
             var cell = tableView.dequeueReusableCell(withIdentifier: "ShortFavoriteTeamTableViewCell") as? ShortFavoriteTeamTableViewCell
             
@@ -572,6 +572,7 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
             }
             
             return cell!
+        /*
         }
         else
         {
@@ -672,7 +673,7 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
             
             return cell!
         }
-        
+        */
         
     }
     

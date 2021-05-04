@@ -9,13 +9,36 @@ import UIKit
 
 class TallFavoriteTeamTableViewCell: UITableViewCell
 {
-    @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var topContainerView: UIView!
+    @IBOutlet weak var recordContainerView: UIView!
+    @IBOutlet weak var contestContainerView: UIView!
+    @IBOutlet weak var articleContainerView: UIView!
     @IBOutlet weak var mascotContainerView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var sportIconImageView: UIImageView!
     @IBOutlet weak var teamMascotImageView: UIImageView!
     @IBOutlet weak var teamFirstLetterLabel: UILabel!
+    
+    func setDisplayMode(mode: FavoriteDetailCellMode)
+    {
+        /*
+        switch mode
+        {
+        case FavoriteDetailCellMode.allCells:
+            <#code#>
+            
+        case FavoriteDetailCellMode.noArticles:
+            <#code#>
+        
+        case FavoriteDetailCellMode.noContests:
+            <#code#>
+        
+        default:
+            <#code#>
+        }
+        */
+    }
     
     func addShapeLayers(color: UIColor)
     {
@@ -25,8 +48,8 @@ class TallFavoriteTeamTableViewCell: UITableViewCell
         // Starting point for the path
         rearPath.move(to: CGPoint(x: 0, y: 0))
         rearPath.addLine(to: CGPoint(x: 57, y: 0))
-        rearPath.addLine(to: CGPoint(x: 10, y: containerView.frame.size.height))
-        rearPath.addLine(to: CGPoint(x: 0, y: containerView.frame.size.height))
+        rearPath.addLine(to: CGPoint(x: 10, y: topContainerView.frame.size.height))
+        rearPath.addLine(to: CGPoint(x: 0, y: topContainerView.frame.size.height))
         rearPath.addLine(to: CGPoint(x: 0, y: 0))
         rearPath.close()
         
@@ -37,7 +60,7 @@ class TallFavoriteTeamTableViewCell: UITableViewCell
         rearShapeLayer.fillColor = lightColor!.cgColor
         rearShapeLayer.position = CGPoint(x: 0, y: 0)
 
-        self.containerView.layer.insertSublayer(rearShapeLayer, below: self.mascotContainerView.layer)
+        self.topContainerView.layer.insertSublayer(rearShapeLayer, below: self.mascotContainerView.layer)
         
         
         // Create a new path for the dark front part
@@ -46,8 +69,8 @@ class TallFavoriteTeamTableViewCell: UITableViewCell
         // Starting point for the path
         frontPath.move(to: CGPoint(x: 0, y: 0))
         frontPath.addLine(to: CGPoint(x: 42, y: 0))
-        frontPath.addLine(to: CGPoint(x: 10, y: containerView.frame.size.height))
-        frontPath.addLine(to: CGPoint(x: 0, y: containerView.frame.size.height))
+        frontPath.addLine(to: CGPoint(x: 10, y: topContainerView.frame.size.height))
+        frontPath.addLine(to: CGPoint(x: 0, y: topContainerView.frame.size.height))
         frontPath.addLine(to: CGPoint(x: 0, y: 0))
         frontPath.close()
         
@@ -57,7 +80,7 @@ class TallFavoriteTeamTableViewCell: UITableViewCell
         frontShapeLayer.fillColor = color.cgColor
         frontShapeLayer.position = CGPoint(x: 0, y: 0)
 
-        self.containerView.layer.insertSublayer(frontShapeLayer, above: rearShapeLayer)
+        self.topContainerView.layer.insertSublayer(frontShapeLayer, above: rearShapeLayer)
     }
     
     override func awakeFromNib()
@@ -67,9 +90,9 @@ class TallFavoriteTeamTableViewCell: UITableViewCell
         self.contentView.backgroundColor = UIColor.mpHeaderBackgroundColor()
         
         // Round the edges
-        self.containerView.layer.cornerRadius = 8
-        self.containerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        self.containerView.clipsToBounds = true
+        self.topContainerView.layer.cornerRadius = 8
+        self.topContainerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        self.topContainerView.clipsToBounds = true
         
         self.mascotContainerView.layer.cornerRadius = self.mascotContainerView.frame.size.width / 2.0
         self.mascotContainerView.clipsToBounds = true

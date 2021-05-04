@@ -22,6 +22,12 @@ enum AspectRatio
     case high
 }
 
+enum FavoriteDetailCellMode
+{
+    case allCells
+    case noArticles
+    case noContests
+}
 
 // MARK: - Shared Data
 struct SharedData
