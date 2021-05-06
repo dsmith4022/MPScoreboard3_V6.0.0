@@ -1786,14 +1786,17 @@ class NewFeeds: NSObject
                                     completionHandler(results, nil)
                                     
                                     /*
-                                     [
+                                     {
+                                         "status": 200,
+                                         "message": "Success",
+                                         "cacheResult": "Unknown",
+                                         "data": [
                                              {
                                                  "teamId": "d9622df1-9a90-49e7-b219-d6c380c566fe",
                                                  "allSeasonId": "22e2b335-334e-4d4d-9f67-a0f716bb1ccd",
                                                  "cardItems": [
                                                      {
-                                                         "type": "Record",
-                                                         "data": {
+                                                         "record": {
                                                              "overallStanding": {
                                                                  "winningPercentage": 0.000,
                                                                  "overallWinLossTies": "0-0",
@@ -1815,8 +1818,7 @@ class NewFeeds: NSObject
                                                          }
                                                      },
                                                      {
-                                                         "type": "Schedule",
-                                                         "data": [
+                                                         "schedules": [
                                                              {
                                                                  "hasResult": false,
                                                                  "resultString": "",
@@ -1826,6 +1828,7 @@ class NewFeeds: NSObject
                                                                  "opponentName": "Rio Linda",
                                                                  "opponentNameAcronym": "RLHS",
                                                                  "opponentUrl": "https://dev.maxpreps.com/high-schools/rio-linda-knights-(rio-linda,ca)/football/home.htm",
+                                                    "opponentColor1": "000080",
                                                                  "homeAwayType": "Home",
                                                                  "contestIsLive": false,
                                                                  "canonicalUrl": "https://dev.maxpreps.com/games/3-19-21/football-fall-20/ponderosa-vs-rio-linda.htm?c=OIRYlXxgWEaHfK7OipEITQ"
@@ -1839,6 +1842,7 @@ class NewFeeds: NSObject
                                                                  "opponentName": "Rio Linda",
                                                                  "opponentNameAcronym": "RLHS",
                                                                  "opponentUrl": "https://dev.maxpreps.com/high-schools/rio-linda-knights-(rio-linda,ca)/football/home.htm",
+                                                    "opponentColor1": "000080",
                                                                  "homeAwayType": "Neutral",
                                                                  "contestIsLive": false,
                                                                  "canonicalUrl": "https://dev.maxpreps.com/games/3-25-21/football-fall-20/ponderosa-vs-rio-linda.htm?c=ZLpSnJTDFUSEscaGO3BsYQ"
@@ -1846,8 +1850,7 @@ class NewFeeds: NSObject
                                                          ]
                                                      },
                                                      {
-                                                         "type": "Latest",
-                                                         "data": [
+                                                         "latestItems": [
                                                              {
                                                                  "type": "Article",
                                                                  "title": "State officials, CIF, coaches meet",
@@ -1896,7 +1899,11 @@ class NewFeeds: NSObject
                                                          ]
                                                      }
                                                  ]
-                                             }]
+                                             }
+                                         ],
+                                         "warnings": [],
+                                         "errors": []
+                                     }
                                      */
                                 }
                                 catch let error as NSError

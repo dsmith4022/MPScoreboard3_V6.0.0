@@ -16,6 +16,8 @@
 		4A1B0CB525E815CD003E2AC2 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A1B0CB425E815CD003E2AC2 /* CoreLocation.framework */; };
 		4A1B84FD25CB21F0000DDBBD /* ALL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4A1B84FB25CB21F0000DDBBD /* ALL.txt */; };
 		4A1B850325CB333C000DDBBD /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1B850225CB333C000DDBBD /* Constants.swift */; };
+		4A1BE0692641E7C300AE371E /* ArticleCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1BE0672641E7C300AE371E /* ArticleCollectionViewCell.swift */; };
+		4A1BE06A2641E7C300AE371E /* ArticleCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A1BE0682641E7C300AE371E /* ArticleCollectionViewCell.xib */; };
 		4A22FE2D2614E8F4005E50A5 /* FavoritesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A22FE2C2614E8F4005E50A5 /* FavoritesListView.swift */; };
 		4A25D7E225ED647E00F332A7 /* Alert.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4A25D7DC25ED647E00F332A7 /* Alert.wav */; };
 		4A25D7E325ED647F00F332A7 /* Note.wav in Resources */ = {isa = PBXBuildFile; fileRef = 4A25D7DD25ED647E00F332A7 /* Note.wav */; };
@@ -33,8 +35,8 @@
 		4A36C55D263B355E00A4A049 /* OldTeamSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A36C55B263B355E00A4A049 /* OldTeamSelectorViewController.swift */; };
 		4A36C55E263B355E00A4A049 /* OldTeamSelectorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A36C55C263B355E00A4A049 /* OldTeamSelectorViewController.xib */; };
 		4A36C560263B56C500A4A049 /* AthleteSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A36C55F263B56C500A4A049 /* AthleteSearchView.swift */; };
-		4A3F25B82641BBD8003DDAFC /* TallTeamSelectorTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A3F25B62641BBD8003DDAFC /* TallTeamSelectorTableViewCell.xib */; };
-		4A3F25B92641BBD8003DDAFC /* TallTeamSelectorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A3F25B72641BBD8003DDAFC /* TallTeamSelectorTableViewCell.swift */; };
+		4A3F25B82641BBD8003DDAFC /* AltTeamSelectorTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A3F25B62641BBD8003DDAFC /* AltTeamSelectorTableViewCell.xib */; };
+		4A3F25B92641BBD8003DDAFC /* AltTeamSelectorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A3F25B72641BBD8003DDAFC /* AltTeamSelectorTableViewCell.swift */; };
 		4A40FB9926125236003CEE4B /* siro-regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4A40FB9526125236003CEE4B /* siro-regular.otf */; };
 		4A40FB9A26125236003CEE4B /* siro-semibold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4A40FB9626125236003CEE4B /* siro-semibold.otf */; };
 		4A40FB9B26125236003CEE4B /* siro-bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4A40FB9726125236003CEE4B /* siro-bold.otf */; };
@@ -406,6 +408,8 @@
 		4A1B0CB425E815CD003E2AC2 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		4A1B84FB25CB21F0000DDBBD /* ALL.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ALL.txt; sourceTree = "<group>"; };
 		4A1B850225CB333C000DDBBD /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		4A1BE0672641E7C300AE371E /* ArticleCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleCollectionViewCell.swift; sourceTree = "<group>"; };
+		4A1BE0682641E7C300AE371E /* ArticleCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ArticleCollectionViewCell.xib; sourceTree = "<group>"; };
 		4A22FE2C2614E8F4005E50A5 /* FavoritesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesListView.swift; sourceTree = "<group>"; };
 		4A25D7DC25ED647E00F332A7 /* Alert.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Alert.wav; sourceTree = "<group>"; };
 		4A25D7DD25ED647E00F332A7 /* Note.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Note.wav; sourceTree = "<group>"; };
@@ -425,8 +429,8 @@
 		4A36C55B263B355E00A4A049 /* OldTeamSelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldTeamSelectorViewController.swift; sourceTree = "<group>"; };
 		4A36C55C263B355E00A4A049 /* OldTeamSelectorViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OldTeamSelectorViewController.xib; sourceTree = "<group>"; };
 		4A36C55F263B56C500A4A049 /* AthleteSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AthleteSearchView.swift; sourceTree = "<group>"; };
-		4A3F25B62641BBD8003DDAFC /* TallTeamSelectorTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TallTeamSelectorTableViewCell.xib; sourceTree = "<group>"; };
-		4A3F25B72641BBD8003DDAFC /* TallTeamSelectorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TallTeamSelectorTableViewCell.swift; sourceTree = "<group>"; };
+		4A3F25B62641BBD8003DDAFC /* AltTeamSelectorTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AltTeamSelectorTableViewCell.xib; sourceTree = "<group>"; };
+		4A3F25B72641BBD8003DDAFC /* AltTeamSelectorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AltTeamSelectorTableViewCell.swift; sourceTree = "<group>"; };
 		4A40FB9526125236003CEE4B /* siro-regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "siro-regular.otf"; sourceTree = "<group>"; };
 		4A40FB9626125236003CEE4B /* siro-semibold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "siro-semibold.otf"; sourceTree = "<group>"; };
 		4A40FB9726125236003CEE4B /* siro-bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "siro-bold.otf"; sourceTree = "<group>"; };
@@ -1116,6 +1120,15 @@
 			path = SchoolDataFiles;
 			sourceTree = "<group>";
 		};
+		4A1BE06B2641E7D100AE371E /* CollectionViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				4A1BE0672641E7C300AE371E /* ArticleCollectionViewCell.swift */,
+				4A1BE0682641E7C300AE371E /* ArticleCollectionViewCell.xib */,
+			);
+			path = CollectionViewCells;
+			sourceTree = "<group>";
+		};
 		4A25D7DB25ED647E00F332A7 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
@@ -1308,8 +1321,8 @@
 				4A28BE8E262F8A9900AFFCE2 /* TallFavoriteTeamTableViewCell.xib */,
 				4A6D676125D5C23900A3E9DB /* TeamSelectorTableViewCell.swift */,
 				4A6D676225D5C23900A3E9DB /* TeamSelectorTableViewCell.xib */,
-				4A3F25B72641BBD8003DDAFC /* TallTeamSelectorTableViewCell.swift */,
-				4A3F25B62641BBD8003DDAFC /* TallTeamSelectorTableViewCell.xib */,
+				4A3F25B72641BBD8003DDAFC /* AltTeamSelectorTableViewCell.swift */,
+				4A3F25B62641BBD8003DDAFC /* AltTeamSelectorTableViewCell.xib */,
 			);
 			path = TableViewCells;
 			sourceTree = "<group>";
@@ -2253,6 +2266,7 @@
 				4A36C55C263B355E00A4A049 /* OldTeamSelectorViewController.xib */,
 				4ADD304425D4397B0097C699 /* TeamSelectorViewController.swift */,
 				4ADD304525D4397B0097C699 /* TeamSelectorViewController.xib */,
+				4A1BE06B2641E7D100AE371E /* CollectionViewCells */,
 				4A6D676025D5C1FE00A3E9DB /* TableViewCells */,
 			);
 			path = FavoritesVC;
@@ -2349,7 +2363,7 @@
 				4AEC3CCE261E449C00C5A4E7 /* SkiAndSnowboarding@2x.png in Resources */,
 				4AEC3CD3261E449C00C5A4E7 /* Speech@2x.png in Resources */,
 				4AEC3CC9261E449C00C5A4E7 /* IceHockey@2x.png in Resources */,
-				4A3F25B82641BBD8003DDAFC /* TallTeamSelectorTableViewCell.xib in Resources */,
+				4A3F25B82641BBD8003DDAFC /* AltTeamSelectorTableViewCell.xib in Resources */,
 				4AB0055825FC1933006D0DC0 /* omsdk-v1.js in Resources */,
 				4AEC3CB3261E449C00C5A4E7 /* Badminton@2x.png in Resources */,
 				4AEC3CC2261E449C00C5A4E7 /* Softball@2x.png in Resources */,
@@ -2436,6 +2450,7 @@
 				4AB0060225FC1933006D0DC0 /* README.md in Resources */,
 				4AB0054425FC1933006D0DC0 /* MPMutedBtn@3x.png in Resources */,
 				4A25D7E325ED647F00F332A7 /* Note.wav in Resources */,
+				4A1BE06A2641E7C300AE371E /* ArticleCollectionViewCell.xib in Resources */,
 				4AEC3CD2261E449C00C5A4E7 /* Rugby@2x.png in Resources */,
 				4AB005FB25FC1933006D0DC0 /* GoogleUtilities-LICENSE in Resources */,
 				4A28BE90262F8A9900AFFCE2 /* TallFavoriteTeamTableViewCell.xib in Resources */,
@@ -2654,6 +2669,7 @@
 				4AFF754C25C8D19A009B6CF4 /* NewsViewController.swift in Sources */,
 				4AB0050D25FC1933006D0DC0 /* MPNativeCustomEvent.m in Sources */,
 				4A25D849262DD9DC0032E61F /* FavoriteViewController.swift in Sources */,
+				4A1BE0692641E7C300AE371E /* ArticleCollectionViewCell.swift in Sources */,
 				4AB0057325FC1933006D0DC0 /* MPMoPubInlineAdAdapter.m in Sources */,
 				4AB0059325FC1933006D0DC0 /* MRError.m in Sources */,
 				4A47D7C625D19BF300732DE6 /* WebViewController.swift in Sources */,
@@ -2667,7 +2683,7 @@
 				4AB0052A25FC1933006D0DC0 /* MPNativeAdRenderingImageLoader.m in Sources */,
 				4AB0059825FC1933006D0DC0 /* MPFullscreenAdViewController+MRAIDWeb.m in Sources */,
 				4AB0058125FC1933006D0DC0 /* MPActivityViewControllerHelper+TweetShare.m in Sources */,
-				4A3F25B92641BBD8003DDAFC /* TallTeamSelectorTableViewCell.swift in Sources */,
+				4A3F25B92641BBD8003DDAFC /* AltTeamSelectorTableViewCell.swift in Sources */,
 				4AB005AA25FC1933006D0DC0 /* MPStopwatch.m in Sources */,
 				4AB0051F25FC1933006D0DC0 /* MPNativeAdSourceQueue.m in Sources */,
 				4AB005C225FC1933006D0DC0 /* MPVASTMediaFile.m in Sources */,
@@ -2862,7 +2878,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 210503;
+				CURRENT_PROJECT_VERSION = 210505;
 				DEVELOPMENT_TEAM = DF5A7UVUA8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2906,7 +2922,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 210503;
+				CURRENT_PROJECT_VERSION = 210505;
 				DEVELOPMENT_TEAM = DF5A7UVUA8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

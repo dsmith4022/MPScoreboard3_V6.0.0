@@ -27,6 +27,7 @@ enum FavoriteDetailCellMode
     case allCells
     case noArticles
     case noContests
+    case noContestsOrArticles
 }
 
 // MARK: - Shared Data
@@ -292,7 +293,7 @@ let kGetTeamAvailabilityHostStaging = "https://stag.api.maxpreps.com/teams/%@/sp
 let kGetTeamAvailabilityHostDev = "https://dev.api.maxpreps.com/teams/%@/sportseasons/%@/data-availability/v1"
 
 // URLs for searching for an athlete
-let kAthleteSearchHostProduction = "https://stag.api.maxpreps.com/gateways/app/roster-athlete-search/v1?term=%@&gender=%@&sport=%@" // optional "&maxresults=%@&state=%@&year=%@"
+let kAthleteSearchHostProduction = "https://production.api.maxpreps.com/gateways/app/roster-athlete-search/v1?term=%@&gender=%@&sport=%@" // optional "&maxresults=%@&state=%@&year=%@"
 let kAthleteSearchHostStaging = "https://stag.api.maxpreps.com/gateways/app/roster-athlete-search/v1?term=%@&gender=%@&sport=%@" // optional "&maxresults=%@&state=%@&year=%@"
 let kAthleteSearchHostDev = "https://dev.api.maxpreps.com/gateways/app/roster-athlete-search/v1?term=%@&gender=%@&sport=%@" // optional "&maxresults=%@&state=%@&year=%@"
 

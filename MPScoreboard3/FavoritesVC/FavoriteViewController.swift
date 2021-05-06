@@ -7,7 +7,8 @@
 
 import UIKit
 
-class FavoriteViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, FavoritesListViewDelegate
+class FavoriteViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate, FavoritesListViewDelegate, TallFavoriteTeamTableViewCellDelegate
+
 {
     @IBOutlet weak var fakeStatusBar: UIView!
     @IBOutlet weak var navView: UIView!
@@ -62,125 +63,176 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
             {
                 print("Team Detail Success")
                 
-                self.detailedFavoritesArray = resultData!
-                /*
-                [
+                // Refactor the feed if it doesn't match the favorites
+                if (resultData!.count == favoriteTeamsArray.count)
+                {
+                    detailedFavoritesArray = resultData!
+                    //print("Done")
+                }
+                else
+                {
+                    for favorite in favoriteTeamsArray
+                    {
+                        let item = favorite  as! Dictionary<String, Any>
+                        let schoolId = item[kNewSchoolIdKey] as! String
+                        let allSeasonId = item[kNewAllSeasonIdKey] as! String
+                        
+                        var noMatch = false
+                        for resultObj in resultData!
                         {
-                            "teamId": "d9622df1-9a90-49e7-b219-d6c380c566fe",
-                            "allSeasonId": "22e2b335-334e-4d4d-9f67-a0f716bb1ccd",
-                            "cardItems": [
-                                {
-                                    "type": "Record",
-                                    "data": {
-                                        "overallStanding": {
-                                            "winningPercentage": 0.000,
-                                            "overallWinLossTies": "0-0",
-                                            "homeWinLossTies": "0-0",
-                                            "awayWinLossTies": "0-0",
-                                            "neutralWinLossTies": "0-0",
-                                            "points": 0,
-                                            "pointsAgainst": 0,
-                                            "streak": 0,
-                                            "streakResult": "0"
-                                        },
-                                        "leagueStanding": {
-                                            "leagueName": "Foothill Valley",
-                                            "canonicalUrl": "https://z.maxpreps.com/league/vIKP_ANcBEeRvG9E5Ztn4Q/standings-foothill-valley.htm",
-                                            "conferenceWinningPercentage": 0.000,
-                                            "conferenceWinLossTies": "0-0",
-                                            "conferenceStandingPlacement": "1st"
-                                        }
-                                    }
-                                },
-                                {
-                                    "type": "Schedule",
-                                    "data": [
-                                        {
-                                            "hasResult": false,
-                                            "resultString": "",
-                                            "dateString": "3/19",
-                                            "timeString": "7:00 PM",
-                                            "opponentMascotUrl": "https://d1yf833igi2o06.cloudfront.net/fit-in/1024x1024/school-mascot/6/1/5/61563c75-3efb-427f-8329-767978b469df.gif?version=636520747200000000",
-                                            "opponentName": "Rio Linda",
-                                            "opponentNameAcronym": "RLHS",
-                                            "opponentUrl": "https://dev.maxpreps.com/high-schools/rio-linda-knights-(rio-linda,ca)/football/home.htm",
-                                            "homeAwayType": "Home",
-                                            "contestIsLive": false,
-                                            "canonicalUrl": "https://dev.maxpreps.com/games/3-19-21/football-fall-20/ponderosa-vs-rio-linda.htm?c=OIRYlXxgWEaHfK7OipEITQ"
-                                        },
-                                        {
-                                            "hasResult": false,
-                                            "resultString": "",
-                                            "dateString": "3/25",
-                                            "timeString": "12:00 PM",
-                                            "opponentMascotUrl": "https://d1yf833igi2o06.cloudfront.net/fit-in/1024x1024/school-mascot/6/1/5/61563c75-3efb-427f-8329-767978b469df.gif?version=636520747200000000",
-                                            "opponentName": "Rio Linda",
-                                            "opponentNameAcronym": "RLHS",
-                                            "opponentUrl": "https://dev.maxpreps.com/high-schools/rio-linda-knights-(rio-linda,ca)/football/home.htm",
-                                            "homeAwayType": "Neutral",
-                                            "contestIsLive": false,
-                                            "canonicalUrl": "https://dev.maxpreps.com/games/3-25-21/football-fall-20/ponderosa-vs-rio-linda.htm?c=ZLpSnJTDFUSEscaGO3BsYQ"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "type": "Latest",
-                                    "data": [
-                                        {
-                                            "type": "Article",
-                                            "title": "State officials, CIF, coaches meet",
-                                            "text": "Dr. Mark Ghaly enters discussion; California coaches group calls meeting 'cooperative,  positive, and open,' but student-athletes are running out of time. ",
-                                            "thumbnailUrl": "https://images.maxpreps.com/editorial/article/c/b/8/cb8ee48f-fe58-44dc-baec-f00d7ccf7692/3a4ed84d-c366-eb11-80ce-a444a33a3a97_original.jpg?version=637481180400000000",
-                                            "thumbnailWidth": null,
-                                            "thumbnailHeight": null,
-                                            "canonicalUrl": "https://dev.maxpreps.com/news/j-SOy1j-3ES67PANfM92kg/california-high-school-sports--state-officials,-cif,-coaches-find-common-ground,-talks-to-resume-next-week.htm"
-                                        },
-                                        {
-                                            "type": "Article",
-                                            "title": "New hope for California sports",
-                                            "text": "Teams slotted in purple tier now allowed to compete; four Sac-Joaquin Section cross country teams ran in Monday meet.",
-                                            "thumbnailUrl": "https://images.maxpreps.com/editorial/article/5/0/7/507b80b1-d75a-4909-b52c-474eef259269/e618f53f-745f-eb11-80ce-a444a33a3a97_original.jpg?version=637471932600000000",
-                                            "thumbnailWidth": null,
-                                            "thumbnailHeight": null,
-                                            "canonicalUrl": "https://dev.maxpreps.com/news/sYB7UFrXCUm1LEdO7yWSaQ/new-hope-for-california-high-school-sports-after-stay-home-orders-lifted.htm"
-                                        },
-                                        {
-                                            "type": "Article",
-                                            "title": "SJS releases new play for Season 1 in 2021",
-                                            "text": "State's second-largest section will forego traditional postseason to allow schools chance to participate in more games. ",
-                                            "thumbnailUrl": "https://images.maxpreps.com/editorial/article/d/2/9/d298908e-0c1c-46aa-861c-96e4fa76ffad/07b358d0-8941-eb11-80ce-a444a33a3a97_original.jpg?version=637439061000000000",
-                                            "thumbnailWidth": null,
-                                            "thumbnailHeight": null,
-                                            "canonicalUrl": "https://dev.maxpreps.com/news/jpCY0hwMqkaGHJbk-nb_rQ/sac-joaquin-section-releases-new-plan-for-season-1-in-2021.htm"
-                                        },
-                                        {
-                                            "type": "Article",
-                                            "title": "Video: When will California sports return?",
-                                            "text": "Health and Human Services agency provides an update as state grapples with COVID-19 guidelines, tiers.",
-                                            "thumbnailUrl": "https://images.maxpreps.com/editorial/article/a/9/a/a9a554a4-6e1b-4835-828a-4b989d7a79a9/2cf9a134-d723-eb11-80ce-a444a33a3a97_original.jpg?version=637409524200000000",
-                                            "thumbnailWidth": null,
-                                            "thumbnailHeight": null,
-                                            "canonicalUrl": "https://dev.maxpreps.com/news/pFSlqRtuNUiCikuYnXp5qQ/video--when-will-california-high-school-and-youth-sports-return.htm"
-                                        },
-                                        {
-                                            "type": "Article",
-                                            "title": "Map: Where NFL QBs went to high school",
-                                            "text": "Patrick Mahomes, Kyler Murray join 18 other quarterbacks who played high school football in Texas.",
-                                            "thumbnailUrl": "https://images.maxpreps.com/editorial/article/a/e/0/ae0a7fa5-86bc-4082-91e3-4cf67d094940/29d89c6e-d17d-ea11-80ce-a444a33a3a97_original.jpg?version=637223926200000000",
-                                            "thumbnailWidth": null,
-                                            "thumbnailHeight": null,
-                                            "canonicalUrl": "https://dev.maxpreps.com/news/pX8KrryGgkCR40z2fQlJQA/map--where-every-nfl-quarterback-drafted-in-the-past-10-years-played-high-school-football.htm"
-                                        }
-                                    ]
-                                }
-                            ]
-                        }]
-                        */
+                            let obj = resultObj as Dictionary<String,Any>
+                            let resultSchoolId = obj["teamId"] as! String
+                            let resultAllSeasonId = obj["allSeasonId"] as! String
+                            
+                            if (resultSchoolId == schoolId) && (resultAllSeasonId == allSeasonId)
+                            {
+                                // Match is found so add the resultObj to the detailedFavoritesArray
+                                detailedFavoritesArray.append(resultObj)
+                                noMatch = false
+                                break
+                            }
+                            else
+                            {
+                                noMatch = true
+                            }
+                        }
+                        
+                        if (noMatch == true)
+                        {
+                            // Add a dummy object
+                            let dummyObj = ["record":[:], "schedules":[], "latestItems":[]] as [String : Any]
+                            detailedFavoritesArray.append(dummyObj)
+                        }
+                    }
+                }
+                
+                /*
+                 {
+                     "status": 200,
+                     "message": "Success",
+                     "cacheResult": "Unknown",
+                     "data": [
+                         {
+                             "teamId": "d9622df1-9a90-49e7-b219-d6c380c566fe",
+                             "allSeasonId": "22e2b335-334e-4d4d-9f67-a0f716bb1ccd",
+                             "cardItems": [
+                                 {
+                                     "record": {
+                                         "overallStanding": {
+                                             "winningPercentage": 0.000,
+                                             "overallWinLossTies": "0-0",
+                                             "homeWinLossTies": "0-0",
+                                             "awayWinLossTies": "0-0",
+                                             "neutralWinLossTies": "0-0",
+                                             "points": 0,
+                                             "pointsAgainst": 0,
+                                             "streak": 0,
+                                             "streakResult": "0"
+                                         },
+                                         "leagueStanding": {
+                                             "leagueName": "Foothill Valley",
+                                             "canonicalUrl": "https://z.maxpreps.com/league/vIKP_ANcBEeRvG9E5Ztn4Q/standings-foothill-valley.htm",
+                                             "conferenceWinningPercentage": 0.000,
+                                             "conferenceWinLossTies": "0-0",
+                                             "conferenceStandingPlacement": "1st"
+                                         }
+                                     }
+                                 },
+                                 {
+                                     "schedules": [
+                                         {
+                                             "hasResult": false,
+                                             "resultString": "",
+                                             "dateString": "3/19",
+                                             "timeString": "7:00 PM",
+                                             "opponentMascotUrl": "https://d1yf833igi2o06.cloudfront.net/fit-in/1024x1024/school-mascot/6/1/5/61563c75-3efb-427f-8329-767978b469df.gif?version=636520747200000000",
+                                             "opponentName": "Rio Linda",
+                                             "opponentNameAcronym": "RLHS",
+                                             "opponentUrl": "https://dev.maxpreps.com/high-schools/rio-linda-knights-(rio-linda,ca)/football/home.htm",
+                                "opponentColor1": "000080",
+                                             "homeAwayType": "Home",
+                                             "contestIsLive": false,
+                                             "canonicalUrl": "https://dev.maxpreps.com/games/3-19-21/football-fall-20/ponderosa-vs-rio-linda.htm?c=OIRYlXxgWEaHfK7OipEITQ"
+                                         },
+                                         {
+                                             "hasResult": false,
+                                             "resultString": "",
+                                             "dateString": "3/25",
+                                             "timeString": "12:00 PM",
+                                             "opponentMascotUrl": "https://d1yf833igi2o06.cloudfront.net/fit-in/1024x1024/school-mascot/6/1/5/61563c75-3efb-427f-8329-767978b469df.gif?version=636520747200000000",
+                                             "opponentName": "Rio Linda",
+                                             "opponentNameAcronym": "RLHS",
+                                             "opponentUrl": "https://dev.maxpreps.com/high-schools/rio-linda-knights-(rio-linda,ca)/football/home.htm",
+                                "opponentColor1": "000080",
+                                             "homeAwayType": "Neutral",
+                                             "contestIsLive": false,
+                                             "canonicalUrl": "https://dev.maxpreps.com/games/3-25-21/football-fall-20/ponderosa-vs-rio-linda.htm?c=ZLpSnJTDFUSEscaGO3BsYQ"
+                                         }
+                                     ]
+                                 },
+                                 {
+                                     "latestItems": [
+                                         {
+                                             "type": "Article",
+                                             "title": "State officials, CIF, coaches meet",
+                                             "text": "Dr. Mark Ghaly enters discussion; California coaches group calls meeting 'cooperative,  positive, and open,' but student-athletes are running out of time. ",
+                                             "thumbnailUrl": "https://images.maxpreps.com/editorial/article/c/b/8/cb8ee48f-fe58-44dc-baec-f00d7ccf7692/3a4ed84d-c366-eb11-80ce-a444a33a3a97_original.jpg?version=637481180400000000",
+                                             "thumbnailWidth": null,
+                                             "thumbnailHeight": null,
+                                             "canonicalUrl": "https://dev.maxpreps.com/news/j-SOy1j-3ES67PANfM92kg/california-high-school-sports--state-officials,-cif,-coaches-find-common-ground,-talks-to-resume-next-week.htm"
+                                         },
+                                         {
+                                             "type": "Article",
+                                             "title": "New hope for California sports",
+                                             "text": "Teams slotted in purple tier now allowed to compete; four Sac-Joaquin Section cross country teams ran in Monday meet.",
+                                             "thumbnailUrl": "https://images.maxpreps.com/editorial/article/5/0/7/507b80b1-d75a-4909-b52c-474eef259269/e618f53f-745f-eb11-80ce-a444a33a3a97_original.jpg?version=637471932600000000",
+                                             "thumbnailWidth": null,
+                                             "thumbnailHeight": null,
+                                             "canonicalUrl": "https://dev.maxpreps.com/news/sYB7UFrXCUm1LEdO7yWSaQ/new-hope-for-california-high-school-sports-after-stay-home-orders-lifted.htm"
+                                         },
+                                         {
+                                             "type": "Article",
+                                             "title": "SJS releases new play for Season 1 in 2021",
+                                             "text": "State's second-largest section will forego traditional postseason to allow schools chance to participate in more games. ",
+                                             "thumbnailUrl": "https://images.maxpreps.com/editorial/article/d/2/9/d298908e-0c1c-46aa-861c-96e4fa76ffad/07b358d0-8941-eb11-80ce-a444a33a3a97_original.jpg?version=637439061000000000",
+                                             "thumbnailWidth": null,
+                                             "thumbnailHeight": null,
+                                             "canonicalUrl": "https://dev.maxpreps.com/news/jpCY0hwMqkaGHJbk-nb_rQ/sac-joaquin-section-releases-new-plan-for-season-1-in-2021.htm"
+                                         },
+                                         {
+                                             "type": "Article",
+                                             "title": "Video: When will California sports return?",
+                                             "text": "Health and Human Services agency provides an update as state grapples with COVID-19 guidelines, tiers.",
+                                             "thumbnailUrl": "https://images.maxpreps.com/editorial/article/a/9/a/a9a554a4-6e1b-4835-828a-4b989d7a79a9/2cf9a134-d723-eb11-80ce-a444a33a3a97_original.jpg?version=637409524200000000",
+                                             "thumbnailWidth": null,
+                                             "thumbnailHeight": null,
+                                             "canonicalUrl": "https://dev.maxpreps.com/news/pFSlqRtuNUiCikuYnXp5qQ/video--when-will-california-high-school-and-youth-sports-return.htm"
+                                         },
+                                         {
+                                             "type": "Article",
+                                             "title": "Map: Where NFL QBs went to high school",
+                                             "text": "Patrick Mahomes, Kyler Murray join 18 other quarterbacks who played high school football in Texas.",
+                                             "thumbnailUrl": "https://images.maxpreps.com/editorial/article/a/e/0/ae0a7fa5-86bc-4082-91e3-4cf67d094940/29d89c6e-d17d-ea11-80ce-a444a33a3a97_original.jpg?version=637223926200000000",
+                                             "thumbnailWidth": null,
+                                             "thumbnailHeight": null,
+                                             "canonicalUrl": "https://dev.maxpreps.com/news/pX8KrryGgkCR40z2fQlJQA/map--where-every-nfl-quarterback-drafted-in-the-past-10-years-played-high-school-football.htm"
+                                         }
+                                     ]
+                                 }
+                             ]
+                         }
+                     ],
+                     "warnings": [],
+                     "errors": []
+                 }
+                 */
             }
             else
             {
                 print("Team Detail Fail")
             }
+            
+            self.favoritesTableView.reloadData()
         }
     }
     
@@ -242,6 +294,40 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
     {
         favoritesListView.removeFromSuperview()
         self.tabBarController?.tabBar.isHidden = false
+    }
+    
+    // MARK: - Show Web VC
+    
+    private func showWebViewController(urlString: String, title: String)
+    {
+        // Add the app's custom query parameter
+        var fixedUrlString = ""
+        
+        if (urlString.contains("?"))
+        {
+            fixedUrlString = urlString + "&" + kAppIdentifierQueryParam
+        }
+        else
+        {
+            fixedUrlString = urlString + "?" + kAppIdentifierQueryParam
+        }
+        
+        self.hidesBottomBarWhenPushed = true
+        
+        webVC = WebViewController(nibName: "WebViewController", bundle: nil)
+        webVC?.titleString = title
+        webVC?.urlString = fixedUrlString
+        webVC?.titleColor = UIColor.mpBlackColor()
+        webVC?.navColor = UIColor.mpWhiteColor()//schoolColor
+        webVC?.allowRotation = false
+        webVC?.showShareButton = true
+        webVC?.showNavControls = true
+        webVC?.showScrollIndicators = false
+        webVC?.showLoadingOverlay = true
+        webVC?.showBannerAd = false
+
+        self.navigationController?.pushViewController(webVC!, animated: true)
+        self.hidesBottomBarWhenPushed = false
     }
     
     // MARK: - Show Settings VC
@@ -316,7 +402,36 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
         }
         else
         {
-            return 356.0
+            // Need to make sure that this array has data because the table could be loaded before the feed finishes
+            if (detailedFavoritesArray.count > indexPath.row)
+            {
+                let cardObject = detailedFavoritesArray[indexPath.row] as! Dictionary<String,Any>
+
+                let schedules = cardObject["schedules"] as! Array<Dictionary<String,Any>>
+                let latestItems = cardObject["latestItems"] as! Array<Dictionary<String,Any>>
+                
+                // Set the display mode
+                if ((schedules.count > 0) && (latestItems.count > 0))
+                {
+                    return 356.0
+                }
+                else if ((schedules.count > 0) && (latestItems.count == 0))
+                {
+                    return 356.0 - 152.0 // No Articles
+                }
+                else if ((schedules.count == 0) && (latestItems.count > 0))
+                {
+                    return 356.0 - 92.0 // No Contests
+                }
+                else
+                {
+                    return 356.0 - 152.0 - 92.0 // Just the record field is displayed
+                }
+            }
+            else
+            {
+                return 0 // Everything is hidden
+            }
         }
     }
     
@@ -446,11 +561,11 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
         let schoolId = favorite[kNewSchoolIdKey] as!String
         let allSeasonId = favorite[kNewAllSeasonIdKey] as! String
         
-        let genderSportLevel = MiscHelper.genderSportLevelFrom(gender: gender, sport: sport, level: level)
+        let levelGenderSport = MiscHelper.genderSportLevelFrom(gender: gender, sport: sport, level: level)
         
         // Different cells depending on the favorites count
-        //if (favoriteTeamsArray.count > 3)
-        //{
+        if (favoriteTeamsArray.count > 3)
+        {
             // Short Cell
             var cell = tableView.dequeueReusableCell(withIdentifier: "ShortFavoriteTeamTableViewCell") as? ShortFavoriteTeamTableViewCell
             
@@ -465,8 +580,9 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
             cell?.teamFirstLetterLabel.isHidden = false
             cell?.adminContainerView.isHidden = true
             cell?.memberContainerView.isHidden = true
+            cell?.joinButton.isHidden = true
 
-            cell?.subtitleLabel.text =  genderSportLevel.uppercased()
+            cell?.subtitleLabel.text =  levelGenderSport
             cell?.titleLabel.text = name
             cell?.teamFirstLetterLabel.text = initial
             
@@ -572,7 +688,7 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
             }
             
             return cell!
-        /*
+    
         }
         else
         {
@@ -585,11 +701,73 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
                 cell = nib![0] as? TallFavoriteTeamTableViewCell
             }
             
+            cell?.delegate = self
             cell?.selectionStyle = .none
+            
+            // Need to make sure that this array has data because the table could be loaded before the feed finishes
+            if (detailedFavoritesArray.count > indexPath.row)
+            {
+                let cardObject = detailedFavoritesArray[indexPath.row] as! Dictionary<String,Any>
+                let record = cardObject["record"] as! Dictionary<String,Any>
+                let schedules = cardObject["schedules"] as! Array<Dictionary<String,Any>>
+                let latestItems = cardObject["latestItems"] as! Array<Dictionary<String,String>>
+                
+                // Set the display mode
+                if ((schedules.count > 0) && (latestItems.count > 0))
+                {
+                    cell?.setDisplayMode(mode: FavoriteDetailCellMode.allCells)
+                    cell?.loadTeamRecordData(record)
+                    cell?.loadArticleData(latestItems)
+                    
+                    if (schedules.count == 1)
+                    {
+                        let contest = schedules.first
+                        cell?.loadTopContestData(contest!)
+                    }
+                    else
+                    {
+                        let contest1 = schedules.first
+                        cell?.loadTopContestData(contest1!)
+                        
+                        let contest2 = schedules.last
+                        cell?.loadTopContestData(contest2!)
+                    }
+                }
+                else if ((schedules.count > 0) && (latestItems.count == 0))
+                {
+                    cell?.setDisplayMode(mode: FavoriteDetailCellMode.noArticles)
+                    cell?.loadTeamRecordData(record)
+                    
+                    if (schedules.count == 1)
+                    {
+                        let contest = schedules.first
+                        cell?.loadTopContestData(contest!)
+                    }
+                    else
+                    {
+                        let contest1 = schedules.first
+                        cell?.loadTopContestData(contest1!)
+                        
+                        let contest2 = schedules.last
+                        cell?.loadTopContestData(contest2!)
+                    }
+                }
+                else if ((schedules.count == 0) && (latestItems.count > 0))
+                {
+                    cell?.setDisplayMode(mode: FavoriteDetailCellMode.noContests)
+                    cell?.loadTeamRecordData(record)
+                    cell?.loadArticleData(latestItems)
+                }
+                else
+                {
+                    cell?.setDisplayMode(mode: FavoriteDetailCellMode.noContestsOrArticles)
+                    cell?.loadTeamRecordData(record)
+                }
+            }
             
             cell?.teamFirstLetterLabel.isHidden = false
 
-            cell?.subtitleLabel.text =  genderSportLevel.uppercased()
+            cell?.subtitleLabel.text =  levelGenderSport
             cell?.titleLabel.text = name
             cell?.teamFirstLetterLabel.text = initial
             cell?.sportIconImageView.image = MiscHelper.getImageForSport(sport)
@@ -673,13 +851,14 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
             
             return cell!
         }
-        */
         
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        
         
         let selectedTeam = favoriteTeamsArray[indexPath.row] as! Dictionary<String,Any>
         
@@ -766,7 +945,24 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
                 
             }
         }
- */
+         */
+    }
+    
+    // MARK: - TallTableViewCell Delegate Methods
+    
+    func collectionViewDidSelectItem(urlString: String)
+    {
+        self.showWebViewController(urlString: urlString, title: "")
+    }
+    
+    func topContestTouched(urlString: String)
+    {
+        self.showWebViewController(urlString: urlString, title: "Contest")
+    }
+    
+    func bottomContestTouched(urlString: String)
+    {
+        self.showWebViewController(urlString: urlString, title: "Contest")
     }
     
     // MARK: - Button Methods
@@ -1016,6 +1212,8 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
         self.view.backgroundColor = UIColor.mpWhiteColor()
         

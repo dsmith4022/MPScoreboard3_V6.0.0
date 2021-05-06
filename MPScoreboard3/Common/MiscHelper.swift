@@ -159,7 +159,7 @@ class MiscHelper: NSObject
         }
         else
         {
-            return gender + " " + level + " " + sport
+            return level + " " + gender + " " + sport
         }
     }
     
@@ -186,7 +186,7 @@ class MiscHelper: NSObject
         }
         else
         {
-            return gender + " " + shortLevel + " " + sport
+            return shortLevel + " " + gender + " " + sport
         }
     }
     

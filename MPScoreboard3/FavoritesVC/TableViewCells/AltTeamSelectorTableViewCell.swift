@@ -1,5 +1,5 @@
 //
-//  TallTeamSelectorTableViewCell.swift
+//  AltTeamSelectorTableViewCell.swift
 //  MPScoreboard3
 //
 //  Created by David Smith on 2/11/21.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TallTeamSelectorTableViewCell: UITableViewCell
+class AltTeamSelectorTableViewCell: UITableViewCell
 {
     
     @IBOutlet weak var titleLabel: UILabel!

@@ -15,6 +15,7 @@ class ShortFavoriteTeamTableViewCell: UITableViewCell
     @IBOutlet weak var teamFirstLetterLabel: UILabel!
     @IBOutlet weak var memberContainerView: UIView!
     @IBOutlet weak var adminContainerView: UIView!
+    @IBOutlet weak var joinButton: UIButton!
     
     /*
     func addShapeLayers(color: UIColor)

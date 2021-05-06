@@ -25,6 +25,7 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, D
     var showScrollIndicators = false
     var showLoadingOverlay = false
     var showBannerAd = false
+    var tabBarVisible = false
             
     private var browserView: WKWebView = WKWebView()
     private var loadingContainer : UIView = UIView()
@@ -497,7 +498,7 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, D
         self.navigationController?.navigationBar.barTintColor = navColor
         self.navigationController?.navigationBar.tintColor = titleColor
         self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: titleColor, .font: UIFont.mpSemiBoldFontWith(size: kNavBarFontSize)]
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)  
+        //self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         
         backButtonItem = UIBarButtonItem(image: UIImage(named: "ArrowLeftGray"), style: .done, target: self, action: #selector(backButtonTouched))
         backButtonItem.tintColor = titleColor
@@ -540,7 +541,7 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, D
          */
         
         var bottomTabBarPad = 0
-        if (self.tabBarController?.tabBar.isHidden == false)
+        if (tabBarVisible == true)
         {
             bottomTabBarPad = kTabBarHeight
         }
@@ -607,6 +608,7 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, D
         setNeedsStatusBarAppearanceUpdate()
         
         self.navigationController?.setNavigationBarHidden(false, animated: false)
+        
     }
     
     override func viewDidAppear(_ animated: Bool)

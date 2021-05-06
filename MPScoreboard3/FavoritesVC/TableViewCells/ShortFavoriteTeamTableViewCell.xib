@@ -90,12 +90,22 @@
                         </subviews>
                         <color key="backgroundColor" name="MPWhiteColor"/>
                     </view>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JVa-Nc-fs9">
+                        <rect key="frame" x="289" y="15" width="70" height="30"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" name="Siro-SemiBold" family="Siro" pointSize="12"/>
+                        <inset key="imageEdgeInsets" minX="-3" minY="-1" maxX="3" maxY="1"/>
+                        <state key="normal" title="JOIN" image="SmallRedStar">
+                            <color key="titleColor" name="MPGrayColor"/>
+                        </state>
+                    </button>
                 </subviews>
                 <color key="backgroundColor" name="MPWhiteColor"/>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="exm-9Q-ICu"/>
             <connections>
                 <outlet property="adminContainerView" destination="jbx-Ux-HXa" id="eSg-jV-UoB"/>
+                <outlet property="joinButton" destination="JVa-Nc-fs9" id="cmd-MW-jQk"/>
                 <outlet property="memberContainerView" destination="EcY-KC-Ygd" id="Det-oH-xrd"/>
                 <outlet property="subtitleLabel" destination="IBC-se-hYV" id="vEM-8K-i32"/>
                 <outlet property="teamFirstLetterLabel" destination="cZB-hz-91w" id="FvS-ew-knM"/>
@@ -108,6 +118,7 @@
     <resources>
         <image name="SmallBlueKey" width="12" height="12"/>
         <image name="SmallGreenCheckmark" width="12" height="10"/>
+        <image name="SmallRedStar" width="11" height="11"/>
         <namedColor name="MPBlackColor">
             <color red="0.12549019607843137" green="0.12941176470588237" blue="0.12941176470588237" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

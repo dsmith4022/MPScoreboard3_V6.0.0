@@ -7,12 +7,22 @@
 
 import UIKit
 
-class TallFavoriteTeamTableViewCell: UITableViewCell
+protocol TallFavoriteTeamTableViewCellDelegate: AnyObject
 {
+    func collectionViewDidSelectItem(urlString: String)
+    func topContestTouched(urlString: String)
+    func bottomContestTouched(urlString: String)
+}
+
+class TallFavoriteTeamTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource
+{
+    weak var delegate: TallFavoriteTeamTableViewCellDelegate?
+    
+    var articleArray = [] as Array<Dictionary<String,String>>
+    var topContestData = [:] as Dictionary<String,Any>
+    var bottomContestData = [:] as Dictionary<String,Any>
+    
     @IBOutlet weak var topContainerView: UIView!
-    @IBOutlet weak var recordContainerView: UIView!
-    @IBOutlet weak var contestContainerView: UIView!
-    @IBOutlet weak var articleContainerView: UIView!
     @IBOutlet weak var mascotContainerView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
@@ -20,25 +30,421 @@ class TallFavoriteTeamTableViewCell: UITableViewCell
     @IBOutlet weak var teamMascotImageView: UIImageView!
     @IBOutlet weak var teamFirstLetterLabel: UILabel!
     
+    @IBOutlet weak var recordContainerView: UIView!
+    @IBOutlet weak var recordLabel: UILabel!
+    
+    @IBOutlet weak var contestContainerView: UIView!
+    @IBOutlet weak var contestTopInnerContainerView: UIView!
+    @IBOutlet weak var topContestMascotImageView: UIImageView!
+    @IBOutlet weak var topContestFirstLetterLabel: UILabel!
+    @IBOutlet weak var topContestHomeAwayLabel: UILabel!
+    @IBOutlet weak var topContestOpponentLabel: UILabel!
+    @IBOutlet weak var topContestDateLabel: UILabel!
+    @IBOutlet weak var topContestResultOrTimeLabel: UILabel!
+    
+    @IBOutlet weak var contestBottomInnerContainerView: UIView!
+    @IBOutlet weak var bottomContestMascotImageView: UIImageView!
+    @IBOutlet weak var bottomContestFirstLetterLabel: UILabel!
+    @IBOutlet weak var bottomContestHomeAwayLabel: UILabel!
+    @IBOutlet weak var bottomContestOpponentLabel: UILabel!
+    @IBOutlet weak var bottomContestDateLabel: UILabel!
+    @IBOutlet weak var bottomContestResultOrTimeLabel: UILabel!
+    
+    @IBOutlet weak var articleContainerView: UIView!
+    @IBOutlet weak var articleCollectionView: UICollectionView!
+    
+    
+    // MARK: - CollectionView Delegate Methods
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int
+    {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
+    {
+        return articleArray.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
+    {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ArticleCollectionViewCell", for: indexPath) as! ArticleCollectionViewCell
+        
+        let article = articleArray[indexPath.row]
+        let articleUrl = article["thumbnailUrl"]
+        let articleTitle = article["title"]
+        
+        // Load the title
+        cell.articleTitleLabel.text = articleTitle
+        
+        // Load the image
+        let url = URL(string: articleUrl!)
+        
+        MiscHelper.getData(from: url!) { data, response, error in
+            guard let data = data, error == nil else { return }
+            
+            //print("Download Finished")
+            DispatchQueue.main.async()
+            {
+                let image = UIImage(data: data)
+                
+                if (image != nil)
+                {
+                    cell.articleImageView.image = image
+                }
+            }
+        }
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
+    {
+        let article = articleArray[indexPath.row]
+        let articleUrl = article["canonicalUrl"]
+        self.delegate?.collectionViewDidSelectItem(urlString: articleUrl!)
+    }
+    
+    // MARK: - Button Methods
+    
+    @IBAction func topContestButtonTouched()
+    {
+        let urlString = topContestData["canonicalUrl"] as! String
+        self.delegate?.topContestTouched(urlString: urlString)
+    }
+    
+    @IBAction func bottomContestButtonTouched()
+    {
+        let urlString = bottomContestData["canonicalUrl"] as! String
+        self.delegate?.bottomContestTouched(urlString: urlString)
+    }
+    
+    // MARK: - Load Team Record Data
+    
+    func loadTeamRecordData(_ data: Dictionary<String, Any>)
+    {
+        recordContainerView.isHidden = false
+        
+        // Check if there is any data since it could be an empty dictionary
+        if (data["overallStanding"] == nil)
+        {
+            recordLabel.text = "No record found"
+        }
+        else
+        {
+            let overallStandingDict = data["overallStanding"] as! Dictionary<String,Any>
+            let leagueStandingDict = data["leagueStanding"] as! Dictionary<String,Any>
+            let winLossTies = overallStandingDict["overallWinLossTies"] as! String
+            let leagueName = leagueStandingDict["leagueName"] as! String
+            let conferenceStanding = leagueStandingDict["conferenceStandingPlacement"] as! String
+            
+            var text = ""
+            if (leagueName.count > 0)
+            {
+                if (conferenceStanding.count > 0)
+                {
+                    text = String(format: "Overall: %@, %@ in %@", winLossTies, conferenceStanding, leagueName)
+                }
+                else
+                {
+                    text = String(format: "Overall: %@, %@", winLossTies, leagueName)
+                }
+            }
+            else
+            {
+                text = String(format: "Overall: %@", winLossTies)
+            }
+            
+            recordLabel.text = text
+        }
+    }
+    
+    // MARK: - Load Contest Data
+    
+    func loadTopContestData(_ data: Dictionary<String,Any>)
+    {
+        contestContainerView.isHidden = false
+        contestTopInnerContainerView.isHidden = false
+        
+        topContestData = data
+        
+        let opponentUrl = data["opponentMascotUrl"] as! String
+        let opponentColorString = data["opponentColor1"] as! String
+        let opponentColor = ColorHelper.color(fromHexString: opponentColorString)
+        let opponentName = data["opponentNameAcronym"] as! String
+        let initial = String(opponentName.prefix(1))
+        let dateString = data["dateString"] as! String
+
+        topContestFirstLetterLabel.text = initial
+        topContestOpponentLabel.text = opponentName
+        topContestDateLabel.text = dateString
+        
+        let homeAwayType = data["homeAwayType"] as! String
+        if (homeAwayType == "Away")
+        {
+            topContestHomeAwayLabel.text = "@"
+        }
+        else
+        {
+            topContestHomeAwayLabel.text = "vs."
+        }
+        
+        let hasResult = data["hasResult"] as! Bool
+        if (hasResult == true)
+        {
+            let resultString = data["resultString"] as! String
+            let attrString =  NSMutableAttributedString(string:resultString)
+            let range = NSRange(location: 0, length: 1)
+            let firstLetter = resultString.prefix(1)
+            
+            // Gray for ties
+            var color = UIColor.mpGrayColor()
+            if (firstLetter == "W")
+            {
+                color = UIColor.mpGreenColor()
+            }
+            else if (firstLetter == "L")
+            {
+                color = UIColor.mpRedColor()
+            }
+            attrString.addAttribute(NSAttributedString.Key.foregroundColor,value:color, range:range)
+            topContestResultOrTimeLabel.attributedText = attrString
+        }
+        else
+        {
+            let timeString = data["timeString"] as! String
+            topContestResultOrTimeLabel.text = timeString
+        }
+        
+        let url = URL(string: opponentUrl)
+
+        if (opponentUrl.count > 0)
+        {
+            // Get the data and make an image
+            MiscHelper.getData(from: url!) { data, response, error in
+                guard let data = data, error == nil else { return }
+                //print("Download Finished")
+                DispatchQueue.main.async()
+                {
+                    let image = UIImage(data: data)
+                    
+                    if (image != nil)
+                    {
+                        let scaledWidth = self.topContestMascotImageView.frame.size.height
+                        let scaledImage = ImageHelper.image(with: image, scaledTo: CGSize(width: scaledWidth, height: scaledWidth))
+                        
+                        self.topContestFirstLetterLabel.isHidden = true
+                        
+                        // Clip the image to a round circle if the corners are not white or clear
+                        let cornerColor = image!.getColorIfCornersMatch()
+                        
+                        if (cornerColor != nil)
+                        {
+                            //print ("Corner Color match")
+
+                            var red: CGFloat = 0
+                            var green: CGFloat = 0
+                            var blue: CGFloat = 0
+                            var alpha: CGFloat = 0
+
+                            // Use the scaled image if the color is white or the alpha is zero
+                            cornerColor!.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+                            
+                            if (((red == 1) && (green == 1) && (blue == 1)) || (alpha == 0))
+                            {
+                                self.topContestMascotImageView.image = scaledImage
+                            }
+                            else
+                            {
+                                let roundedImage = UIImage.maskRoundedImage(image: scaledImage!, radius: scaledWidth / 2.0)
+                                self.topContestMascotImageView.image = roundedImage
+                            }
+                        }
+                        else
+                        {
+                            print("Corner Color Mismatch")
+                            self.topContestMascotImageView.image = scaledImage
+                        }
+                    }
+                    else
+                    {
+                        // Set the first letter color
+                        self.topContestFirstLetterLabel.textColor = opponentColor
+                    }
+                }
+            }
+        }
+        else
+        {
+            // Set the first letter color
+            self.topContestFirstLetterLabel.textColor = opponentColor
+        }
+    }
+    
+    func loadBottomContestData(_ data: Dictionary<String,Any>)
+    {
+        contestContainerView.isHidden = false
+        contestBottomInnerContainerView.isHidden = false
+        
+        bottomContestData = data
+        
+        let opponentUrl = data["opponentMascotUrl"] as! String
+        let opponentColorString = data["opponentColor1"] as! String
+        let opponentColor = ColorHelper.color(fromHexString: opponentColorString)
+        let opponentName = data["opponentNameAcronym"] as! String
+        let initial = String(opponentName.prefix(1))
+        let dateString = data["dateString"] as! String
+
+        bottomContestFirstLetterLabel.text = initial
+        bottomContestOpponentLabel.text = opponentName
+        bottomContestDateLabel.text = dateString
+        
+        let homeAwayType = data["homeAwayType"] as! String
+        if (homeAwayType == "Away")
+        {
+            bottomContestHomeAwayLabel.text = "@"
+        }
+        else
+        {
+            bottomContestHomeAwayLabel.text = "vs."
+        }
+        
+        let hasResult = data["hasResult"] as! Bool
+        if (hasResult == true)
+        {
+            let resultString = data["resultString"] as! String
+            let attrString =  NSMutableAttributedString(string:resultString)
+            let range = NSRange(location: 0, length: 1)
+            let firstLetter = resultString.prefix(1)
+            
+            // Gray for ties
+            var color = UIColor.mpGrayColor()
+            if (firstLetter == "W")
+            {
+                color = UIColor.mpGreenColor()
+            }
+            else if (firstLetter == "L")
+            {
+                color = UIColor.mpRedColor()
+            }
+            attrString.addAttribute(NSAttributedString.Key.foregroundColor,value:color, range:range)
+            bottomContestResultOrTimeLabel.attributedText = attrString
+        }
+        else
+        {
+            let timeString = data["timeString"] as! String
+            bottomContestResultOrTimeLabel.text = timeString
+        }
+        
+        let url = URL(string: opponentUrl)
+
+        if (opponentUrl.count > 0)
+        {
+            // Get the data and make an image
+            MiscHelper.getData(from: url!) { data, response, error in
+                guard let data = data, error == nil else { return }
+                //print("Download Finished")
+                DispatchQueue.main.async()
+                {
+                    let image = UIImage(data: data)
+                    
+                    if (image != nil)
+                    {
+                        let scaledWidth = self.bottomContestMascotImageView.frame.size.height
+                        let scaledImage = ImageHelper.image(with: image, scaledTo: CGSize(width: scaledWidth, height: scaledWidth))
+                        
+                        self.bottomContestFirstLetterLabel.isHidden = true
+                        
+                        // Clip the image to a round circle if the corners are not white or clear
+                        let cornerColor = image!.getColorIfCornersMatch()
+                        
+                        if (cornerColor != nil)
+                        {
+                            //print ("Corner Color match")
+
+                            var red: CGFloat = 0
+                            var green: CGFloat = 0
+                            var blue: CGFloat = 0
+                            var alpha: CGFloat = 0
+
+                            // Use the scaled image if the color is white or the alpha is zero
+                            cornerColor!.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+                            
+                            if (((red == 1) && (green == 1) && (blue == 1)) || (alpha == 0))
+                            {
+                                self.bottomContestMascotImageView.image = scaledImage
+                            }
+                            else
+                            {
+                                let roundedImage = UIImage.maskRoundedImage(image: scaledImage!, radius: scaledWidth / 2.0)
+                                self.bottomContestMascotImageView.image = roundedImage
+                            }
+                        }
+                        else
+                        {
+                            print("Corner Color Mismatch")
+                            self.bottomContestMascotImageView.image = scaledImage
+                        }
+                    }
+                    else
+                    {
+                        // Set the first letter color
+                        self.bottomContestFirstLetterLabel.textColor = opponentColor
+                    }
+                }
+            }
+        }
+        else
+        {
+            // Set the first letter color
+            self.bottomContestFirstLetterLabel.textColor = opponentColor
+        }
+    }
+    
+    // MARK: - Load Article Data
+    
+    func loadArticleData(_ data: Array<Dictionary<String,String>>)
+    {
+        articleContainerView.isHidden = false
+        
+        articleArray = data
+        
+        articleCollectionView.reloadData()
+    }
+    
+    // MARK: - Set Display Mode
+    
     func setDisplayMode(mode: FavoriteDetailCellMode)
     {
-        /*
         switch mode
         {
         case FavoriteDetailCellMode.allCells:
-            <#code#>
+            
+            // Reset the frmaes to their default location
+            contestContainerView.frame = CGRect(x: 0, y: topContainerView.frame.size.height + recordContainerView.frame.size.height, width: contestContainerView.frame.size.width, height: contestContainerView.frame.size.height)
+            
+            articleContainerView.frame = CGRect(x: 0, y: topContainerView.frame.size.height + recordContainerView.frame.size.height + contestContainerView.frame.size.height, width: articleContainerView.frame.size.width, height: articleContainerView.frame.size.height)
             
         case FavoriteDetailCellMode.noArticles:
-            <#code#>
-        
+            
+            articleContainerView.isHidden = true
+            
+            contestContainerView.frame = CGRect(x: 0, y: topContainerView.frame.size.height + recordContainerView.frame.size.height, width: contestContainerView.frame.size.width, height: contestContainerView.frame.size.height)
+
         case FavoriteDetailCellMode.noContests:
-            <#code#>
-        
-        default:
-            <#code#>
+            
+            contestContainerView.isHidden = true
+            
+            articleContainerView.frame = CGRect(x: 0, y: topContainerView.frame.size.height + recordContainerView.frame.size.height, width: articleContainerView.frame.size.width, height: articleContainerView.frame.size.height)
+            
+        case FavoriteDetailCellMode.noContestsOrArticles:
+            
+            contestContainerView.isHidden = true
+            articleContainerView.isHidden = true
         }
-        */
     }
+    
+    // MARK: - Draw Shape Layers
     
     func addShapeLayers(color: UIColor)
     {
@@ -83,6 +489,8 @@ class TallFavoriteTeamTableViewCell: UITableViewCell
         self.topContainerView.layer.insertSublayer(frontShapeLayer, above: rearShapeLayer)
     }
     
+    // MARK: - Init Methods
+    
     override func awakeFromNib()
     {
         super.awakeFromNib()
@@ -96,6 +504,16 @@ class TallFavoriteTeamTableViewCell: UITableViewCell
         
         self.mascotContainerView.layer.cornerRadius = self.mascotContainerView.frame.size.width / 2.0
         self.mascotContainerView.clipsToBounds = true
+        
+        // Register the Gallery Cell
+        articleCollectionView.register(UINib.init(nibName: "ArticleCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "ArticleCollectionViewCell")
+        
+        // Hide the various inner containers. They will be unhidden in the load data functions
+        recordContainerView.isHidden = true
+        contestContainerView.isHidden = true
+        contestTopInnerContainerView.isHidden = true
+        contestBottomInnerContainerView.isHidden = true
+        articleContainerView.isHidden = true
     }
 
     override func setSelected(_ selected: Bool, animated: Bool)

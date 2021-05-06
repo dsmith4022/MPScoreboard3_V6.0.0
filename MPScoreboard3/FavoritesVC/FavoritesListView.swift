@@ -339,16 +339,10 @@ class FavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
         cell?.selectionStyle = .none
         cell?.adminContainerView.isHidden = true
         cell?.memberContainerView.isHidden = true
+        cell?.joinButton.isHidden = true
         
-        // Remove the contentView subviews with tags >= 100
-        // Remove the star image
-        for view in cell!.contentView.subviews
-        {
-            if (view.tag >= 100)
-            {
-                view.removeFromSuperview()
-            }
-        }
+        cell?.joinButton.tag = indexPath.row + 100
+        cell?.joinButton.addTarget(self, action: #selector(joinButtonTouched), for: .touchUpInside)
                 
         if (indexPath.section == 0)
         {
@@ -365,7 +359,7 @@ class FavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
             let schoolId = favoriteTeam[kNewSchoolIdKey] as!String
             let allSeasonId = favoriteTeam[kNewAllSeasonIdKey] as!String
             //let season = favoriteTeam[kNewSeasonKey] as! String
-            let genderSportLevel = MiscHelper.genderSportLevelFrom(gender: gender, sport: sport, level: level)
+            let levelGenderSport = MiscHelper.genderSportLevelFrom(gender: gender, sport: sport, level: level)
             
             // Show the season for soccer
             //if (sport == "Soccer")
@@ -374,7 +368,7 @@ class FavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
             //}
             //else
             //{
-                cell?.subtitleLabel.text =  genderSportLevel
+                cell?.subtitleLabel.text =  levelGenderSport
             //}
             
             cell?.titleLabel.text = name
@@ -406,18 +400,7 @@ class FavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
                 // Add a join button if adminContainer and memberContainer are hidded
                 if ((cell?.adminContainerView.isHidden == true) && (cell?.memberContainerView.isHidden == true))
                 {
-                    let joinButton = UIButton(type: .custom)
-                    joinButton.autoresizingMask = [.flexibleLeftMargin, .flexibleBottomMargin]
-                    joinButton.frame = CGRect(x: tableView.frame.size.width - 100.0, y: 18, width: 70, height: 30)
-                    joinButton.setTitle("JOIN", for: .normal)
-                    joinButton.setTitleColor(UIColor.mpGrayColor(), for: .normal)
-                    joinButton.contentHorizontalAlignment = .right
-                    joinButton.titleLabel?.font = UIFont.mpSemiBoldFontWith(size: 12)
-                    joinButton.tag = indexPath.row + 100
-                    joinButton.setImage(UIImage(named: "SmallRedStar"), for: .normal)
-                    joinButton.imageEdgeInsets = UIEdgeInsets(top: -1, left: -3, bottom: 1, right: 3)
-                    joinButton.addTarget(self, action: #selector(joinButtonTouched), for: .touchUpInside)
-                    cell?.contentView.addSubview(joinButton)
+                    cell?.joinButton.isHidden = false
                 }
             }
             
