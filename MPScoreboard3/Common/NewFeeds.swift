@@ -196,7 +196,7 @@ class NewFeeds: NSObject
                                             let adminRoles = kUserDefaults.dictionary(forKey: kUserAdminRolesDictionaryKey)
                                             let roleKey = schoolId + "_" + allSeasonId
                                             
-                                            if (adminRoles![roleKey] != nil)
+                                            if (adminRoles != nil) && (adminRoles![roleKey] != nil)
                                             {
                                                 let adminRole = adminRoles![roleKey] as! Dictionary<String,String>
                                                 let roleName = adminRole[kRoleNameKey]

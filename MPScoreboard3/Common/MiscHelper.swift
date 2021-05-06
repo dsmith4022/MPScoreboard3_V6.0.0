@@ -356,4 +356,41 @@ class MiscHelper: NSObject
         return image
     }
     
+    // MARK: - Mascot Improver Method
+    
+    class func renderImprovedMascot(sourceImage: UIImage, destinationImageView: UIImageView)
+    {
+        let scaledImage = ImageHelper.image(with: sourceImage, scaledTo: CGSize(width: destinationImageView.frame.size.width, height: destinationImageView.frame.size.height))
+        
+        let cornerColor = sourceImage.getColorIfCornersMatch()
+        
+        if (cornerColor != nil)
+        {
+            //print ("Corner Color match")
+
+            var red: CGFloat = 0
+            var green: CGFloat = 0
+            var blue: CGFloat = 0
+            var alpha: CGFloat = 0
+
+            // Use the scaled image if the color is white or the alpha is zero
+            cornerColor!.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+            
+            if (((red == 1) && (green == 1) && (blue == 1)) || (alpha == 0))
+            {
+                destinationImageView.image = scaledImage
+            }
+            else
+            {
+                let roundedImage = UIImage.maskRoundedImage(image: scaledImage!, radius: destinationImageView.frame.size.width / 2.0)
+                destinationImageView.image = roundedImage
+            }
+        }
+        else
+        {
+            print("Corner Color Mismatch")
+            destinationImageView.image = scaledImage
+        }
+    }
+    
 }

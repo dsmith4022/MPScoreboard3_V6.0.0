@@ -300,31 +300,21 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
     
     private func showWebViewController(urlString: String, title: String)
     {
-        // Add the app's custom query parameter
-        var fixedUrlString = ""
-        
-        if (urlString.contains("?"))
-        {
-            fixedUrlString = urlString + "&" + kAppIdentifierQueryParam
-        }
-        else
-        {
-            fixedUrlString = urlString + "?" + kAppIdentifierQueryParam
-        }
-        
         self.hidesBottomBarWhenPushed = true
         
         webVC = WebViewController(nibName: "WebViewController", bundle: nil)
         webVC?.titleString = title
-        webVC?.urlString = fixedUrlString
+        webVC?.urlString = urlString
         webVC?.titleColor = UIColor.mpBlackColor()
-        webVC?.navColor = UIColor.mpWhiteColor()//schoolColor
+        webVC?.navColor = UIColor.mpWhiteColor()
         webVC?.allowRotation = false
         webVC?.showShareButton = true
         webVC?.showNavControls = true
         webVC?.showScrollIndicators = false
         webVC?.showLoadingOverlay = true
         webVC?.showBannerAd = false
+        webVC?.tabBarVisible = false
+        webVC?.enableTracking = true
 
         self.navigationController?.pushViewController(webVC!, animated: true)
         self.hidesBottomBarWhenPushed = false
@@ -413,11 +403,25 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
                 // Set the display mode
                 if ((schedules.count > 0) && (latestItems.count > 0))
                 {
-                    return 356.0
+                    if (schedules.count == 1)
+                    {
+                        return 356.0 - 46.0 // One Contest
+                    }
+                    else
+                    {
+                        return 356.0 // Both contests
+                    }
                 }
                 else if ((schedules.count > 0) && (latestItems.count == 0))
                 {
-                    return 356.0 - 152.0 // No Articles
+                    if (schedules.count == 1)
+                    {
+                        return 356.0 - 152.0 - 46.0 // No Articles, one contest
+                    }
+                    else
+                    {
+                        return 356.0 - 152.0 // No Articles, both contests
+                    }
                 }
                 else if ((schedules.count == 0) && (latestItems.count > 0))
                 {
@@ -635,41 +639,10 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
                                 
                                 if (image != nil)
                                 {
-                                    let scaledWidth = cell?.teamMascotImageView.frame.size.height
-                                    let scaledImage = ImageHelper.image(with: image, scaledTo: CGSize(width: scaledWidth!, height: scaledWidth!))
-                                    
                                     cell?.teamFirstLetterLabel.isHidden = true
                                     
-                                    // Clip the image to a round circle if the corners are not white or clear
-                                    let cornerColor = image!.getColorIfCornersMatch()
-                                    
-                                    if (cornerColor != nil)
-                                    {
-                                        //print ("Corner Color match")
-
-                                        var red: CGFloat = 0
-                                        var green: CGFloat = 0
-                                        var blue: CGFloat = 0
-                                        var alpha: CGFloat = 0
-
-                                        // Use the scaled image if the color is white or the alpha is zero
-                                        cornerColor!.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-                                        
-                                        if (((red == 1) && (green == 1) && (blue == 1)) || (alpha == 0))
-                                        {
-                                            cell?.teamMascotImageView.image = scaledImage
-                                        }
-                                        else
-                                        {
-                                            let roundedImage = UIImage.maskRoundedImage(image: scaledImage!, radius: scaledWidth! / 2.0)
-                                            cell?.teamMascotImageView.image = roundedImage
-                                        }
-                                    }
-                                    else
-                                    {
-                                        print("Corner Color Mismatch")
-                                        cell?.teamMascotImageView.image = scaledImage
-                                    }
+                                    // Render the mascot using this helper
+                                    MiscHelper.renderImprovedMascot(sourceImage: image!, destinationImageView: (cell?.teamMascotImageView)!)
                                 }
                                 else
                                 {
@@ -715,41 +688,43 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
                 // Set the display mode
                 if ((schedules.count > 0) && (latestItems.count > 0))
                 {
-                    cell?.setDisplayMode(mode: FavoriteDetailCellMode.allCells)
                     cell?.loadTeamRecordData(record)
                     cell?.loadArticleData(latestItems)
                     
                     if (schedules.count == 1)
                     {
+                        cell?.setDisplayMode(mode: FavoriteDetailCellMode.allCellsOneContest)
                         let contest = schedules.first
                         cell?.loadTopContestData(contest!)
                     }
                     else
                     {
+                        cell?.setDisplayMode(mode: FavoriteDetailCellMode.allCells)
                         let contest1 = schedules.first
                         cell?.loadTopContestData(contest1!)
                         
                         let contest2 = schedules.last
-                        cell?.loadTopContestData(contest2!)
+                        cell?.loadBottomContestData(contest2!)
                     }
                 }
                 else if ((schedules.count > 0) && (latestItems.count == 0))
                 {
-                    cell?.setDisplayMode(mode: FavoriteDetailCellMode.noArticles)
                     cell?.loadTeamRecordData(record)
                     
                     if (schedules.count == 1)
                     {
+                        cell?.setDisplayMode(mode: FavoriteDetailCellMode.noArticlesOneContest)
                         let contest = schedules.first
                         cell?.loadTopContestData(contest!)
                     }
                     else
                     {
+                        cell?.setDisplayMode(mode: FavoriteDetailCellMode.noArticlesAllContests)
                         let contest1 = schedules.first
                         cell?.loadTopContestData(contest1!)
                         
                         let contest2 = schedules.last
-                        cell?.loadTopContestData(contest2!)
+                        cell?.loadBottomContestData(contest2!)
                     }
                 }
                 else if ((schedules.count == 0) && (latestItems.count > 0))
@@ -797,41 +772,10 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
                                 
                                 if (image != nil)
                                 {
-                                    let scaledWidth = cell?.teamMascotImageView.frame.size.height
-                                    let scaledImage = ImageHelper.image(with: image, scaledTo: CGSize(width: scaledWidth!, height: scaledWidth!))
-                                    
                                     cell?.teamFirstLetterLabel.isHidden = true
                                     
-                                    // Clip the image to a round circle if the corners are not white or clear
-                                    let cornerColor = image!.getColorIfCornersMatch()
-                                    
-                                    if (cornerColor != nil)
-                                    {
-                                        //print ("Corner Color match")
-
-                                        var red: CGFloat = 0
-                                        var green: CGFloat = 0
-                                        var blue: CGFloat = 0
-                                        var alpha: CGFloat = 0
-
-                                        // Use the scaled image if the color is white or the alpha is zero
-                                        cornerColor!.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-                                        
-                                        if (((red == 1) && (green == 1) && (blue == 1)) || (alpha == 0))
-                                        {
-                                            cell?.teamMascotImageView.image = scaledImage
-                                        }
-                                        else
-                                        {
-                                            let roundedImage = UIImage.maskRoundedImage(image: scaledImage!, radius: scaledWidth! / 2.0)
-                                            cell?.teamMascotImageView.image = roundedImage
-                                        }
-                                    }
-                                    else
-                                    {
-                                        print("Corner Color Mismatch")
-                                        cell?.teamMascotImageView.image = scaledImage
-                                    }
+                                    // Render the mascot using this helper
+                                    MiscHelper.renderImprovedMascot(sourceImage: image!, destinationImageView: (cell?.teamMascotImageView)!)
                                 }
                                 else
                                 {
@@ -1060,74 +1004,11 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
             athleteDetailVC.showSaveFavoriteButton = false
             
             self.navigationController?.pushViewController(athleteDetailVC, animated: true)
-            
-            /*
-            let schoolColorString = favoriteAthlete[kAthleteCareerProfileSchoolColor1Key] as! String
-            let schoolColor = ColorHelper.color(fromHexString: schoolColorString)!
-            
-            let careerProfileId = favoriteAthlete[kAthleteCareerProfileIdKey] as! String
-            
-            var subDomain = ""
-            
-            // Build the subdomain
-            if (kUserDefaults .string(forKey: kServerModeKey) == kServerModeBranch)
-            {
-                let branchValue = kUserDefaults.string(forKey: kBranchValue)
-                subDomain = String(format: "branch-%@.fe", branchValue!.lowercased())
-            }
-            else if (kUserDefaults .string(forKey: kServerModeKey) == kServerModeDev)
-            {
-                subDomain = "dev"
-            }
-            else if (kUserDefaults .string(forKey: kServerModeKey) == kServerModeStaging)
-            {
-                subDomain = "staging"
-            }
-            else
-            {
-                subDomain = "www"
-            }
-            
-            var urlString = String(format: kCareerProfileHostGeneric, subDomain, careerProfileId)
-            
-            // Add the app's custom query parameter
-            urlString = urlString + "&" + kAppIdentifierQueryParam
-            
-            // Show the web browser
-            //self.hidesBottomBarWhenPushed = true
-            
-            webVC = WebViewController(nibName: "WebViewController", bundle: nil)
-            webVC?.titleString = ""
-            webVC?.urlString = urlString
-            webVC?.titleColor = UIColor.mpWhiteColor()
-            webVC?.navColor = schoolColor
-            webVC?.allowRotation = false
-            webVC?.showShareButton = true
-            webVC?.showNavControls = true
-            webVC?.showScrollIndicators = false
-            webVC?.showLoadingOverlay = true
-            webVC?.showBannerAd = false
-
-            self.navigationController?.pushViewController(webVC!, animated: true)
-            //self.hidesBottomBarWhenPushed = false
-            */
         }
     }
     
     @IBAction func favoritesButtonTouched(_ sender: UIButton)
     {
-        
-        /*
-        let favoritesListVC = FavoritesListViewController(nibName: "FavoritesListViewController", bundle: nil)
-        //let favoritesListNav = TopNavigationController()
-        //favoritesListNav.viewControllers = [favoritesListVC]
-        favoritesListVC.modalPresentationStyle = .formSheet
-        favoritesListVC.preferredContentSize = CGSize(width: CGFloat(kDeviceWidth), height: 400.0)
-        self.present(favoritesListVC, animated: true, completion: {
-            
-        })
-        */
-        
         self.tabBarController?.tabBar.isHidden = true
         
         favoritesListView = FavoritesListView(frame: CGRect(x: 0, y: 0, width: kDeviceWidth, height: kDeviceHeight))

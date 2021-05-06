@@ -15,7 +15,7 @@ class ScoresViewController: UIViewController
     
     @IBAction func webButtonTouched(_ sender: UIButton)
     {
-        self.hidesBottomBarWhenPushed = true
+        //self.hidesBottomBarWhenPushed = true
         
         webVC = WebViewController(nibName: "WebViewController", bundle: nil)
         webVC?.titleString = ""
@@ -28,14 +28,16 @@ class ScoresViewController: UIViewController
         webVC?.showScrollIndicators = false
         webVC?.showLoadingOverlay = true
         webVC?.showBannerAd = false
+        webVC?.tabBarVisible = true
+        webVC?.enableTracking = true
 
         self.navigationController?.pushViewController(webVC!, animated: true)
-        self.hidesBottomBarWhenPushed = false
+        //self.hidesBottomBarWhenPushed = false
     }
     
     @IBAction func webButtonWithAdsTouched(_ sender: UIButton)
     {
-        self.hidesBottomBarWhenPushed = true
+        //self.hidesBottomBarWhenPushed = true
         
         webVC = WebViewController(nibName: "WebViewController", bundle: nil)
         webVC?.titleString = ""
@@ -48,9 +50,11 @@ class ScoresViewController: UIViewController
         webVC?.showScrollIndicators = false
         webVC?.showLoadingOverlay = true
         webVC?.showBannerAd = true
+        webVC?.tabBarVisible = true
+        webVC?.enableTracking = true
 
         self.navigationController?.pushViewController(webVC!, animated: true)
-        self.hidesBottomBarWhenPushed = false
+        //self.hidesBottomBarWhenPushed = false
     }
     
     // MARK: - View Methods

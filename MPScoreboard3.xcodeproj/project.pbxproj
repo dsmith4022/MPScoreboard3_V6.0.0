@@ -65,7 +65,10 @@
 		4A730EC02603E3E600B3FECE /* NewFeeds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A730EBF2603E3E600B3FECE /* NewFeeds.swift */; };
 		4A74A28A25E5907600DCBF1E /* NotificationEditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A74A28825E5907600DCBF1E /* NotificationEditorViewController.swift */; };
 		4A74A28B25E5907600DCBF1E /* NotificationEditorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4A74A28925E5907600DCBF1E /* NotificationEditorViewController.xib */; };
-		4A80F2F92631F13500255771 /* OldFavoritesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A80F2F82631F13500255771 /* OldFavoritesListView.swift */; };
+		4A971FE026445DDA00D2A041 /* VideoHeartbeat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A971FC326445DDA00D2A041 /* VideoHeartbeat.a */; };
+		4A971FE126445DDA00D2A041 /* ADBMobileConfig.json in Resources */ = {isa = PBXBuildFile; fileRef = 4A971FC526445DDA00D2A041 /* ADBMobileConfig.json */; };
+		4A971FE226445DDA00D2A041 /* ADBMobileConfig-dev.json in Resources */ = {isa = PBXBuildFile; fileRef = 4A971FC626445DDA00D2A041 /* ADBMobileConfig-dev.json */; };
+		4A971FE326445DDA00D2A041 /* AdobeMobileLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A971FDF26445DDA00D2A041 /* AdobeMobileLibrary.a */; };
 		4AA2EC8025CA1BA100CB85BA /* LaunchScreenIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 4AA2EC7F25CA1BA100CB85BA /* LaunchScreenIcon@2x.png */; };
 		4AAA83442613CF4300F44D44 /* IQActionSheetToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA833E2613CF4300F44D44 /* IQActionSheetToolbar.m */; };
 		4AAA83452613CF4300F44D44 /* IQActionSheetTitleBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AAA833F2613CF4300F44D44 /* IQActionSheetTitleBarButtonItem.m */; };
@@ -464,7 +467,34 @@
 		4A730EBF2603E3E600B3FECE /* NewFeeds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFeeds.swift; sourceTree = "<group>"; };
 		4A74A28825E5907600DCBF1E /* NotificationEditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationEditorViewController.swift; sourceTree = "<group>"; };
 		4A74A28925E5907600DCBF1E /* NotificationEditorViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationEditorViewController.xib; sourceTree = "<group>"; };
-		4A80F2F82631F13500255771 /* OldFavoritesListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldFavoritesListView.swift; sourceTree = "<group>"; };
+		4A971FC326445DDA00D2A041 /* VideoHeartbeat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = VideoHeartbeat.a; sourceTree = "<group>"; };
+		4A971FC426445DDA00D2A041 /* ADBMobile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADBMobile.h; sourceTree = "<group>"; };
+		4A971FC526445DDA00D2A041 /* ADBMobileConfig.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ADBMobileConfig.json; sourceTree = "<group>"; };
+		4A971FC626445DDA00D2A041 /* ADBMobileConfig-dev.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "ADBMobileConfig-dev.json"; sourceTree = "<group>"; };
+		4A971FC826445DDA00D2A041 /* ADB_VHB_AdobeHeartbeatPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADB_VHB_AdobeHeartbeatPlugin.h; sourceTree = "<group>"; };
+		4A971FC926445DDA00D2A041 /* ADB_HB_PluginConfigProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADB_HB_PluginConfigProtocol.h; sourceTree = "<group>"; };
+		4A971FCA26445DDA00D2A041 /* ADB_VHB_VideoPlayerPluginConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADB_VHB_VideoPlayerPluginConfig.h; sourceTree = "<group>"; };
+		4A971FCB26445DDA00D2A041 /* ADB_VHB_AdobeAnalyticsPluginConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADB_VHB_AdobeAnalyticsPluginConfig.h; sourceTree = "<group>"; };
+		4A971FCC26445DDA00D2A041 /* ADB_VHB_ErrorInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADB_VHB_ErrorInfo.h; sourceTree = "<group>"; };
+		4A971FCD26445DDA00D2A041 /* ADB_VHB_HeartbeatDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADB_VHB_HeartbeatDelegate.h; sourceTree = "<group>"; };
+		4A971FCE26445DDA00D2A041 /* ADB_VHB_AssetType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADB_VHB_AssetType.h; sourceTree = "<group>"; };
+		4A971FCF26445DDA00D2A041 /* ADB_VHB_AdBreakInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADB_VHB_AdBreakInfo.h; sourceTree = "<group>"; };
+		4A971FD026445DDA00D2A041 /* ADB_VHB_AdobeAnalyticsPluginDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADB_VHB_AdobeAnalyticsPluginDelegate.h; sourceTree = "<group>"; };
+		4A971FD126445DDA00D2A041 /* ADB_VHB_Heartbeat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADB_VHB_Heartbeat.h; sourceTree = "<group>"; };
+		4A971FD226445DDA00D2A041 /* ADB_VHB_VideoInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADB_VHB_VideoInfo.h; sourceTree = "<group>"; };
+		4A971FD326445DDA00D2A041 /* ADB_HB_PluginProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADB_HB_PluginProtocol.h; sourceTree = "<group>"; };
+		4A971FD426445DDA00D2A041 /* ADB_VHB_VideoPlayerPluginDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADB_VHB_VideoPlayerPluginDelegate.h; sourceTree = "<group>"; };
+		4A971FD526445DDA00D2A041 /* ADB_VHB_AdInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADB_VHB_AdInfo.h; sourceTree = "<group>"; };
+		4A971FD626445DDA00D2A041 /* ADB_VHB_ChapterInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADB_VHB_ChapterInfo.h; sourceTree = "<group>"; };
+		4A971FD726445DDA00D2A041 /* ADB_VHB_Version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADB_VHB_Version.h; sourceTree = "<group>"; };
+		4A971FD826445DDA00D2A041 /* ADB_HB_BasePlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADB_HB_BasePlugin.h; sourceTree = "<group>"; };
+		4A971FD926445DDA00D2A041 /* ADB_VHB_QoSInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADB_VHB_QoSInfo.h; sourceTree = "<group>"; };
+		4A971FDA26445DDA00D2A041 /* ADB_VHB_VideoPlayerPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADB_VHB_VideoPlayerPlugin.h; sourceTree = "<group>"; };
+		4A971FDB26445DDA00D2A041 /* ADB_VHB_AdobeHeartbeatPluginConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADB_VHB_AdobeHeartbeatPluginConfig.h; sourceTree = "<group>"; };
+		4A971FDC26445DDA00D2A041 /* ADB_VHB_AdobeHeartbeatPluginDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADB_VHB_AdobeHeartbeatPluginDelegate.h; sourceTree = "<group>"; };
+		4A971FDD26445DDA00D2A041 /* ADB_VHB_AdobeAnalyticsPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADB_VHB_AdobeAnalyticsPlugin.h; sourceTree = "<group>"; };
+		4A971FDE26445DDA00D2A041 /* ADB_VHB_HeartbeatConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADB_VHB_HeartbeatConfig.h; sourceTree = "<group>"; };
+		4A971FDF26445DDA00D2A041 /* AdobeMobileLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = AdobeMobileLibrary.a; sourceTree = "<group>"; };
 		4AA2EC7F25CA1BA100CB85BA /* LaunchScreenIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchScreenIcon@2x.png"; sourceTree = "<group>"; };
 		4AAA833C2613CF4300F44D44 /* IQActionSheetPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IQActionSheetPickerView.h; sourceTree = "<group>"; };
 		4AAA833D2613CF4300F44D44 /* IQActionSheetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IQActionSheetViewController.h; sourceTree = "<group>"; };
@@ -1081,11 +1111,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				4AB005FE25FC1933006D0DC0 /* UserMessagingPlatform.framework in Frameworks */,
+				4A971FE326445DDA00D2A041 /* AdobeMobileLibrary.a in Frameworks */,
 				4A1B0CB525E815CD003E2AC2 /* CoreLocation.framework in Frameworks */,
 				4AB0050A25FC1933006D0DC0 /* libKochavaTrackeriOS.a in Frameworks */,
 				4AB005F725FC1933006D0DC0 /* GoogleAppMeasurement.framework in Frameworks */,
 				4A1B0CB125E815B5003E2AC2 /* CoreGraphics.framework in Frameworks */,
 				4A1B0CB325E815C3003E2AC2 /* CoreTelephony.framework in Frameworks */,
+				4A971FE026445DDA00D2A041 /* VideoHeartbeat.a in Frameworks */,
 				4A0B149825FBE093000B316A /* DTBiOSSDK.xcframework in Frameworks */,
 				4AB005FD25FC1933006D0DC0 /* GoogleMobileAds.framework in Frameworks */,
 				4A0B149625FBE078000B316A /* SystemConfiguration.framework in Frameworks */,
@@ -1208,6 +1240,7 @@
 		4A47D7D025D2073E00732DE6 /* 3rd Party Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4A971FC226445DDA00D2A041 /* AdobeMobileLibrary */,
 				4AB002D125FC1917006D0DC0 /* Amazon */,
 				4AB004F925FC1933006D0DC0 /* GoogleMobileAdsSdkiOS-7.66.0 */,
 				4AB0050525FC1933006D0DC0 /* GoogleMobileAdsMediationMoPub */,
@@ -1325,6 +1358,49 @@
 				4A3F25B62641BBD8003DDAFC /* AltTeamSelectorTableViewCell.xib */,
 			);
 			path = TableViewCells;
+			sourceTree = "<group>";
+		};
+		4A971FC226445DDA00D2A041 /* AdobeMobileLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				4A971FC326445DDA00D2A041 /* VideoHeartbeat.a */,
+				4A971FC426445DDA00D2A041 /* ADBMobile.h */,
+				4A971FC526445DDA00D2A041 /* ADBMobileConfig.json */,
+				4A971FC626445DDA00D2A041 /* ADBMobileConfig-dev.json */,
+				4A971FC726445DDA00D2A041 /* Headers */,
+				4A971FDF26445DDA00D2A041 /* AdobeMobileLibrary.a */,
+			);
+			path = AdobeMobileLibrary;
+			sourceTree = "<group>";
+		};
+		4A971FC726445DDA00D2A041 /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				4A971FC826445DDA00D2A041 /* ADB_VHB_AdobeHeartbeatPlugin.h */,
+				4A971FC926445DDA00D2A041 /* ADB_HB_PluginConfigProtocol.h */,
+				4A971FCA26445DDA00D2A041 /* ADB_VHB_VideoPlayerPluginConfig.h */,
+				4A971FCB26445DDA00D2A041 /* ADB_VHB_AdobeAnalyticsPluginConfig.h */,
+				4A971FCC26445DDA00D2A041 /* ADB_VHB_ErrorInfo.h */,
+				4A971FCD26445DDA00D2A041 /* ADB_VHB_HeartbeatDelegate.h */,
+				4A971FCE26445DDA00D2A041 /* ADB_VHB_AssetType.h */,
+				4A971FCF26445DDA00D2A041 /* ADB_VHB_AdBreakInfo.h */,
+				4A971FD026445DDA00D2A041 /* ADB_VHB_AdobeAnalyticsPluginDelegate.h */,
+				4A971FD126445DDA00D2A041 /* ADB_VHB_Heartbeat.h */,
+				4A971FD226445DDA00D2A041 /* ADB_VHB_VideoInfo.h */,
+				4A971FD326445DDA00D2A041 /* ADB_HB_PluginProtocol.h */,
+				4A971FD426445DDA00D2A041 /* ADB_VHB_VideoPlayerPluginDelegate.h */,
+				4A971FD526445DDA00D2A041 /* ADB_VHB_AdInfo.h */,
+				4A971FD626445DDA00D2A041 /* ADB_VHB_ChapterInfo.h */,
+				4A971FD726445DDA00D2A041 /* ADB_VHB_Version.h */,
+				4A971FD826445DDA00D2A041 /* ADB_HB_BasePlugin.h */,
+				4A971FD926445DDA00D2A041 /* ADB_VHB_QoSInfo.h */,
+				4A971FDA26445DDA00D2A041 /* ADB_VHB_VideoPlayerPlugin.h */,
+				4A971FDB26445DDA00D2A041 /* ADB_VHB_AdobeHeartbeatPluginConfig.h */,
+				4A971FDC26445DDA00D2A041 /* ADB_VHB_AdobeHeartbeatPluginDelegate.h */,
+				4A971FDD26445DDA00D2A041 /* ADB_VHB_AdobeAnalyticsPlugin.h */,
+				4A971FDE26445DDA00D2A041 /* ADB_VHB_HeartbeatConfig.h */,
+			);
+			path = Headers;
 			sourceTree = "<group>";
 		};
 		4AA2EC7E25CA1BA100CB85BA /* Images */ = {
@@ -2258,7 +2334,6 @@
 				4A2881A22633405700465A75 /* AthleteDetailViewController.xib */,
 				4A2AACEC2626331200D6B338 /* FavoritesBrowserView.swift */,
 				4A22FE2C2614E8F4005E50A5 /* FavoritesListView.swift */,
-				4A80F2F82631F13500255771 /* OldFavoritesListView.swift */,
 				4A4E389B25E83B6500C9FF41 /* SearchViewController.swift */,
 				4A4E389C25E83B6500C9FF41 /* SearchViewController.xib */,
 				4A36C55F263B56C500A4A049 /* AthleteSearchView.swift */,
@@ -2428,6 +2503,7 @@
 				4A40FB9B26125236003CEE4B /* siro-bold.otf in Resources */,
 				4AEF5E0625DEDB550077327E /* LoginHomeViewController.xib in Resources */,
 				4A6D676425D5C23900A3E9DB /* TeamSelectorTableViewCell.xib in Resources */,
+				4A971FE126445DDA00D2A041 /* ADBMobileConfig.json in Resources */,
 				4AB0054725FC1933006D0DC0 /* MPMutedBtn@2x.png in Resources */,
 				4AEC3CBC261E449C00C5A4E7 /* BassFishing@2x.png in Resources */,
 				4AEC3CCF261E449C00C5A4E7 /* WaterPolo@2x.png in Resources */,
@@ -2439,6 +2515,7 @@
 				4AB0054625FC1933006D0DC0 /* MPMutedBtn.png in Resources */,
 				4A25D7E625ED647F00F332A7 /* ZipCodes.txt in Resources */,
 				4AB0054125FC1933006D0DC0 /* MPUnmutedBtn@2x.png in Resources */,
+				4A971FE226445DDA00D2A041 /* ADBMobileConfig-dev.json in Resources */,
 				4AEC3CC6261E449C00C5A4E7 /* Archery@2x.png in Resources */,
 				4AEC3CB4261E449C00C5A4E7 /* Tennis@2x.png in Resources */,
 				4A5A54A725E03DA100541097 /* ProfileViewController.xib in Resources */,
@@ -2528,7 +2605,6 @@
 				4AB0058D25FC1933006D0DC0 /* MRBridge.m in Sources */,
 				4AB005ED25FC1933006D0DC0 /* MoPub.m in Sources */,
 				4AB005B425FC1933006D0DC0 /* SKStoreProductViewController+MPAdditions.m in Sources */,
-				4A80F2F92631F13500255771 /* OldFavoritesListView.swift in Sources */,
 				4AB0053625FC1933006D0DC0 /* MPConstants.m in Sources */,
 				4AB0051D25FC1933006D0DC0 /* MPNativeAdConfigValues+Internal.m in Sources */,
 				4AB005B625FC1933006D0DC0 /* NSHTTPURLResponse+MPAdditions.m in Sources */,
@@ -2878,7 +2954,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 210505;
+				CURRENT_PROJECT_VERSION = 210506;
 				DEVELOPMENT_TEAM = DF5A7UVUA8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2903,6 +2979,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/MPScoreboard3/3rd\\ Party\\ Frameworks/KochavaTrackeriOS",
 					"$(PROJECT_DIR)/MPScoreboard3/3rd\\ Party\\ Frameworks/mopub-ios-sdk/MoPubSDK/Internal/Viewability/OMSDK",
+					"$(PROJECT_DIR)/MPScoreboard3/3rd\\ Party\\ Frameworks/AdobeMobileLibrary",
+					"$(PROJECT_DIR)/MPScoreboard3/3rd\\ Party\\ Frameworks/AdobeMobileLibrary",
 				);
 				MARKETING_VERSION = 6.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxpreps.MaxChat;
@@ -2922,7 +3000,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 210505;
+				CURRENT_PROJECT_VERSION = 210506;
 				DEVELOPMENT_TEAM = DF5A7UVUA8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2947,6 +3025,8 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/MPScoreboard3/3rd\\ Party\\ Frameworks/KochavaTrackeriOS",
 					"$(PROJECT_DIR)/MPScoreboard3/3rd\\ Party\\ Frameworks/mopub-ios-sdk/MoPubSDK/Internal/Viewability/OMSDK",
+					"$(PROJECT_DIR)/MPScoreboard3/3rd\\ Party\\ Frameworks/AdobeMobileLibrary",
+					"$(PROJECT_DIR)/MPScoreboard3/3rd\\ Party\\ Frameworks/AdobeMobileLibrary",
 				);
 				MARKETING_VERSION = 6.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maxpreps.MaxChat;

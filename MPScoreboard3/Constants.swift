@@ -25,7 +25,9 @@ enum AspectRatio
 enum FavoriteDetailCellMode
 {
     case allCells
-    case noArticles
+    case allCellsOneContest
+    case noArticlesAllContests
+    case noArticlesOneContest
     case noContests
     case noContestsOrArticles
 }
@@ -298,8 +300,8 @@ let kAthleteSearchHostStaging = "https://stag.api.maxpreps.com/gateways/app/rost
 let kAthleteSearchHostDev = "https://dev.api.maxpreps.com/gateways/app/roster-athlete-search/v1?term=%@&gender=%@&sport=%@" // optional "&maxresults=%@&state=%@&year=%@"
 
 // URLs for getting team detail for the tall and medium height cards
-let kGetTeamDetailCardHostProduction = "https://dev.api.maxpreps.com/gateways/app/team-cards/v1?scheduleCount=2&latestCount=5"
-let kGetTeamDetailCardHostStaging = "https://dev.api.maxpreps.com/gateways/app/team-cards/v1?scheduleCount=2&latestCount=5"
+let kGetTeamDetailCardHostProduction = "https://production.api.maxpreps.com/gateways/app/team-cards/v1?scheduleCount=2&latestCount=5"
+let kGetTeamDetailCardHostStaging = "https://stag.api.maxpreps.com/gateways/app/team-cards/v1?scheduleCount=2&latestCount=5"
 let kGetTeamDetailCardHostDev = "https://dev.api.maxpreps.com/gateways/app/team-cards/v1?scheduleCount=2&latestCount=5"
 
 

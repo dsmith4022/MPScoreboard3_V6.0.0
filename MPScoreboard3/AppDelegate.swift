@@ -7,6 +7,7 @@
 
 import UIKit
 import DTBiOSSDK
+import AdSupport
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate
@@ -24,7 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         // Replace the path with the downloaded patch file if it exists
         if let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last
         {
-            
             let fileURL = documentsDirectory.appendingPathComponent("ALL.txt")
             
             do {
@@ -154,6 +154,84 @@ class AppDelegate: UIResponder, UIApplicationDelegate
             kUserDefaults.setValue("/8264/appaw-maxpreps/teams", forKey: kTeamsBannerAdIdKey)
             kUserDefaults.setValue("/8264/appaw-maxpreps/web", forKey: kWebBannerAdIdKey)
         }
+    }
+    
+    // MARK: - Init Trackers
+    
+    private func initOmnitureTracking()
+    {
+        var filePath = ""
+        
+        if ((kUserDefaults .string(forKey: kServerModeKey) == kServerModeDev) || (kUserDefaults .string(forKey: kServerModeKey) == kServerModeBranch))
+        {
+            filePath = Bundle.main.path(forResource: "ADBMobileConfig-dev", ofType: "json")!
+        }
+        else
+        {
+            filePath = Bundle.main.path(forResource: "ADBMobileConfig", ofType: "json")!
+        }
+        
+        ADBMobile.overrideConfigPath(filePath)
+        
+        let contextData = ["brandplatformid":"maxpreps_app_ios"]
+        ADBMobile.collectLifecycleData(withAdditionalData: contextData)
+        
+        ADBMobile.setDebugLogging(false)
+        ADBMobile.keepLifecycleSessionAlive()
+        
+        let idfaString = ASIdentifierManager.shared().advertisingIdentifier.uuidString
+        ADBMobile.setAdvertisingIdentifier(idfaString)
+        
+        if ((kUserDefaults.string(forKey: kUserIdKey) == kTestDriveUserId) || (kUserDefaults.string(forKey: kUserIdKey) == kEmptyGuid))
+        {
+            ADBMobile.visitorSyncIdentifiers(["other":""])
+        }
+        else
+        {
+            let userId = kUserDefaults.string(forKey: kUserIdKey)
+            ADBMobile.visitorSyncIdentifiers(["other":userId!])
+        }
+        
+        /*
+         #pragma mark - Tracking
+
+         - (void)initOmnitureTracking
+         {
+             // Setup the Omniture JSON file path
+             NSString *filePath;
+             
+             if ([[prefs stringForKey:kServerModeKey]isEqualToString:kServerModeDev])
+                 filePath = [[NSBundle mainBundle] pathForResource:@"ADBMobileConfig-dev" ofType:@"json"];
+             else
+                 filePath = [[NSBundle mainBundle] pathForResource:@"ADBMobileConfig" ofType:@"json"];
+             
+             if ([fileManager fileExistsAtPath:filePath])
+                 NSLog(@"Omniture JSON file found");
+             
+             [ADBMobile overrideConfigPath:filePath];
+             
+             // Changed in V4.8.2
+             //[ADBMobile collectLifecycleData];
+             NSDictionary *contextData = [NSDictionary dictionaryWithObjectsAndKeys:@"maxpreps_app_ios", @"brandplatformid", nil];
+             [ADBMobile collectLifecycleDataWithAdditionalData:contextData];
+             
+             [ADBMobile setDebugLogging:NO];
+             [ADBMobile keepLifecycleSessionAlive]; // New session for each launch, irrespective if it is coming from the background
+             
+             // Added in V5.2.6
+             NSString *idfa = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
+             [ADBMobile setAdvertisingIdentifier:idfa];
+             
+             if ([[prefs objectForKey:kUserObjectUserIdKey]isEqualToString:kTestDriveUserId] || [[prefs objectForKey:kUserObjectUserIdKey]isEqualToString:kEmptyGuid])
+             {
+                 [ADBMobile visitorSyncIdentifiers:@{@"other":@""} authenticationState:ADBMobileVisitorAuthenticationStateUnknown];
+             }
+             else
+             {
+                 [ADBMobile visitorSyncIdentifiers:@{@"other":[prefs objectForKey:kUserObjectUserIdKey]} authenticationState:ADBMobileVisitorAuthenticationStateAuthenticated];
+             }
+         }
+         */
     }
     
     // MARK: - Amazon Ad Init
@@ -371,6 +449,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         
         // Load the Google Ad IDs
         self.loadGoolgeAdIds()
+        
+        // Init Omniture Tracking
+        self.initOmnitureTracking()
         
         return true
     }

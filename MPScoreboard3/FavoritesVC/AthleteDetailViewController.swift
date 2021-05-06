@@ -171,6 +171,9 @@ class AthleteDetailViewController: UIViewController
         // Add the app's custom query parameter
         urlString = urlString + "&" + kAppIdentifierQueryParam
         
+        // Add the Omniture tracking query parameter
+        urlString = ADBMobile.visitorAppend(to: URL(string: urlString))!.absoluteString
+        
         browserView.loadUrl(urlString)
     }
 

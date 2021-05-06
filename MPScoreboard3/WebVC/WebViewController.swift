@@ -26,6 +26,7 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, D
     var showLoadingOverlay = false
     var showBannerAd = false
     var tabBarVisible = false
+    var enableTracking = false
             
     private var browserView: WKWebView = WKWebView()
     private var loadingContainer : UIView = UIView()
@@ -571,7 +572,7 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, D
         loadingLabel.font = .systemFont(ofSize: 11)
         loadingContainer.addSubview(loadingLabel)
         
-        // Append some items to the URL
+        // Append the app identifier to the URL
         if (urlString.contains("?"))
         {
             urlString = urlString + "&" + kAppIdentifierQueryParam
@@ -579,6 +580,14 @@ class WebViewController: UIViewController, WKNavigationDelegate, WKUIDelegate, D
         else
         {
             urlString = urlString + "?" + kAppIdentifierQueryParam
+        }
+        
+        // Add the Omniture tracking query parameter
+        if (enableTracking == true)
+        {
+            urlString = ADBMobile.visitorAppend(to: URL(string: urlString))!.absoluteString
+            
+            //print(urlString)
         }
         
         // Load the browser

@@ -37,33 +37,6 @@ class TeamSelectorViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     
-    // MARK: - Get School Info
-    
-    private func getNewSchoolInfo(_ teams : Array<Any>)
-    {
-        // Build an array of schoolIds
-        var schoolIds = [] as Array<String>
-        
-        for team in teams
-        {
-            let item = team  as! Dictionary<String, Any>
-            let schoolId  = item[kNewSchoolIdKey] as! String
-            
-            schoolIds.append(schoolId)
-        }
-
-        NewFeeds.getSchoolInfoForSchoolIds(schoolIds) { error in
-            if error == nil
-            {
-                print("Download school info success")
-            }
-            else
-            {
-                print("Download school info error")
-            }
-        }
-    }
-    
     // MARK: - Get Available Teams
     
     private func getAvailableTeams(schoolId : String)
@@ -106,7 +79,7 @@ class TeamSelectorViewController: UIViewController, UITableViewDelegate, UITable
                     
                     MiscHelper.getData(from: url!) { data, response, error in
                         guard let data = data, error == nil else { return }
-                        //print("Download Finished")
+                        
                         DispatchQueue.main.async()
                         {
                             //self.mascotImageView.image = UIImage(data: data)
@@ -114,40 +87,11 @@ class TeamSelectorViewController: UIViewController, UITableViewDelegate, UITable
                             self.mascotImageView.isHidden = false
                             
                             let image = UIImage(data: data)
-                            let scaledImage = ImageHelper.image(with: image, scaledTo: CGSize(width: self.mascotImageView.frame.size.width, height: self.mascotImageView.frame.size.height))
-                            //self.teamSelectorButton.setImage(scaledImage, for: .normal)
-                            
+                                                        
                             if (image != nil)
                             {
-                                let cornerColor = image!.getColorIfCornersMatch()
-                                
-                                if (cornerColor != nil)
-                                {
-                                    //print ("Corner Color match")
-
-                                    var red: CGFloat = 0
-                                    var green: CGFloat = 0
-                                    var blue: CGFloat = 0
-                                    var alpha: CGFloat = 0
-
-                                    // Use the scaled image if the color is white or the alpha is zero
-                                    cornerColor!.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-                                    
-                                    if (((red == 1) && (green == 1) && (blue == 1)) || (alpha == 0))
-                                    {
-                                        self.mascotImageView.image = scaledImage
-                                    }
-                                    else
-                                    {
-                                        let roundedImage = UIImage.maskRoundedImage(image: scaledImage!, radius: self.mascotImageView.frame.size.width / 2.0)
-                                        self.mascotImageView.image = roundedImage
-                                    }
-                                }
-                                else
-                                {
-                                    print("Corner Color Mismatch")
-                                    self.mascotImageView.image = scaledImage
-                                }
+                                // Render the mascot using this helper
+                                MiscHelper.renderImprovedMascot(sourceImage: image!, destinationImageView: self.mascotImageView)
                             }
                             else
                             {
@@ -728,6 +672,20 @@ class TeamSelectorViewController: UIViewController, UITableViewDelegate, UITable
         
         titleLabel.text = selectedSchool!.name
         subtitleLabel.text = selectedSchool!.state
+        
+        // Check if the school already exists in the SchoolInfoDIctionary to load the colors.
+        // If the school doesn't exist, the color will be loaded later in the getAvailableTeams method
+        let schoolInfos = kUserDefaults.dictionary(forKey: kNewSchoolInfoDictionaryKey)
+        
+        if (schoolInfos![selectedSchool!.schoolId] != nil)
+        {
+            let schoolInfo = schoolInfos![selectedSchool!.schoolId] as! Dictionary<String,String>
+            let colorString = schoolInfo[kNewSchoolInfoColor1Key]
+            let teamColor = ColorHelper.color(fromHexString: colorString)
+            
+            fakeStatusBar.backgroundColor = teamColor
+            navView.backgroundColor = teamColor
+        }
         
         /*
         if (selectedSchool!.city.count > 0)

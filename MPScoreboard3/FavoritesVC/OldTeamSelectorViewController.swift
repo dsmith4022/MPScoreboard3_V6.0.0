@@ -96,7 +96,7 @@ class OldTeamSelectorViewController: UIViewController, UITableViewDelegate, UITa
                     
                     MiscHelper.getData(from: url!) { data, response, error in
                         guard let data = data, error == nil else { return }
-                        //print("Download Finished")
+
                         DispatchQueue.main.async()
                         {
                             //self.mascotImageView.image = UIImage(data: data)
@@ -104,40 +104,11 @@ class OldTeamSelectorViewController: UIViewController, UITableViewDelegate, UITa
                             self.mascotImageView.isHidden = false
                             
                             let image = UIImage(data: data)
-                            let scaledImage = ImageHelper.image(with: image, scaledTo: CGSize(width: self.mascotImageView.frame.size.width, height: self.mascotImageView.frame.size.height))
-                            //self.teamSelectorButton.setImage(scaledImage, for: .normal)
                             
                             if (image != nil)
                             {
-                                let cornerColor = image!.getColorIfCornersMatch()
-                                
-                                if (cornerColor != nil)
-                                {
-                                    //print ("Corner Color match")
-
-                                    var red: CGFloat = 0
-                                    var green: CGFloat = 0
-                                    var blue: CGFloat = 0
-                                    var alpha: CGFloat = 0
-
-                                    // Use the scaled image if the color is white or the alpha is zero
-                                    cornerColor!.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-                                    
-                                    if (((red == 1) && (green == 1) && (blue == 1)) || (alpha == 0))
-                                    {
-                                        self.mascotImageView.image = scaledImage
-                                    }
-                                    else
-                                    {
-                                        let roundedImage = UIImage.maskRoundedImage(image: scaledImage!, radius: self.mascotImageView.frame.size.width / 2.0)
-                                        self.mascotImageView.image = roundedImage
-                                    }
-                                }
-                                else
-                                {
-                                    print("Corner Color Mismatch")
-                                    self.mascotImageView.image = scaledImage
-                                }
+                                // Render the mascot using this helper
+                                MiscHelper.renderImprovedMascot(sourceImage: image!, destinationImageView: (self.mascotImageView)!)
                             }
                             else
                             {

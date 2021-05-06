@@ -425,41 +425,10 @@ class FavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
                                 
                                 if (image != nil)
                                 {
-                                    let scaledWidth = cell?.teamMascotImageView.frame.size.height
-                                    let scaledImage = ImageHelper.image(with: image, scaledTo: CGSize(width: scaledWidth!, height: scaledWidth!))
-                                    
                                     cell?.teamFirstLetterLabel.isHidden = true
                                     
-                                    // Clip the image to a round circle if the corners are not white or clear
-                                    let cornerColor = image!.getColorIfCornersMatch()
-                                    
-                                    if (cornerColor != nil)
-                                    {
-                                        //print ("Corner Color match")
-
-                                        var red: CGFloat = 0
-                                        var green: CGFloat = 0
-                                        var blue: CGFloat = 0
-                                        var alpha: CGFloat = 0
-
-                                        // Use the scaled image if the color is white or the alpha is zero
-                                        cornerColor!.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-                                        
-                                        if (((red == 1) && (green == 1) && (blue == 1)) || (alpha == 0))
-                                        {
-                                            cell?.teamMascotImageView.image = scaledImage
-                                        }
-                                        else
-                                        {
-                                            let roundedImage = UIImage.maskRoundedImage(image: scaledImage!, radius: scaledWidth! / 2.0)
-                                            cell?.teamMascotImageView.image = roundedImage
-                                        }
-                                    }
-                                    else
-                                    {
-                                        print("Corner Color Mismatch")
-                                        cell?.teamMascotImageView.image = scaledImage
-                                    }
+                                    // Render the mascot using this helper
+                                    MiscHelper.renderImprovedMascot(sourceImage: image!, destinationImageView: (cell?.teamMascotImageView)!)
                                 }
                                 else
                                 {
@@ -508,40 +477,22 @@ class FavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
                     DispatchQueue.main.async()
                     {
                         let image = UIImage(data: data)
-                        let scaledWidth = cell?.teamMascotImageView.frame.size.height
-                        let scaledImage = ImageHelper.image(with: image, scaledTo: CGSize(width: scaledWidth!, height: scaledWidth!))
                         
-                        cell?.teamFirstLetterLabel.isHidden = true
-                        
-                        // Clip the image to a round circle if the corners are not white or clear
-                        let cornerColor = image!.getColorIfCornersMatch()
-                        
-                        if (cornerColor != nil)
+                        if (image != nil)
                         {
-                            //print ("Corner Color match")
-
-                            var red: CGFloat = 0
-                            var green: CGFloat = 0
-                            var blue: CGFloat = 0
-                            var alpha: CGFloat = 0
-
-                            // Use the scaled image if the color is white or the alpha is zero
-                            cornerColor!.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+                            cell?.teamFirstLetterLabel.isHidden = true
                             
-                            if (((red == 1) && (green == 1) && (blue == 1)) || (alpha == 0))
-                            {
-                                cell?.teamMascotImageView.image = scaledImage
-                            }
-                            else
-                            {
-                                let roundedImage = UIImage.maskRoundedImage(image: scaledImage!, radius: scaledWidth! / 2.0)
-                                cell?.teamMascotImageView.image = roundedImage
-                            }
+                            // Render the mascot using this helper
+                            MiscHelper.renderImprovedMascot(sourceImage: image!, destinationImageView: (cell?.teamMascotImageView)!)
                         }
                         else
                         {
-                            print("Corner Color Mismatch")
-                            cell?.teamMascotImageView.image = scaledImage
+                            cell?.teamMascotImageView!.image = nil
+                            cell?.teamFirstLetterLabel.isHidden = false
+                            cell?.teamFirstLetterLabel.text = initial
+
+                            let color = ColorHelper.color(fromHexString: colorString)
+                            cell?.teamFirstLetterLabel.textColor = color
                         }
                     }
                 }
@@ -835,181 +786,7 @@ class FavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
             roundRectView!.center = initialCenter
         }
     }
-    /*
     
-    private func updateHeaderContainer()
-    {
-        let index = kUserDefaults.value(forKey: kSelectedFavoriteIndexKey) as! Int
-        let section = kUserDefaults.value(forKey: kSelectedFavoriteSectionKey) as! Int
-        
-        if (section == 0)
-        {
-            // Favorite team is selected
-            let favoriteTeam = favoriteTeamsArray[index] as! Dictionary<String, Any>
-            
-            let name = favoriteTeam[kNewSchoolNameKey] as! String
-            let initial = String(name.prefix(1))
-            let gender = favoriteTeam[kNewGenderKey] as! String
-            let sport = favoriteTeam[kNewSportKey] as! String
-            let level = favoriteTeam[kNewLevelKey] as!String
-            let schoolId = favoriteTeam[kNewSchoolIdKey] as!String
-            let season = favoriteTeam[kNewSeasonKey] as! String
-            let genderSportLevel = MiscHelper.genderSportLevelFrom(gender: gender, sport: sport, level: level)
-            
-            // Show the season for soccer
-            if (sport == "Soccer")
-            {
-                headerSubtitleLabel!.text =  String(format: "%@ (%@)", genderSportLevel, season)
-            }
-            else
-            {
-                headerSubtitleLabel!.text =  genderSportLevel
-            }
-            
-            headerTitleLabel!.text = name
-            headerFirstLetterLabel!.text = initial
-            
-            // Look for a mascot
-            if let schoolsInfo = kUserDefaults.dictionary(forKey: kNewSchoolInfoDictionaryKey)
-            {
-                if let schoolInfo = schoolsInfo[schoolId] as? Dictionary<String, String>
-                {
-                    let mascotUrl = schoolInfo[kNewSchoolInfoMascotUrlKey]
-                    let url = URL(string: mascotUrl!)
-
-                    if (mascotUrl!.count > 0)
-                    {
-                        // Get the data and make an image
-                        MiscHelper.getData(from: url!) { data, response, error in
-                            guard let data = data, error == nil else { return }
-                            //print("Download Finished")
-                            DispatchQueue.main.async()
-                            {
-                                let image = UIImage(data: data)
-                                let scaledWidth = self.headerMascotImageView!.frame.size.height
-                                let scaledImage = ImageHelper.image(with: image, scaledTo: CGSize(width: scaledWidth, height: scaledWidth))
-                                
-                                self.headerFirstLetterLabel!.isHidden = true
-                                
-                                // Clip the image to a round circle if the corners are not white or clear
-                                let cornerColor = image!.getColorIfCornersMatch()
-                                
-                                if (cornerColor != nil)
-                                {
-                                    //print ("Corner Color match")
-
-                                    var red: CGFloat = 0
-                                    var green: CGFloat = 0
-                                    var blue: CGFloat = 0
-                                    var alpha: CGFloat = 0
-
-                                    // Use the scaled image if the color is white or the alpha is zero
-                                    cornerColor!.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-                                    
-                                    if (((red == 1) && (green == 1) && (blue == 1)) || (alpha == 0))
-                                    {
-                                        self.headerMascotImageView!.image = scaledImage
-                                    }
-                                    else
-                                    {
-                                        let roundedImage = UIImage.maskRoundedImage(image: scaledImage!, radius: scaledWidth / 2.0)
-                                        self.headerMascotImageView!.image = roundedImage
-                                    }
-                                }
-                                else
-                                {
-                                    print("Corner Color Mismatch")
-                                    self.headerMascotImageView!.image = scaledImage
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // Set the first letter color
-                        let hexColorString = schoolInfo[kNewSchoolInfoColor1Key]!
-                        let color = ColorHelper.color(fromHexString: hexColorString)
-                        headerFirstLetterLabel!.textColor = color
-                    }
-                }
-            }
-        }
-        else
-        {
-            // Favorite Athlete is selected
-            let favoriteAthlete = favoriteAthletesArray[index] as! Dictionary<String, Any>
-
-            let firstName = favoriteAthlete[kAthleteCareerProfileFirstNameKey] as! String
-            let lastName = favoriteAthlete[kAthleteCareerProfileLastNameKey] as! String
-            let schoolName = favoriteAthlete[kAthleteCareerProfileSchoolNameKey] as! String
-            let initial = String(schoolName.prefix(1))
-            let mascotUrlString = favoriteAthlete[kAthleteCareerProfileSchoolMascotUrlKey] as! String
-            let colorString = favoriteAthlete[kAthleteCareerProfileSchoolColor1Key] as! String
-                        
-            headerTitleLabel!.text = firstName + " " + lastName
-            headerFirstLetterLabel!.text = ""
-            headerSubtitleLabel!.text = schoolName
-            
-            if (mascotUrlString.count > 0)
-            {
-                let url = URL(string: mascotUrlString)
-                
-                // Get the data and make an image
-                MiscHelper.getData(from: url!) { data, response, error in
-                    guard let data = data, error == nil else { return }
-                    DispatchQueue.main.async()
-                    {
-                        let image = UIImage(data: data)
-                        let scaledWidth = self.headerMascotImageView!.frame.size.height
-                        let scaledImage = ImageHelper.image(with: image, scaledTo: CGSize(width: scaledWidth, height: scaledWidth))
-                        
-                        self.headerFirstLetterLabel!.isHidden = true
-                        
-                        // Clip the image to a round circle if the corners are not white or clear
-                        let cornerColor = image!.getColorIfCornersMatch()
-                        
-                        if (cornerColor != nil)
-                        {
-                            //print ("Corner Color match")
-
-                            var red: CGFloat = 0
-                            var green: CGFloat = 0
-                            var blue: CGFloat = 0
-                            var alpha: CGFloat = 0
-
-                            // Use the scaled image if the color is white or the alpha is zero
-                            cornerColor!.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-                            
-                            if (((red == 1) && (green == 1) && (blue == 1)) || (alpha == 0))
-                            {
-                                self.headerMascotImageView!.image = scaledImage
-                            }
-                            else
-                            {
-                                let roundedImage = UIImage.maskRoundedImage(image: scaledImage!, radius: scaledWidth / 2.0)
-                                self.headerMascotImageView!.image = roundedImage
-                            }
-                        }
-                        else
-                        {
-                            print("Corner Color Mismatch")
-                            self.headerMascotImageView!.image = scaledImage
-                        }
-                    }
-                }
-            }
-            else
-            {
-                headerMascotImageView!.image = nil
-                headerFirstLetterLabel!.isHidden = false
-                headerFirstLetterLabel!.text = initial
-
-                let color = ColorHelper.color(fromHexString: colorString)
-                headerFirstLetterLabel!.textColor = color
-            }
-        }
-    }
-    */
     // MARK: - Init Method
     
     override init(frame: CGRect)

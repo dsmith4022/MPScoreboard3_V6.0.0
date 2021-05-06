@@ -143,16 +143,16 @@ class TallFavoriteTeamTableViewCell: UITableViewCell, UICollectionViewDelegate, 
             {
                 if (conferenceStanding.count > 0)
                 {
-                    text = String(format: "Overall: %@, %@ in %@", winLossTies, conferenceStanding, leagueName)
+                    text = String(format: "%@, %@ in %@", winLossTies, conferenceStanding, leagueName)
                 }
                 else
                 {
-                    text = String(format: "Overall: %@, %@", winLossTies, leagueName)
+                    text = String(format: "%@, %@", winLossTies, leagueName)
                 }
             }
             else
             {
-                text = String(format: "Overall: %@", winLossTies)
+                text = String(format: "Record: %@", winLossTies)
             }
             
             recordLabel.text = text
@@ -230,41 +230,10 @@ class TallFavoriteTeamTableViewCell: UITableViewCell, UICollectionViewDelegate, 
                     
                     if (image != nil)
                     {
-                        let scaledWidth = self.topContestMascotImageView.frame.size.height
-                        let scaledImage = ImageHelper.image(with: image, scaledTo: CGSize(width: scaledWidth, height: scaledWidth))
-                        
                         self.topContestFirstLetterLabel.isHidden = true
                         
-                        // Clip the image to a round circle if the corners are not white or clear
-                        let cornerColor = image!.getColorIfCornersMatch()
-                        
-                        if (cornerColor != nil)
-                        {
-                            //print ("Corner Color match")
-
-                            var red: CGFloat = 0
-                            var green: CGFloat = 0
-                            var blue: CGFloat = 0
-                            var alpha: CGFloat = 0
-
-                            // Use the scaled image if the color is white or the alpha is zero
-                            cornerColor!.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-                            
-                            if (((red == 1) && (green == 1) && (blue == 1)) || (alpha == 0))
-                            {
-                                self.topContestMascotImageView.image = scaledImage
-                            }
-                            else
-                            {
-                                let roundedImage = UIImage.maskRoundedImage(image: scaledImage!, radius: scaledWidth / 2.0)
-                                self.topContestMascotImageView.image = roundedImage
-                            }
-                        }
-                        else
-                        {
-                            print("Corner Color Mismatch")
-                            self.topContestMascotImageView.image = scaledImage
-                        }
+                        // Render the mascot using this helper
+                        MiscHelper.renderImprovedMascot(sourceImage: image!, destinationImageView: (self.topContestMascotImageView)!)
                     }
                     else
                     {
@@ -350,41 +319,10 @@ class TallFavoriteTeamTableViewCell: UITableViewCell, UICollectionViewDelegate, 
                     
                     if (image != nil)
                     {
-                        let scaledWidth = self.bottomContestMascotImageView.frame.size.height
-                        let scaledImage = ImageHelper.image(with: image, scaledTo: CGSize(width: scaledWidth, height: scaledWidth))
-                        
                         self.bottomContestFirstLetterLabel.isHidden = true
                         
-                        // Clip the image to a round circle if the corners are not white or clear
-                        let cornerColor = image!.getColorIfCornersMatch()
-                        
-                        if (cornerColor != nil)
-                        {
-                            //print ("Corner Color match")
-
-                            var red: CGFloat = 0
-                            var green: CGFloat = 0
-                            var blue: CGFloat = 0
-                            var alpha: CGFloat = 0
-
-                            // Use the scaled image if the color is white or the alpha is zero
-                            cornerColor!.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-                            
-                            if (((red == 1) && (green == 1) && (blue == 1)) || (alpha == 0))
-                            {
-                                self.bottomContestMascotImageView.image = scaledImage
-                            }
-                            else
-                            {
-                                let roundedImage = UIImage.maskRoundedImage(image: scaledImage!, radius: scaledWidth / 2.0)
-                                self.bottomContestMascotImageView.image = roundedImage
-                            }
-                        }
-                        else
-                        {
-                            print("Corner Color Mismatch")
-                            self.bottomContestMascotImageView.image = scaledImage
-                        }
+                        // Render the mascot using this helper
+                        MiscHelper.renderImprovedMascot(sourceImage: image!, destinationImageView: (self.bottomContestMascotImageView)!)
                     }
                     else
                     {
@@ -425,11 +363,24 @@ class TallFavoriteTeamTableViewCell: UITableViewCell, UICollectionViewDelegate, 
             
             articleContainerView.frame = CGRect(x: 0, y: topContainerView.frame.size.height + recordContainerView.frame.size.height + contestContainerView.frame.size.height, width: articleContainerView.frame.size.width, height: articleContainerView.frame.size.height)
             
-        case FavoriteDetailCellMode.noArticles:
+        case FavoriteDetailCellMode.allCellsOneContest:
+            
+            // Reset the frmaes to their default location
+            contestContainerView.frame = CGRect(x: 0, y: topContainerView.frame.size.height + recordContainerView.frame.size.height, width: contestContainerView.frame.size.width, height: contestContainerView.frame.size.height - contestBottomInnerContainerView.frame.size.height)
+            
+            articleContainerView.frame = CGRect(x: 0, y: topContainerView.frame.size.height + recordContainerView.frame.size.height + contestContainerView.frame.size.height - contestBottomInnerContainerView.frame.size.height, width: articleContainerView.frame.size.width, height: articleContainerView.frame.size.height)
+            
+        case FavoriteDetailCellMode.noArticlesAllContests:
             
             articleContainerView.isHidden = true
             
             contestContainerView.frame = CGRect(x: 0, y: topContainerView.frame.size.height + recordContainerView.frame.size.height, width: contestContainerView.frame.size.width, height: contestContainerView.frame.size.height)
+            
+        case FavoriteDetailCellMode.noArticlesOneContest:
+            
+            articleContainerView.isHidden = true
+            
+            contestContainerView.frame = CGRect(x: 0, y: topContainerView.frame.size.height + recordContainerView.frame.size.height, width: contestContainerView.frame.size.width, height: contestContainerView.frame.size.height - contestBottomInnerContainerView.frame.size.height)
 
         case FavoriteDetailCellMode.noContests:
             
