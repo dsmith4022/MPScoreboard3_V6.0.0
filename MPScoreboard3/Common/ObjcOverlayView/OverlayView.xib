@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="OverlayView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pFb-DF-wRW">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zpf-rk-VO8">
+                    <rect key="frame" x="110" y="256" width="155" height="155"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="OverlayCheckmark" translatesAutoresizingMaskIntoConstraints="NO" id="J2z-hS-81a">
+                            <rect key="frame" x="43.5" y="40" width="68" height="46"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="68" id="cBk-2q-85h"/>
+                                <constraint firstAttribute="height" constant="46" id="wKp-jA-Kvp"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="ipD-0o-ETp">
+                            <rect key="frame" x="8" y="109" width="139" height="24"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.72549019607843135" green="0.72156862745098038" blue="0.74509803921568629" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="J2z-hS-81a" firstAttribute="centerX" secondItem="zpf-rk-VO8" secondAttribute="centerX" id="2Qk-nO-PBT"/>
+                        <constraint firstAttribute="height" constant="155" id="6A5-MM-CMd"/>
+                        <constraint firstAttribute="trailing" secondItem="ipD-0o-ETp" secondAttribute="trailing" constant="8" id="81n-Tl-AQk"/>
+                        <constraint firstItem="ipD-0o-ETp" firstAttribute="top" secondItem="J2z-hS-81a" secondAttribute="bottom" constant="23" id="RH6-E8-Ued"/>
+                        <constraint firstAttribute="width" constant="155" id="aiw-kt-Bf5"/>
+                        <constraint firstItem="J2z-hS-81a" firstAttribute="top" secondItem="zpf-rk-VO8" secondAttribute="top" constant="40" id="llS-Pt-zIO"/>
+                        <constraint firstAttribute="bottom" secondItem="ipD-0o-ETp" secondAttribute="bottom" constant="22" id="pNQ-KA-dcK"/>
+                        <constraint firstItem="ipD-0o-ETp" firstAttribute="leading" secondItem="zpf-rk-VO8" secondAttribute="leading" constant="8" id="umL-B0-DXO"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="10"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="pFb-DF-wRW" secondAttribute="trailing" id="Hva-D6-H5m"/>
+                <constraint firstItem="pFb-DF-wRW" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="RiG-0W-aMk"/>
+                <constraint firstItem="pFb-DF-wRW" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="YdW-BG-e6y"/>
+                <constraint firstItem="zpf-rk-VO8" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="fY9-rg-Prg"/>
+                <constraint firstItem="zpf-rk-VO8" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="lky-MM-7xQ"/>
+                <constraint firstAttribute="bottom" secondItem="pFb-DF-wRW" secondAttribute="bottom" id="rSD-dk-IcX"/>
+            </constraints>
+            <connections>
+                <outlet property="backGroundView" destination="pFb-DF-wRW" id="gtn-ES-qpD"/>
+                <outlet property="overLayLbl" destination="ipD-0o-ETp" id="px4-bH-RfZ"/>
+            </connections>
+            <point key="canvasLocation" x="-426" y="113"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="OverlayCheckmark" width="68" height="46"/>
+    </resources>
+</document>

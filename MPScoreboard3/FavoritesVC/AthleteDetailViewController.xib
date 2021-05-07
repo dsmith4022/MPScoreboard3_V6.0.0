@@ -19,6 +19,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AthleteDetailViewController" customModule="MPScoreboard3" customModuleProvider="target">
             <connections>
                 <outlet property="navView" destination="g5x-aG-mD2" id="8vo-z3-yt5"/>
+                <outlet property="removeFavoriteButton" destination="v8o-WW-LGb" id="6pT-Mf-zCU"/>
                 <outlet property="saveFavoriteButton" destination="G06-Je-t4v" id="IJI-i0-pWV"/>
                 <outlet property="titleLabel" destination="nGu-q7-YMX" id="5Iz-4X-QR4"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -59,6 +60,14 @@
                                 <action selector="saveFavoriteButtonTouched:" destination="-1" eventType="touchUpInside" id="rwX-Ma-ia4"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v8o-WW-LGb">
+                            <rect key="frame" x="365" y="40" width="40" height="40"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
+                            <state key="normal" image="RemoveFavoriteIcon"/>
+                            <connections>
+                                <action selector="removeFavoriteButtonTouched:" destination="-1" eventType="touchUpInside" id="Ai0-kA-Q27"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" name="MPLightGrayColor"/>
                 </view>
@@ -70,6 +79,7 @@
     </objects>
     <resources>
         <image name="BackArrowWhite" width="27.5" height="21"/>
+        <image name="RemoveFavoriteIcon" width="28" height="24"/>
         <image name="SaveFavoriteIcon" width="28" height="24"/>
         <namedColor name="MPLightGrayColor">
             <color red="0.65098039215686276" green="0.66274509803921566" blue="0.67843137254901964" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

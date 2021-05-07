@@ -9,7 +9,7 @@ import UIKit
 
 protocol AthleteSearchViewDelegate: AnyObject
 {
-    func athleteSearchDidSelectAthlete(selectedAthlete: Athlete, showFavoriteButton: Bool)
+    func athleteSearchDidSelectAthlete(selectedAthlete: Athlete, showSaveFavoriteButton: Bool, showRemoveFavoriteButton: Bool)
 }
 
 class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource
@@ -253,8 +253,9 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
         label.font = UIFont.mpRegularFontWith(size: 14)
         label.backgroundColor = UIColor.clear
         label.textColor = UIColor.mpLightGrayColor()
-        label.text = "RESULTS"
         view.addSubview(label)
+        
+        label.text = String(format: "RESULTS (%ld)", filteredAthletesArray.count)
             
         // Add the filterButton that were created at init
         filterButton.frame = CGRect(x: tableView.frame.size.width - 106, y: 14, width: 90, height: 30)
@@ -376,14 +377,17 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
         
         let selectedAthlete = Athlete(firstName: firstName, lastName: lastName, schoolName: schoolName, schoolState: schoolState, schoolCity: schoolCity, schoolId: schoolId, schoolColor: schoolColor1, schoolMascotUrl: schoolMascotUrl, careerId: careerId, photoUrl: photoUrl)
         
-        var showFavoriteButton = false
+        var showSaveFavoriteButton = false
+        var showRemoveFavoriteButton = false
+        
         
         // Check to see if the athlete is already a favorite
         let result = favoriteAthletesIdentifierArray.filter { $0 as! String == careerId }
         
         if (result.isEmpty == false)
         {
-            showFavoriteButton = false
+            showSaveFavoriteButton = false
+            showRemoveFavoriteButton = true
         }
         else
         {
@@ -392,15 +396,17 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
             
             if (userId != kTestDriveUserId)
             {
-                showFavoriteButton = true
+                showSaveFavoriteButton = true
+                showRemoveFavoriteButton = false
             }
             else
             {
-                showFavoriteButton = false
+                showSaveFavoriteButton = false
+                showRemoveFavoriteButton = false
             }
         }
         
-        self.delegate?.athleteSearchDidSelectAthlete(selectedAthlete: selectedAthlete, showFavoriteButton: showFavoriteButton)
+        self.delegate?.athleteSearchDidSelectAthlete(selectedAthlete: selectedAthlete, showSaveFavoriteButton: showSaveFavoriteButton, showRemoveFavoriteButton: showRemoveFavoriteButton)
         
     }
     

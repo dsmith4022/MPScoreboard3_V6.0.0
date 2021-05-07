@@ -525,13 +525,13 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
             athleteContainerScrollView!.contentSize = CGSize(width: overallWidth + rightPad - buttonSpace, height: Int(athleteContainerScrollView!.frame.size.height))
             
             // Add the left and right shadows
-            leftShadow = UIImageView(frame: CGRect(x: -6, y: Int(0), width: 22, height: Int(athleteContainerScrollView!.frame.size.height)))
+            leftShadow = UIImageView(frame: CGRect(x: 0, y: 9, width: 16, height: Int(athleteContainerScrollView!.frame.size.height) - 18))
             leftShadow.image = UIImage(named: "LeftShadow")
             leftShadow.tag = 200
             athleteContainerScrollView!.addSubview(leftShadow)
             leftShadow.isHidden = true
             
-            rightShadow = UIImageView(frame: CGRect(x: Int(kDeviceWidth) - 16, y: 0, width: 22, height: Int(athleteContainerScrollView!.frame.size.height)))
+            rightShadow = UIImageView(frame: CGRect(x: Int(kDeviceWidth) - 16, y: 9, width: 16, height: Int(athleteContainerScrollView!.frame.size.height) - 18))
             rightShadow.image = UIImage(named: "RightShadow")
             rightShadow.tag = 201
             athleteContainerScrollView!.addSubview(rightShadow)
@@ -632,7 +632,7 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
                         // Get the data and make an image
                         MiscHelper.getData(from: url!) { data, response, error in
                             guard let data = data, error == nil else { return }
-                            //print("Download Finished")
+
                             DispatchQueue.main.async()
                             {
                                 let image = UIImage(data: data)
@@ -741,11 +741,37 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
             }
             
             cell?.teamFirstLetterLabel.isHidden = false
+            cell?.adminContainerView.isHidden = true
+            cell?.memberContainerView.isHidden = true
 
             cell?.subtitleLabel.text =  levelGenderSport
             cell?.titleLabel.text = name
             cell?.teamFirstLetterLabel.text = initial
             cell?.sportIconImageView.image = MiscHelper.getImageForSport(sport)
+            
+            // Look at the roles dictionary for a match if a logged in user
+            let userId = kUserDefaults.string(forKey: kUserIdKey)
+            
+            if (userId != kTestDriveUserId)
+            {
+                let adminRoles = kUserDefaults.dictionary(forKey: kUserAdminRolesDictionaryKey)
+                let roleKey = schoolId + "_" + allSeasonId
+                
+                if (adminRoles![roleKey] != nil)
+                {
+                    let adminRole = adminRoles![roleKey] as! Dictionary<String,String>
+                    let roleName = adminRole[kRoleNameKey]
+                    
+                    if ((roleName == "Head Coach") || (roleName == "Assistant Coach") || (roleName == "Statistician"))
+                    {
+                        cell?.adminContainerView.isHidden = false
+                    }
+                    else if (roleName == "Team Community")
+                    {
+                        cell?.memberContainerView.isHidden = false
+                    }
+                }
+            }
             
             // Look for a mascot
             if let schoolsInfo = kUserDefaults.dictionary(forKey: kNewSchoolInfoDictionaryKey)
@@ -1002,6 +1028,7 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
             let athleteDetailVC = AthleteDetailViewController(nibName: "AthleteDetailViewController", bundle: nil)
             athleteDetailVC.selectedAthlete = selectedAthlete
             athleteDetailVC.showSaveFavoriteButton = false
+            athleteDetailVC.showRemoveFavoriteButton = true
             
             self.navigationController?.pushViewController(athleteDetailVC, animated: true)
         }

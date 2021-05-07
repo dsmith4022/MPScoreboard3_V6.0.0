@@ -224,7 +224,7 @@ let kSecureUserIdHostProduction = "https://secure.maxpreps.com/feeds/apps_json/c
 let kSecureUserIdHostStaging = "https://secure-staging.maxpreps.com/feeds/apps_json/common/validate_member.ashx"
 let kSecureUserIdHostDev = "https://secure-dev.maxpreps.com/feeds/apps_json/common/validate_member.ashx"
 
-// URL for getting the user's info
+// URL for getting the user's info (not used)
 let kUserInfoHostProduction = "https://production.api.maxpreps.com/users/%@/roles/public/v1"
 let kUserInfoHostStaging = "https://stag.api.maxpreps.com/users/%@/public/v1"
 let kUserInfoHostDev = "https://dev.api.maxpreps.com/users/%@/public/v1"

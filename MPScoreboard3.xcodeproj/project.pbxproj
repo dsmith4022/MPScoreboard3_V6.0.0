@@ -115,7 +115,6 @@
 		4AB0053025FC1933006D0DC0 /* MPEngineInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AB0033925FC1932006D0DC0 /* MPEngineInfo.m */; };
 		4AB0053125FC1933006D0DC0 /* MPImpressionData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AB0033B25FC1932006D0DC0 /* MPImpressionData.m */; };
 		4AB0053225FC1933006D0DC0 /* MPAdView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AB0033C25FC1932006D0DC0 /* MPAdView.m */; };
-		4AB0053325FC1933006D0DC0 /* MoPubSDK.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 4AB0034125FC1932006D0DC0 /* MoPubSDK.xcconfig */; };
 		4AB0053425FC1933006D0DC0 /* MPConsentChangedReason.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AB0034225FC1932006D0DC0 /* MPConsentChangedReason.m */; };
 		4AB0053525FC1933006D0DC0 /* MPNativeAdError.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AB0034825FC1932006D0DC0 /* MPNativeAdError.m */; };
 		4AB0053625FC1933006D0DC0 /* MPConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AB0034925FC1932006D0DC0 /* MPConstants.m */; };
@@ -323,6 +322,8 @@
 		4AB0060025FC1933006D0DC0 /* MoPubAdapter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AB0050725FC1933006D0DC0 /* MoPubAdapter.framework */; };
 		4AB0060125FC1933006D0DC0 /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 4AB0050825FC1933006D0DC0 /* CHANGELOG.md */; };
 		4AB0060225FC1933006D0DC0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 4AB0050925FC1933006D0DC0 /* README.md */; };
+		4AC8B81E26459D55002AD3DE /* OverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AC8B81B26459D55002AD3DE /* OverlayView.m */; };
+		4AC8B81F26459D55002AD3DE /* OverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4AC8B81C26459D55002AD3DE /* OverlayView.xib */; };
 		4AD393CB25D303420070F843 /* UpdateSchoolsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD393C925D303420070F843 /* UpdateSchoolsViewController.swift */; };
 		4AD393CC25D303420070F843 /* UpdateSchoolsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4AD393CA25D303420070F843 /* UpdateSchoolsViewController.xib */; };
 		4AD393D725D30F0C0070F843 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD393D625D30F0C0070F843 /* MBProgressHUD.m */; };
@@ -1038,6 +1039,9 @@
 		4AB0050725FC1933006D0DC0 /* MoPubAdapter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MoPubAdapter.framework; sourceTree = "<group>"; };
 		4AB0050825FC1933006D0DC0 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		4AB0050925FC1933006D0DC0 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		4AC8B81B26459D55002AD3DE /* OverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverlayView.m; sourceTree = "<group>"; };
+		4AC8B81C26459D55002AD3DE /* OverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OverlayView.xib; sourceTree = "<group>"; };
+		4AC8B81D26459D55002AD3DE /* OverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlayView.h; sourceTree = "<group>"; };
 		4AD393C925D303420070F843 /* UpdateSchoolsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateSchoolsViewController.swift; sourceTree = "<group>"; };
 		4AD393CA25D303420070F843 /* UpdateSchoolsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UpdateSchoolsViewController.xib; sourceTree = "<group>"; };
 		4AD393D525D30F0C0070F843 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
@@ -1223,6 +1227,7 @@
 			isa = PBXGroup;
 			children = (
 				4A25D7ED25ED659B00F332A7 /* MPScoreboard3-Bridging-Header.h */,
+				4AC8B81A26459D55002AD3DE /* ObjcOverlayView */,
 				4AAA833B2613CF4300F44D44 /* ObjcIQActionSheetPicker */,
 				4AEACA6825F9598600B4971E /* ObjcColorHelper */,
 				4A25D7F125ED668000F332A7 /* ObjcZipCodeHelper */,
@@ -2237,6 +2242,16 @@
 			path = "MoPubAdapter-5.13.1.1";
 			sourceTree = "<group>";
 		};
+		4AC8B81A26459D55002AD3DE /* ObjcOverlayView */ = {
+			isa = PBXGroup;
+			children = (
+				4AC8B81D26459D55002AD3DE /* OverlayView.h */,
+				4AC8B81B26459D55002AD3DE /* OverlayView.m */,
+				4AC8B81C26459D55002AD3DE /* OverlayView.xib */,
+			);
+			path = ObjcOverlayView;
+			sourceTree = "<group>";
+		};
 		4AD393CE25D30ECB0070F843 /* ObjcMBProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
@@ -2403,7 +2418,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1240;
-				LastUpgradeCheck = 1240;
+				LastUpgradeCheck = 1250;
 				TargetAttributes = {
 					4A5D975025C8C03F00537DE9 = {
 						CreatedOnToolsVersion = 12.4;
@@ -2440,6 +2455,7 @@
 				4AEC3CC9261E449C00C5A4E7 /* IceHockey@2x.png in Resources */,
 				4A3F25B82641BBD8003DDAFC /* AltTeamSelectorTableViewCell.xib in Resources */,
 				4AB0055825FC1933006D0DC0 /* omsdk-v1.js in Resources */,
+				4AC8B81F26459D55002AD3DE /* OverlayView.xib in Resources */,
 				4AEC3CB3261E449C00C5A4E7 /* Badminton@2x.png in Resources */,
 				4AEC3CC2261E449C00C5A4E7 /* Softball@2x.png in Resources */,
 				4AB0054025FC1933006D0DC0 /* MPPlayBtn@3x.png in Resources */,
@@ -2494,7 +2510,6 @@
 				4AEC3CB7261E449C00C5A4E7 /* Cricket@2x.png in Resources */,
 				4AEC3CB9261E449C00C5A4E7 /* Fencing@2x.png in Resources */,
 				4AEA6CAB262E10290054B811 /* ShortFavoriteTeamTableViewCell.xib in Resources */,
-				4AB0053325FC1933006D0DC0 /* MoPubSDK.xcconfig in Resources */,
 				4AB005F925FC1933006D0DC0 /* NanoPB-LICENSE in Resources */,
 				4AB0053C25FC1933006D0DC0 /* MPPlayBtn@2x.png in Resources */,
 				4A25D7E225ED647E00F332A7 /* Alert.wav in Resources */,
@@ -2597,6 +2612,7 @@
 				4AB005B825FC1933006D0DC0 /* NSJSONSerialization+MPAdditions.m in Sources */,
 				4AB0051325FC1933006D0DC0 /* MPNativePositionSource.m in Sources */,
 				4AB0055525FC1933006D0DC0 /* MPViewableView.m in Sources */,
+				4AC8B81E26459D55002AD3DE /* OverlayView.m in Sources */,
 				4AB005C425FC1933006D0DC0 /* MPVASTTracking.m in Sources */,
 				4AB0054B25FC1933006D0DC0 /* MPAdTargeting.m in Sources */,
 				4AB0059925FC1933006D0DC0 /* MPFullscreenAdViewController+Video.m in Sources */,
@@ -2954,7 +2970,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 210506;
+				CURRENT_PROJECT_VERSION = 210507;
 				DEVELOPMENT_TEAM = DF5A7UVUA8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3000,7 +3016,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 210506;
+				CURRENT_PROJECT_VERSION = 210507;
 				DEVELOPMENT_TEAM = DF5A7UVUA8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

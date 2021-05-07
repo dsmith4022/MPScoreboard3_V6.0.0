@@ -86,7 +86,10 @@ class TeamDetailViewController: UIViewController, UIScrollViewDelegate, IQAction
                     
                     if (error == nil)
                     {
-                        //self.navigationController?.popViewController(animated: true)
+                        OverlayView.showCheckmarkOverlay(withMessage: "Success")
+                        {
+                            
+                        }
                         print("Download user favorites success")
                     }
                     else
@@ -152,8 +155,15 @@ class TeamDetailViewController: UIViewController, UIScrollViewDelegate, IQAction
 
         // We need to create a new browser
         browserView = FavoritesBrowserView(frame: CGRect(x: 0, y: Int(navView.frame.size.height) + Int(itemScrollView.frame.size.height), width: Int(kDeviceWidth), height: browserHeight))
-        //self.view.addSubview(browserView)
-        self.view.insertSubview(browserView, belowSubview: contributeButton)
+        
+        if (contributeButton != nil)
+        {
+            self.view.insertSubview(browserView, belowSubview: contributeButton)
+        }
+        else
+        {
+            self.view.addSubview(browserView)
+        }
         
         let item = filteredItems[selectedItemIndex]
         let ssid = currentTeam["sportSeasonId"] as! String
@@ -446,12 +456,56 @@ class TeamDetailViewController: UIViewController, UIScrollViewDelegate, IQAction
             subview.removeFromSuperview()
         }
         
+        // Remove the shadows from to top view
         let mainSubviews = self.view.subviews
         for subview in mainSubviews
         {
             if (subview.tag == 200) || (subview.tag == 201)
             {
                 subview.removeFromSuperview()
+            }
+        }
+        
+        // Add the mascot image or the team initial to the left
+        let name = self.selectedTeam?.schoolName
+        let initial = String(name!.prefix(1))
+        
+        let initialLabel = UILabel(frame: CGRect(x: 14, y: 7, width: 30, height: 30))
+        initialLabel.layer.cornerRadius = initialLabel.frame.size.width / 2.0
+        initialLabel.layer.borderWidth = 1
+        initialLabel.layer.borderColor = UIColor.mpHeaderBackgroundColor().cgColor
+        initialLabel.clipsToBounds = true
+        initialLabel.font = UIFont.mpBoldFontWith(size: 20)
+        initialLabel.textAlignment = .center
+        initialLabel.textColor = currentTeamColor
+        initialLabel.text = initial.uppercased()
+        itemScrollView.addSubview(initialLabel)
+        
+        let mascotUrl = self.selectedTeam?.mascotUrl
+        
+        if (mascotUrl!.count > 0)
+        {
+            let url = URL(string: mascotUrl!)
+
+            // Get the data and make an image
+            MiscHelper.getData(from: url!) { data, response, error in
+                guard let data = data, error == nil else { return }
+
+                DispatchQueue.main.async()
+                {
+                    let image = UIImage(data: data)
+                    
+                    if (image != nil)
+                    {
+                        initialLabel.isHidden = true
+                        
+                        let teamMascotImageView = UIImageView(frame: CGRect(x: 14, y: 8, width: 28, height: 28))
+                        self.itemScrollView.addSubview(teamMascotImageView)
+                        
+                        // Render the mascot using this helper
+                        MiscHelper.renderImprovedMascot(sourceImage: image!, destinationImageView: teamMascotImageView)
+                    }
+                }
             }
         }
         
@@ -469,7 +523,7 @@ class TeamDetailViewController: UIViewController, UIScrollViewDelegate, IQAction
             // Add the left pad to the first cell
             if (index == 0)
             {
-                leftPad = 10
+                leftPad = 48
             }
             else
             {
@@ -519,13 +573,13 @@ class TeamDetailViewController: UIViewController, UIScrollViewDelegate, IQAction
         itemScrollView.contentSize = CGSize(width: overallWidth + rightPad, height: Int(itemScrollView.frame.size.height))
         
         // Add the left and right shadows
-        leftShadow = UIImageView(frame: CGRect(x: -6, y: Int(itemScrollView.frame.origin.y), width: 22, height: Int(itemScrollView.frame.size.height)))
+        leftShadow = UIImageView(frame: CGRect(x: 0, y: Int(itemScrollView.frame.origin.y), width: 16, height: Int(itemScrollView.frame.size.height)))
         leftShadow.image = UIImage(named: "LeftShadow")
         leftShadow.tag = 200
         self.view.addSubview(leftShadow)
         leftShadow.isHidden = true
         
-        rightShadow = UIImageView(frame: CGRect(x: Int(kDeviceWidth) - 16, y: Int(itemScrollView.frame.origin.y), width: 22, height: Int(itemScrollView.frame.size.height)))
+        rightShadow = UIImageView(frame: CGRect(x: Int(kDeviceWidth) - 16, y: Int(itemScrollView.frame.origin.y), width: 16, height: Int(itemScrollView.frame.size.height)))
         rightShadow.image = UIImage(named: "RightShadow")
         rightShadow.tag = 201
         self.view.addSubview(rightShadow)
@@ -757,10 +811,10 @@ class TeamDetailViewController: UIViewController, UIScrollViewDelegate, IQAction
         browserHeight = Int(kDeviceHeight) - navViewHeight - itemScrollViewHeight - SharedData.bottomSafeAreaHeight - bottomTabBarPad
         
         
-        // Add the + button to the lower right corner if logged in
+        // Add the + button to the lower right corner if logged in and the team is already a favorite
         let userId = kUserDefaults.string(forKey: kUserIdKey)
         
-        if (userId != kTestDriveUserId)
+        if (userId != kTestDriveUserId) && (self.showSaveFavoriteButton == false)
         {
             contributeButton = UIButton(type: .custom)
             contributeButton.frame = CGRect(x: Int(kDeviceWidth) - 76, y: navViewHeight + itemScrollViewHeight + browserHeight - 76, width: 60, height: 60)

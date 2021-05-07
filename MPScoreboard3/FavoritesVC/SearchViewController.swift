@@ -378,11 +378,12 @@ class SearchViewController: UIViewController, ThreeSegmentControlViewDelegate, U
     
     // MARK: - AthleteSearchView Delegate
     
-    func athleteSearchDidSelectAthlete(selectedAthlete: Athlete, showFavoriteButton: Bool)
+    func athleteSearchDidSelectAthlete(selectedAthlete: Athlete, showSaveFavoriteButton: Bool, showRemoveFavoriteButton: Bool)
     {
         let athleteDetailVC = AthleteDetailViewController(nibName: "AthleteDetailViewController", bundle: nil)
         athleteDetailVC.selectedAthlete = selectedAthlete
-        athleteDetailVC.showSaveFavoriteButton = showFavoriteButton
+        athleteDetailVC.showSaveFavoriteButton = showSaveFavoriteButton
+        athleteDetailVC.showRemoveFavoriteButton = showRemoveFavoriteButton
         
         self.navigationController?.pushViewController(athleteDetailVC, animated: true)
     }

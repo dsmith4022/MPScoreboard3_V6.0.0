@@ -33,6 +33,7 @@ class ScoresViewController: UIViewController
 
         self.navigationController?.pushViewController(webVC!, animated: true)
         //self.hidesBottomBarWhenPushed = false
+
     }
     
     @IBAction func webButtonWithAdsTouched(_ sender: UIButton)

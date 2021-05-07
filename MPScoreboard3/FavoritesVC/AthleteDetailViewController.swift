@@ -12,9 +12,11 @@ class AthleteDetailViewController: UIViewController
     @IBOutlet weak var navView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var saveFavoriteButton: UIButton!
+    @IBOutlet weak var removeFavoriteButton: UIButton!
     
     var selectedAthlete : Athlete?
     var showSaveFavoriteButton = false
+    var showRemoveFavoriteButton = false
     
     private var browserView: FavoritesBrowserView!
     
@@ -27,12 +29,6 @@ class AthleteDetailViewController: UIViewController
     
     @IBAction func saveFavoriteButtonTouched(_ sender: UIButton)
     {
-        /*
-        MiscHelper.showAlert(in: self, withActionNames: ["Ok"], title: "Save Athlete", message: "Coming Soon...", lastItemCancelType: false) { (tag) in
-            
-        }
-        */
-        
         let favoriteAthletes = kUserDefaults.array(forKey: kUserFavoriteAthletesArrayKey)
         
         if (favoriteAthletes!.count >= kMaxFavoriteAthletesCount)
@@ -70,8 +66,16 @@ class AthleteDetailViewController: UIViewController
                             
                             if (error == nil)
                             {
-                                //self.navigationController?.popViewController(animated: true)
+                                OverlayView.showCheckmarkOverlay(withMessage: "Success")
+                                {
+                                    
+                                }
                                 print("Download user favorite athletes success")
+                                
+                                self.saveFavoriteButton.isHidden = true
+                                self.removeFavoriteButton.isHidden = false
+                                self.showSaveFavoriteButton = false
+                                self.showRemoveFavoriteButton = true
                             }
                             else
                             {
@@ -99,6 +103,66 @@ class AthleteDetailViewController: UIViewController
             }
         }
         
+    }
+    
+    @IBAction func removeFavoriteButtonTouched(_ sender: UIButton)
+    {
+        MiscHelper.showAlert(in: self, withActionNames: ["Cancel", "Ok"], title: "Remove Athlete", message: "Do you want to remove this athlete from your favorites?", lastItemCancelType: false) { (tag) in
+            
+            if (tag == 1)
+            {
+                // Show the busy indicator
+                DispatchQueue.main.async
+                {
+                    MBProgressHUD.showAdded(to: self.view, animated: true)
+                }
+                
+                let careerProfileId = self.selectedAthlete?.careerId
+                
+                NewFeeds.deleteUserFavoriteAthlete(careerProfileId!) { (error) in
+                    
+                    if error == nil
+                    {       
+                        // Get the user favorites so the prefs get updated
+                        NewFeeds.getUserFavoriteAthletes(completionHandler: { error in
+                            
+                            // Hide the busy indicator
+                            DispatchQueue.main.async
+                            {
+                                MBProgressHUD.hide(for: self.view, animated: true)
+                            }
+                            
+                            if (error == nil)
+                            {
+                                //self.navigationController?.popViewController(animated: true)
+                                print("Download user favorite athletes success")
+                                
+                                self.saveFavoriteButton.isHidden = false
+                                self.removeFavoriteButton.isHidden = true
+                                self.showSaveFavoriteButton = true
+                                self.showRemoveFavoriteButton = false
+                            }
+                            else
+                            {
+                                print("Download user favorite athletes error")
+                            }
+                        })
+                    }
+                    else
+                    {
+                        // Hide the busy indicator
+                        DispatchQueue.main.async
+                        {
+                            MBProgressHUD.hide(for: self.view, animated: true)
+                        }
+                                                
+                        MiscHelper.showAlert(in: self, withActionNames: ["Ok"], title: "MaxPreps App", message: "There was a problem removing this athlete from your favorites.", lastItemCancelType: false) { (tag) in
+                            
+                        }
+                    }
+                }
+            }
+        }
     }
     
     // MARK: - View Methods
@@ -129,6 +193,11 @@ class AthleteDetailViewController: UIViewController
             saveFavoriteButton.isHidden = true
         }
         
+        if (self.showRemoveFavoriteButton == false)
+        {
+            removeFavoriteButton.isHidden = true
+        }
+        
         //let schoolColorString = self.oldSelectedAthlete[kAthleteCareerProfileSchoolColor1Key] as! String
         let schoolColorString = self.selectedAthlete?.schoolColor
         let schoolColor = ColorHelper.color(fromHexString: schoolColorString)!
@@ -142,7 +211,6 @@ class AthleteDetailViewController: UIViewController
         titleLabel.text = firstName! + " " + lastName!
         
         // Load the browser
-        //let careerProfileId = self.oldSelectedAthlete[kAthleteCareerProfileIdKey] as! String
         let careerProfileId = self.selectedAthlete?.careerId
         
         var subDomain = ""

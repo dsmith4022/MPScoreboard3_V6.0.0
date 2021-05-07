@@ -29,6 +29,8 @@ class TallFavoriteTeamTableViewCell: UITableViewCell, UICollectionViewDelegate, 
     @IBOutlet weak var sportIconImageView: UIImageView!
     @IBOutlet weak var teamMascotImageView: UIImageView!
     @IBOutlet weak var teamFirstLetterLabel: UILabel!
+    @IBOutlet weak var memberContainerView: UIView!
+    @IBOutlet weak var adminContainerView: UIView!
     
     @IBOutlet weak var recordContainerView: UIView!
     @IBOutlet weak var recordLabel: UILabel!
