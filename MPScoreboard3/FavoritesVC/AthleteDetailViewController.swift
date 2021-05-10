@@ -31,7 +31,7 @@ class AthleteDetailViewController: UIViewController
     {
         let favoriteAthletes = kUserDefaults.array(forKey: kUserFavoriteAthletesArrayKey)
         
-        if (favoriteAthletes!.count >= kMaxFavoriteAthletesCount)
+        if (favoriteAthletes != nil) && (favoriteAthletes!.count >= kMaxFavoriteAthletesCount)
         {
             let messageTitle = String(kMaxFavoriteTeamsCount) + " Athlete Limit"
             let messageText = "The maximum number of favorites allowed is " + String(kMaxFavoriteAthletesCount) + ".  You must remove an athlete in order to add another."

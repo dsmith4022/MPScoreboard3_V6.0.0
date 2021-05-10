@@ -21,7 +21,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="143" height="130"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="XmanLogo" translatesAutoresizingMaskIntoConstraints="NO" id="esK-2Z-nwD">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="esK-2Z-nwD">
                         <rect key="frame" x="0.0" y="0.0" width="143" height="82"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" name="MPOffWhiteColor"/>
@@ -44,7 +44,6 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="XmanLogo" width="40" height="40"/>
         <namedColor name="MPOffWhiteColor">
             <color red="0.95999997854232788" green="0.95999997854232788" blue="0.95999997854232788" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

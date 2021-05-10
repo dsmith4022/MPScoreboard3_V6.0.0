@@ -8,8 +8,8 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="siro-extrabold.otf">
-            <string>Siro-ExtraBold</string>
+        <array key="siro-bold.otf">
+            <string>Siro-Bold</string>
         </array>
         <array key="siro-regular.otf">
             <string>Siro-Regular</string>
@@ -35,9 +35,9 @@
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Athlete Name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nGu-q7-YMX" userLabel="Title">
-                            <rect key="frame" x="80" y="45" width="253" height="28"/>
+                            <rect key="frame" x="80" y="46" width="253" height="24"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                            <fontDescription key="fontDescription" name="Siro-ExtraBold" family="Siro" pointSize="24"/>
+                            <fontDescription key="fontDescription" name="Siro-Bold" family="Siro" pointSize="20"/>
                             <color key="textColor" name="MPWhiteColor"/>
                             <nil key="highlightedColor"/>
                         </label>

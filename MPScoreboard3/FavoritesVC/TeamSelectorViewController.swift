@@ -269,7 +269,7 @@ class TeamSelectorViewController: UIViewController, UITableViewDelegate, UITable
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
     {
-        return 0.1
+        return 0.0
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?

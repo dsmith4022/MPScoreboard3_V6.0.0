@@ -31,6 +31,7 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
     private var favoriteAthletesArray = [] as Array
     private var detailedFavoritesArray = [] as Array
     private var bottomTabBarPad = 0
+    private var lastCellPadValue = CGFloat(0)
     
     private var searchVC: SearchViewController!
     private var webVC: WebViewController!
@@ -232,6 +233,80 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
                 print("Team Detail Fail")
             }
             
+            // Enable or disable scrolling
+            var contentHeight = 0
+            
+            // The header and record subview has a height of 112 which is added to the other views
+            // Each contest subview is 46
+            // The latestItems subview is 152
+            
+            for item in detailedFavoritesArray
+            {
+                let cardObject = item as! Dictionary<String,Any>
+                
+                let schedules = cardObject["schedules"] as! Array<Dictionary<String,Any>>
+                let latestItems = cardObject["latestItems"] as! Array<Dictionary<String,Any>>
+                
+                // Set the display mode
+                if ((schedules.count > 0) && (latestItems.count > 0))
+                {
+                    if (schedules.count == 1)
+                    {
+                        // One Contest
+                        contentHeight += 112 + 46 + 152
+                    }
+                    else
+                    {
+                        // Both contests
+                        contentHeight += 112 + 46 + 46 + 152
+                    }
+                }
+                else if ((schedules.count > 0) && (latestItems.count == 0))
+                {
+                    if (schedules.count == 1)
+                    {
+                        // No Articles, one contest
+                        contentHeight += 112 + 46
+                    }
+                    else
+                    {
+                        // No Articles, both contests
+                        contentHeight += 112 + 46 + 46
+                    }
+                }
+                else if ((schedules.count == 0) && (latestItems.count > 0))
+                {
+                    // No Contests
+                    contentHeight += 112 + 152
+                }
+                else
+                {
+                    // Just the record field is displayed
+                    contentHeight += 112
+                }
+            }
+            
+            lastCellPadValue = 0
+            
+            // Disable scrolling if the content height is less than the tableView's frame
+            if (contentHeight <= Int(favoritesTableView.frame.size.height))
+            {
+                favoritesTableView.isScrollEnabled = false
+            }
+            else
+            {
+                favoritesTableView.isScrollEnabled = true
+                
+                // Calculate the footer pad so the table has enough height to not oscillate
+                let heightDifference = contentHeight - Int(favoritesTableView.frame.size.height)
+                
+                if (heightDifference < Int(titleContainerView.frame.size.height + 30))
+                {
+                    lastCellPadValue = CGFloat(heightDifference + 30) // Added a little extra to handle the bounce
+                    //print("Footer Pad Value: " + String(lastCellPadValue))
+                }
+            }
+            
             self.favoritesTableView.reloadData()
         }
     }
@@ -392,6 +467,8 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
         }
         else
         {
+            var height = CGFloat(0)
+            
             // Need to make sure that this array has data because the table could be loaded before the feed finishes
             if (detailedFavoritesArray.count > indexPath.row)
             {
@@ -405,31 +482,41 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
                 {
                     if (schedules.count == 1)
                     {
-                        return 356.0 - 46.0 // One Contest
+                        height = 364.0 - 46.0 // One Contest
                     }
                     else
                     {
-                        return 356.0 // Both contests
+                        height = 364.0 // Both contests
                     }
                 }
                 else if ((schedules.count > 0) && (latestItems.count == 0))
                 {
                     if (schedules.count == 1)
                     {
-                        return 356.0 - 152.0 - 46.0 // No Articles, one contest
+                        height = 364.0 - 152.0 - 46.0 // No Articles, one contest
                     }
                     else
                     {
-                        return 356.0 - 152.0 // No Articles, both contests
+                        height = 364.0 - 152.0 // No Articles, both contests
                     }
                 }
                 else if ((schedules.count == 0) && (latestItems.count > 0))
                 {
-                    return 356.0 - 92.0 // No Contests
+                    height = 364.0 - 92.0 // No Contests
                 }
                 else
                 {
-                    return 356.0 - 152.0 - 92.0 // Just the record field is displayed
+                    height = 364.0 - 152.0 - 92.0 // Just the record field is displayed
+                }
+                
+                // Add pad to the last cell to handle the in between case that causes jitter
+                if (detailedFavoritesArray.count - 1 == indexPath.row)
+                {
+                return height + lastCellPadValue
+                }
+                else
+                {
+                    return height
                 }
             }
             else
@@ -447,13 +534,13 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
         }
         else
         {
-            return 0.1
+            return 0.0
         }
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
     {
-        return 0.1
+        return 0.0
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
@@ -1246,16 +1333,13 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
             var contentHeight = 0
             
             // Disable scrolling if the content height is less than the tableView's frame
-            if (favoriteTeamsArray.count > 0) && (favoriteTeamsArray.count <= 3)
+            // If the favorites count is less, then this is calculated in the getTeamDetailCardData() method
+            if (favoriteTeamsArray.count > 3)
             {
-                contentHeight = (favoriteAthletesArray.count * 50) + (favoriteTeamsArray.count * 356)
-            }
-            else
-            {
-                contentHeight = (favoriteAthletesArray.count * 50) + (favoriteTeamsArray.count * 58)
+                contentHeight = 50 + (favoriteTeamsArray.count * 58)
             }
             
-            if (contentHeight < Int(favoritesTableView.frame.size.height))
+            if (contentHeight <= Int(favoritesTableView.frame.size.height))
             {
                 favoritesTableView.isScrollEnabled = false
             }

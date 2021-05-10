@@ -96,7 +96,7 @@
                                         <rect key="frame" x="104" y="11" width="205" height="22"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                         <attributedString key="attributedText">
-                                            <fragment content="News">
+                                            <fragment content="Latest">
                                                 <attributes>
                                                     <color key="NSColor" red="0.12549019607843137" green="0.12941176470588234" blue="0.12941176470588234" alpha="1" colorSpace="calibratedRGB"/>
                                                     <font key="NSFont" size="19" name="Siro-Bold"/>
@@ -153,6 +153,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="YTI-sM-wYZ">
                                 <rect key="frame" x="0.0" y="130" width="414" height="683"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" name="MPWhiteColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="zJY-xE-HtN" id="Tgs-hH-MAp"/>
                                     <outlet property="delegate" destination="zJY-xE-HtN" id="Mm5-sK-3QK"/>
@@ -202,10 +203,10 @@
                                                 </connections>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <color key="backgroundColor" name="MPHeaderBackgroundColor"/>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" name="MPHeaderBackgroundColor"/>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ug5-hq-EKJ">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
@@ -377,6 +378,9 @@
         </namedColor>
         <namedColor name="MPDarkGrayColor">
             <color red="0.396078431372549" green="0.40000000000000002" blue="0.40392156862745099" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="MPHeaderBackgroundColor">
+            <color red="0.92941176470588238" green="0.93333333333333335" blue="0.94901960784313721" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="MPWhiteColor">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

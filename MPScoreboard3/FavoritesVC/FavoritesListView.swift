@@ -266,12 +266,12 @@ class FavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
             return 0.1
         }
         */
-        return 0.1
+        return 0.0
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
     {
-        return 0.1
+        return 0.0
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
@@ -713,7 +713,14 @@ class FavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
                         })
         { (finished) in
             
-            self.delegate?.closeFavoritesListView()
+            if (self.teamOrAthleteDeleted == true)
+            {
+                self.delegate?.closeFavoritesListViewAfterChange()
+            }
+            else
+            {
+                self.delegate?.closeFavoritesListView()
+            }
         }
     }
     
@@ -774,7 +781,15 @@ class FavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
                                 })
                 { (finished) in
                     
-                    self.delegate?.closeFavoritesListView()
+                    if (self.teamOrAthleteDeleted == true)
+                    {
+                        self.delegate?.closeFavoritesListViewAfterChange()
+                    }
+                    else
+                    {
+                        self.delegate?.closeFavoritesListView()
+                    }
+                    
                 }
             }
             
@@ -814,6 +829,13 @@ class FavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
         let topTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         blackBackgroundView?.addGestureRecognizer(topTapGesture)
         
+        var bottomPad = 0
+        
+        if (SharedData.bottomSafeAreaHeight > 0)
+        {
+            bottomPad = SharedData.bottomSafeAreaHeight + 20
+        }
+        
         // Calculate the height of the roundRectView to match the table content if it is less than the available height
         let headerViewHeight = 60
         let maxRoundRectViewHeight = Int(kDeviceHeight) - 56 - kStatusBarHeight - SharedData.topNotchHeight
@@ -821,13 +843,14 @@ class FavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
         let tableHeight = totalCellCount * kCellHeight
         var roundRectViewHeight = 0
         
-        if (tableHeight + headerViewHeight + SharedData.bottomSafeAreaHeight) >= maxRoundRectViewHeight
+        
+        if (tableHeight + headerViewHeight + bottomPad) >= maxRoundRectViewHeight
         {
             roundRectViewHeight = maxRoundRectViewHeight
         }
         else
         {
-            roundRectViewHeight = tableHeight + headerViewHeight + SharedData.bottomSafeAreaHeight
+            roundRectViewHeight = tableHeight + headerViewHeight + bottomPad
         }
         
         roundRectView = UIView(frame: CGRect(x: 0, y: Int(kDeviceHeight) - roundRectViewHeight, width: Int(kDeviceWidth), height: roundRectViewHeight))
@@ -881,50 +904,11 @@ class FavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
         editButton!.titleLabel?.font = UIFont.mpSemiBoldFontWith(size: 14)
         editButton!.addTarget(self, action: #selector(editButtonTouched), for: .touchUpInside)
         roundRectHeaderContainer!.addSubview(editButton!)
-        
         roundRectView?.addSubview(roundRectHeaderContainer!)
-        
-        /*
-        // Add a header container
-        roundRectHeaderContainer = UIView(frame: CGRect(x: 0, y: 0, width: kDeviceWidth, height: 80))
-        roundRectHeaderContainer?.backgroundColor = UIColor.mpWhiteColor()
-        roundRectView?.addSubview(roundRectHeaderContainer!)
-        
-        let headerTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
-        roundRectHeaderContainer?.addGestureRecognizer(headerTapGesture)
-        
-        // Add the header contents
-        headerTitleLabel = UILabel(frame: CGRect(x: 76, y: 19, width: (roundRectHeaderContainer?.frame.size.width)! - 96 - 22, height: 21))
-        headerTitleLabel?.font = UIFont.mpSemiBoldFontWith(size: 17)
-        headerTitleLabel?.textColor = UIColor.mpBlackColor()
-        roundRectHeaderContainer?.addSubview(headerTitleLabel!)
-        
-        headerSubtitleLabel = UILabel(frame: CGRect(x: 76, y: 44, width: (roundRectHeaderContainer?.frame.size.width)! - 96 - 22, height: 17))
-        headerSubtitleLabel?.font = UIFont.mpRegularFontWith(size: 14)
-        headerSubtitleLabel?.textColor = UIColor.mpGrayColor()
-        roundRectHeaderContainer?.addSubview(headerSubtitleLabel!)
-        
-        headerFirstLetterLabel = UILabel(frame: CGRect(x: 20, y: 18, width: 44, height: 44))
-        headerFirstLetterLabel?.font = .mpSemiBoldFontWith(size: 34)
-        headerFirstLetterLabel?.textAlignment = .center
-        roundRectHeaderContainer?.addSubview(headerFirstLetterLabel!)
-        
-        headerMascotImageView = UIImageView(frame: CGRect(x: 20, y: 18, width: 44, height: 44))
-        roundRectHeaderContainer?.addSubview(headerMascotImageView!)
-        
-        let greenCheckmark = UILabel(frame: CGRect(x: (roundRectHeaderContainer?.frame.size.width)! - 42, y: 29, width: 22, height: 22))
-        greenCheckmark.backgroundColor = UIColor.mpGreenColor()
-        greenCheckmark.textColor = UIColor.mpWhiteColor()
-        greenCheckmark.textAlignment = .center
-        greenCheckmark.text = "✓"
-        greenCheckmark.font = .boldSystemFont(ofSize: 15)
-        greenCheckmark.layer.cornerRadius = 11
-        greenCheckmark.clipsToBounds = true
-        roundRectHeaderContainer?.addSubview(greenCheckmark)
-        */
         
         // Add the tableView
-        favoritesTableView = UITableView(frame: CGRect(x: 0, y: roundRectHeaderContainer!.frame.size.height, width: kDeviceWidth, height: (roundRectView?.frame.size.height)! - roundRectHeaderContainer!.frame.size.height - CGFloat(SharedData.bottomSafeAreaHeight)), style: .plain)
+        favoritesTableView = UITableView(frame: CGRect(x: 0, y: CGFloat(headerViewHeight), width: kDeviceWidth, height: (roundRectView?.frame.size.height)! - CGFloat(headerViewHeight) - CGFloat(bottomPad)), style: .plain)
+
         favoritesTableView?.delegate = self
         favoritesTableView?.dataSource = self
         favoritesTableView?.separatorStyle = .none

@@ -15,6 +15,7 @@ class SearchViewController: UIViewController, ThreeSegmentControlViewDelegate, U
         
     @IBOutlet weak var fakeStatusBar: UIView!
     @IBOutlet weak var navView: UIView!
+    @IBOutlet weak var searchContainerView: UIView!
     @IBOutlet weak var searchTextField: UITextField!
     @IBOutlet weak var searchTextFieldBackground: UIView!
     @IBOutlet weak var searchTableView: UITableView!
@@ -253,7 +254,7 @@ class SearchViewController: UIViewController, ThreeSegmentControlViewDelegate, U
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
     {
-        return 0.1
+        return 0.0
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
@@ -440,14 +441,14 @@ class SearchViewController: UIViewController, ThreeSegmentControlViewDelegate, U
             //print("Keyboard will show")
             
             // Need to subtract the tab bar height from the keyboard height
-            searchTableView.frame = CGRect(x: 0, y: fakeStatusBar.frame.size.height + navView.frame.size.height + searchTextFieldBackground.frame.size.height, width: kDeviceWidth, height: kDeviceHeight - navView.frame.size.height - fakeStatusBar.frame.size.height - searchTextFieldBackground.frame.size.height - keyboardSize.height)
+            searchTableView.frame = CGRect(x: 0, y: fakeStatusBar.frame.size.height + navView.frame.size.height + searchContainerView.frame.size.height, width: kDeviceWidth, height: kDeviceHeight - navView.frame.size.height - fakeStatusBar.frame.size.height - searchContainerView.frame.size.height - keyboardSize.height)
         }
     }
     
     @objc private func keyboardDidHide(notification: Notification)
     {
         //print("Keyboard will hide")
-        searchTableView.frame = CGRect(x: 0, y: fakeStatusBar.frame.size.height + navView.frame.size.height + searchTextFieldBackground.frame.size.height, width: kDeviceWidth, height: kDeviceHeight - navView.frame.size.height - fakeStatusBar.frame.size.height - searchTextFieldBackground.frame.size.height - CGFloat(SharedData.bottomSafeAreaHeight) - bottomTabBarPad)
+        searchTableView.frame = CGRect(x: 0, y: fakeStatusBar.frame.size.height + navView.frame.size.height + searchContainerView.frame.size.height, width: kDeviceWidth, height: kDeviceHeight - navView.frame.size.height - fakeStatusBar.frame.size.height - searchContainerView.frame.size.height - CGFloat(SharedData.bottomSafeAreaHeight) - bottomTabBarPad)
     }
     
     // MARK: - View Methods
@@ -465,8 +466,11 @@ class SearchViewController: UIViewController, ThreeSegmentControlViewDelegate, U
         // Size the fakeStatusBar, navBar, and tableView
         fakeStatusBar.frame = CGRect(x: 0, y: 0, width: Int(kDeviceWidth), height: kStatusBarHeight + SharedData.topNotchHeight)
         navView.frame = CGRect(x: 0, y: fakeStatusBar.frame.size.height, width: CGFloat(kDeviceWidth), height: navView.frame.size.height)
-        searchTextFieldBackground.frame = CGRect(x: 0, y: fakeStatusBar.frame.size.height + navView.frame.size.height, width: CGFloat(kDeviceWidth), height: searchTextFieldBackground.frame.size.height)
-        searchTableView.frame = CGRect(x: 0, y: fakeStatusBar.frame.size.height + navView.frame.size.height + searchTextFieldBackground.frame.size.height, width: CGFloat(kDeviceWidth), height: CGFloat(kDeviceHeight) - navView.frame.size.height - searchTextFieldBackground.frame.size.height - fakeStatusBar.frame.size.height - CGFloat(SharedData.bottomSafeAreaHeight) - bottomTabBarPad)
+        searchContainerView.frame = CGRect(x: 0, y: fakeStatusBar.frame.size.height + navView.frame.size.height, width: CGFloat(kDeviceWidth), height: searchContainerView.frame.size.height)
+        searchTableView.frame = CGRect(x: 0, y: fakeStatusBar.frame.size.height + navView.frame.size.height + searchContainerView.frame.size.height, width: CGFloat(kDeviceWidth), height: CGFloat(kDeviceHeight) - navView.frame.size.height - searchContainerView.frame.size.height - fakeStatusBar.frame.size.height - CGFloat(SharedData.bottomSafeAreaHeight) - bottomTabBarPad)
+        
+        searchTextFieldBackground.layer.cornerRadius = 8
+        searchTextFieldBackground.clipsToBounds = true
         
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
 

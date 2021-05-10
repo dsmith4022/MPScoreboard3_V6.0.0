@@ -412,9 +412,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate
         // iPhone 6 - 750 x 1334 (@2x) (375 x 667) Aspect = 1.778
         // iPhone 6+  1242 × 2208 (@3x) (414 x 736) Aspect = 1.777
         // iPhone X, 12 Mini - 1125 x 2436 (@3x) (375 x 812) Aspect = 2.165
-        // iPhone Xr - 828 x 1792 (@2x) (414 x 896) Aspect = 2.164
+        // iPhone Xr, 11 - 828 x 1792 (@2x) (414 x 896) Aspect = 2.164
         // iPhone Xs Max - 1242 x 2688 (@3x) (414 x 896) Aspect = 2.164
-        // iPhone 12 Pro - 1170 x 2532 (@3x) (390 x 844) Aspect = 2.164
+        // iPhone 12, 12 Pro - 1170 x 2532 (@3x) (390 x 844) Aspect = 2.164
         // iPhone 12 Pro Max - 1284 x 2788 (@3x) (428 x 926) Aspect = 2.163
         
         let aspectRatio: CGFloat = kDeviceHeight / kDeviceWidth

@@ -240,7 +240,7 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
     {
-        return 0.1
+        return 0.0
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
@@ -459,8 +459,10 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
         super.init(frame: frame)
         
         // Build the sportContainerView
-        sportContainerView = UIView(frame: CGRect(x: 0, y: 20, width: CGFloat(kDeviceWidth), height: 40))
-        sportContainerView?.backgroundColor = UIColor.mpWhiteColor()
+        sportContainerView = UIView(frame: CGRect(x: 16, y: 20, width: CGFloat(kDeviceWidth - 32), height: 40))
+        sportContainerView?.backgroundColor = UIColor.mpOffWhiteNavColor()
+        sportContainerView?.layer.cornerRadius = 8
+        sportContainerView?.clipsToBounds = true
         self.addSubview(sportContainerView!)
         
         sportPlaceholderLabel = UILabel(frame: CGRect(x: 16, y: 11, width: (sportContainerView?.frame.size.width)! / 2.0, height: 18))
@@ -490,8 +492,10 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
         
         
         // Build the searchContainerView
-        searchContainerView = UIView(frame: CGRect(x: 0, y: 68, width: CGFloat(kDeviceWidth), height: 40))
-        searchContainerView?.backgroundColor = UIColor.mpWhiteColor()
+        searchContainerView = UIView(frame: CGRect(x: 16, y: 68, width: CGFloat(kDeviceWidth - 32), height: 40))
+        searchContainerView?.backgroundColor = UIColor.mpOffWhiteNavColor()
+        searchContainerView?.layer.cornerRadius = 8
+        searchContainerView?.clipsToBounds = true
         self.addSubview(searchContainerView!)
         searchContainerView?.isHidden = true
         
@@ -499,11 +503,13 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
         searchIconImageView?.image = UIImage(named: "SmallSearchIconGray")
         searchContainerView?.addSubview(searchIconImageView!)
         
-        searchTextField = UITextField(frame: CGRect(x: 40, y: 3, width: (searchContainerView?.frame.size.width)! - 56, height: 34))
+        searchTextField = UITextField(frame: CGRect(x: 44, y: 3, width: (searchContainerView?.frame.size.width)! - 48, height: 34))
         searchTextField?.delegate = self
         searchTextField?.textColor = UIColor.mpBlackColor()
         searchTextField?.font = UIFont.mpRegularFontWith(size: 15)
         searchTextField?.placeholder = "Search for an athlete"
+        searchTextField?.borderStyle = .none
+        searchTextField?.backgroundColor = UIColor.mpOffWhiteNavColor()
         searchTextField?.returnKeyType = .search
         searchTextField?.keyboardType = .asciiCapable
         searchTextField?.autocorrectionType = .no

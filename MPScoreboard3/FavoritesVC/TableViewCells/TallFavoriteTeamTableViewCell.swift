@@ -361,34 +361,34 @@ class TallFavoriteTeamTableViewCell: UITableViewCell, UICollectionViewDelegate, 
         case FavoriteDetailCellMode.allCells:
             
             // Reset the frmaes to their default location
-            contestContainerView.frame = CGRect(x: 0, y: topContainerView.frame.size.height + recordContainerView.frame.size.height, width: contestContainerView.frame.size.width, height: contestContainerView.frame.size.height)
+            contestContainerView.frame = CGRect(x: 0, y: topContainerView.frame.origin.y + topContainerView.frame.size.height + recordContainerView.frame.size.height, width: contestContainerView.frame.size.width, height: contestContainerView.frame.size.height)
             
-            articleContainerView.frame = CGRect(x: 0, y: topContainerView.frame.size.height + recordContainerView.frame.size.height + contestContainerView.frame.size.height, width: articleContainerView.frame.size.width, height: articleContainerView.frame.size.height)
+            articleContainerView.frame = CGRect(x: 0, y: topContainerView.frame.origin.y + topContainerView.frame.size.height + recordContainerView.frame.size.height + contestContainerView.frame.size.height, width: articleContainerView.frame.size.width, height: articleContainerView.frame.size.height)
             
         case FavoriteDetailCellMode.allCellsOneContest:
             
             // Reset the frmaes to their default location
-            contestContainerView.frame = CGRect(x: 0, y: topContainerView.frame.size.height + recordContainerView.frame.size.height, width: contestContainerView.frame.size.width, height: contestContainerView.frame.size.height - contestBottomInnerContainerView.frame.size.height)
+            contestContainerView.frame = CGRect(x: 0, y: topContainerView.frame.origin.y + topContainerView.frame.size.height + recordContainerView.frame.size.height, width: contestContainerView.frame.size.width, height: contestContainerView.frame.size.height - contestBottomInnerContainerView.frame.size.height)
             
-            articleContainerView.frame = CGRect(x: 0, y: topContainerView.frame.size.height + recordContainerView.frame.size.height + contestContainerView.frame.size.height - contestBottomInnerContainerView.frame.size.height, width: articleContainerView.frame.size.width, height: articleContainerView.frame.size.height)
+            articleContainerView.frame = CGRect(x: 0, y: topContainerView.frame.origin.y + topContainerView.frame.size.height + recordContainerView.frame.size.height + contestContainerView.frame.size.height - contestBottomInnerContainerView.frame.size.height, width: articleContainerView.frame.size.width, height: articleContainerView.frame.size.height)
             
         case FavoriteDetailCellMode.noArticlesAllContests:
             
             articleContainerView.isHidden = true
             
-            contestContainerView.frame = CGRect(x: 0, y: topContainerView.frame.size.height + recordContainerView.frame.size.height, width: contestContainerView.frame.size.width, height: contestContainerView.frame.size.height)
+            contestContainerView.frame = CGRect(x: 0, y: topContainerView.frame.origin.y + topContainerView.frame.size.height + recordContainerView.frame.size.height, width: contestContainerView.frame.size.width, height: contestContainerView.frame.size.height)
             
         case FavoriteDetailCellMode.noArticlesOneContest:
             
             articleContainerView.isHidden = true
             
-            contestContainerView.frame = CGRect(x: 0, y: topContainerView.frame.size.height + recordContainerView.frame.size.height, width: contestContainerView.frame.size.width, height: contestContainerView.frame.size.height - contestBottomInnerContainerView.frame.size.height)
+            contestContainerView.frame = CGRect(x: 0, y: topContainerView.frame.origin.y + topContainerView.frame.size.height + recordContainerView.frame.size.height, width: contestContainerView.frame.size.width, height: contestContainerView.frame.size.height - contestBottomInnerContainerView.frame.size.height)
 
         case FavoriteDetailCellMode.noContests:
             
             contestContainerView.isHidden = true
             
-            articleContainerView.frame = CGRect(x: 0, y: topContainerView.frame.size.height + recordContainerView.frame.size.height, width: articleContainerView.frame.size.width, height: articleContainerView.frame.size.height)
+            articleContainerView.frame = CGRect(x: 0, y: topContainerView.frame.origin.y + topContainerView.frame.size.height + recordContainerView.frame.size.height, width: articleContainerView.frame.size.width, height: articleContainerView.frame.size.height)
             
         case FavoriteDetailCellMode.noContestsOrArticles:
             
@@ -413,7 +413,7 @@ class TallFavoriteTeamTableViewCell: UITableViewCell, UICollectionViewDelegate, 
         rearPath.close()
         
         // Create a CAShapeLayer
-        let lightColor = color.lighter(by: 50.0)
+        let lightColor = color.lighter(by: 70.0)
         let rearShapeLayer = CAShapeLayer()
         rearShapeLayer.path = rearPath.cgPath
         rearShapeLayer.fillColor = lightColor!.cgColor
@@ -450,10 +450,15 @@ class TallFavoriteTeamTableViewCell: UITableViewCell, UICollectionViewDelegate, 
 
         self.contentView.backgroundColor = UIColor.mpHeaderBackgroundColor()
         
+        
         // Round the edges
-        self.topContainerView.layer.cornerRadius = 8
-        self.topContainerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        self.topContainerView.clipsToBounds = true
+        topContainerView.layer.cornerRadius = 8
+        topContainerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        topContainerView.clipsToBounds = true
+        
+        articleContainerView.layer.cornerRadius = 8
+        articleContainerView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
+        articleContainerView.clipsToBounds = true
         
         self.mascotContainerView.layer.cornerRadius = self.mascotContainerView.frame.size.width / 2.0
         self.mascotContainerView.clipsToBounds = true
