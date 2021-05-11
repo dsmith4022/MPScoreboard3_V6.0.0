@@ -460,8 +460,12 @@ class TallFavoriteTeamTableViewCell: UITableViewCell, UICollectionViewDelegate, 
         articleContainerView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         articleContainerView.clipsToBounds = true
         
-        self.mascotContainerView.layer.cornerRadius = self.mascotContainerView.frame.size.width / 2.0
-        self.mascotContainerView.clipsToBounds = true
+        mascotContainerView.layer.cornerRadius = self.mascotContainerView.frame.size.width / 2.0
+        mascotContainerView.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+        mascotContainerView.layer.shadowOffset = CGSize(width: 0.0, height: 4.0)
+        mascotContainerView.layer.shadowOpacity = 1.0
+        mascotContainerView.layer.shadowRadius = 4.0
+        mascotContainerView.clipsToBounds = false
         
         // Register the Gallery Cell
         articleCollectionView.register(UINib.init(nibName: "ArticleCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "ArticleCollectionViewCell")

@@ -39,6 +39,7 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
     private var teamDetailVC: TeamDetailViewController!
     private var profileVC: ProfileViewController!
     private var favoritesListView: FavoritesListView!
+    private var roleSelectorVC: RoleSelectorViewController!
     
     // MARK: - Get Team Detail Card Data
     
@@ -311,8 +312,6 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    
-    
     // MARK: - Favorites List View Delegate
     
     func closeFavoritesListViewAfterChange()
@@ -369,6 +368,87 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
     {
         favoritesListView.removeFromSuperview()
         self.tabBarController?.tabBar.isHidden = false
+    }
+    
+    func joinButtonTouched(index: Int)
+    {
+        favoritesListView.removeFromSuperview()
+        self.tabBarController?.tabBar.isHidden = false
+        
+        let selectedTeam = favoriteTeamsArray[index] as! Dictionary<String,Any>
+        
+        // Refactor the selected team into a Team object that is used by the TeamDetailVC
+        let schoolId = selectedTeam[kNewSchoolIdKey] as! String
+        let name = selectedTeam[kNewSchoolNameKey] as! String
+        let fullName = selectedTeam[kNewSchoolFormattedNameKey] as! String
+        let city = selectedTeam[kNewSchoolCityKey] as! String
+        let state = selectedTeam[kNewSchoolStateKey] as! String
+        let gender = selectedTeam[kNewGenderKey] as! String
+        let sport = selectedTeam[kNewSportKey] as! String
+        let level = selectedTeam[kNewLevelKey] as!String
+        let season = selectedTeam[kNewSeasonKey] as!String
+        let allSeasonId = selectedTeam[kNewAllSeasonIdKey] as! String
+        var mascotUrlString = ""
+        var hexColorString = ""
+        
+        // Make sure that the school info exists
+        let schoolInfos = kUserDefaults.dictionary(forKey: kNewSchoolInfoDictionaryKey)
+
+        if schoolInfos![schoolId] != nil
+        {
+            let schoolInfo = schoolInfos![schoolId] as! Dictionary<String, String>
+            hexColorString = schoolInfo[kNewSchoolInfoColor1Key]!
+            mascotUrlString = schoolInfo[kNewSchoolInfoMascotUrlKey]!
+        }
+        
+        let selectedTeamObj = Team(teamId: 0, allSeasonId: allSeasonId, gender: gender, sport: sport, teamColor: hexColorString, mascotUrl: mascotUrlString, schoolName: name, teamLevel: level, schoolId: schoolId, schoolState: state, schoolCity: city, schoolFullName: fullName, season: season, notifications: [])
+        
+        /*
+         Team Object
+         var teamId: Double
+         var allSeasonId: String
+         var gender: String
+         var sport: String
+         var teamColor: String
+         var mascotUrl: String
+         var schoolName: String
+         var teamLevel: String
+         var schoolId: String
+         var schoolState: String
+         var schoolCity: String
+         var schoolFullName: String
+         var season: String
+         var notifications: Array<Any>
+         */
+        
+        // Look at the roles dictionary for a match to forward the role to the VC
+        let adminRoles = kUserDefaults.dictionary(forKey: kUserAdminRolesDictionaryKey)
+        let roleKey = schoolId + "_" + allSeasonId
+        var userRole = "Follower"
+        
+        if (adminRoles![roleKey] != nil)
+        {
+            let adminRole = adminRoles![roleKey] as! Dictionary<String,String>
+            let roleName = adminRole[kRoleNameKey]
+            
+            if ((roleName == "Head Coach") || (roleName == "Assistant Coach") || (roleName == "Statistician"))
+            {
+                userRole = "Admin"
+            }
+            else if (roleName == "Team Community")
+            {
+                userRole = "Member"
+            }
+        }
+        
+        roleSelectorVC = RoleSelectorViewController(nibName: "RoleSelectorViewController", bundle: nil)
+        roleSelectorVC.modalPresentationStyle = .fullScreen
+        roleSelectorVC.selectedTeam = selectedTeamObj
+        roleSelectorVC.userRole = userRole
+        self.tabBarController!.present(roleSelectorVC, animated: true)
+        {
+            
+        }
     }
     
     // MARK: - Show Web VC
@@ -915,8 +995,6 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
     {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        
-        
         let selectedTeam = favoriteTeamsArray[indexPath.row] as! Dictionary<String,Any>
         
         // Refactor the selected team into a Team object that is used by the TeamDetailVC
@@ -1288,6 +1366,11 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
         if (webVC != nil) || (teamDetailVC != nil)
         {
             return
+        }
+        
+        if (roleSelectorVC != nil)
+        {
+            //self.tabBarController?.reloadInputViews()
         }
         
         // Set the image to the settings icon if a Test Drive user right away

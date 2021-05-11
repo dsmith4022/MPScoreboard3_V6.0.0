@@ -17,6 +17,7 @@ class AthleteDetailViewController: UIViewController
     var selectedAthlete : Athlete?
     var showSaveFavoriteButton = false
     var showRemoveFavoriteButton = false
+    var athleteChanged = false
     
     private var browserView: FavoritesBrowserView!
     
@@ -55,6 +56,8 @@ class AthleteDetailViewController: UIViewController
                     
                     if error == nil
                     {
+                        self.athleteChanged = true
+                        
                         // Get the user favorites so the prefs get updated
                         NewFeeds.getUserFavoriteAthletes(completionHandler: { error in
                             
@@ -123,6 +126,8 @@ class AthleteDetailViewController: UIViewController
                     
                     if error == nil
                     {       
+                        self.athleteChanged = true
+                        
                         // Get the user favorites so the prefs get updated
                         NewFeeds.getUserFavoriteAthletes(completionHandler: { error in
                             

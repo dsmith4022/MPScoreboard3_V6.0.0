@@ -296,7 +296,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate, LoginHom
         
         // Set the overall window background color so navigation looks better
         window.backgroundColor = UIColor.mpOffWhiteNavColor()
-        
+
         // Load the tab bar icons and text color
         let tabBarItem0 = self.tabBar.items![0]
         let tabBarItem1 = self.tabBar.items![1]
@@ -332,7 +332,7 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate, LoginHom
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
-    
+
     }
     
     override func viewDidAppear(_ animated: Bool)

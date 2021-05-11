@@ -11,6 +11,7 @@ protocol FavoritesListViewDelegate: AnyObject
 {
     func closeFavoritesListView()
     func closeFavoritesListViewAfterChange()
+    func joinButtonTouched(index: Int)
 }
 
 class FavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
@@ -59,6 +60,10 @@ class FavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
         if (kUserDefaults .string(forKey: kUserIdKey) != kTestDriveUserId)
         {
             self.deleteUserFavoriteAthleteFromDatabase(careerProfileId: careerProfileIdToDelete)
+        }
+        else
+        {
+            self.teamOrAthleteDeleted = true
         }
     }
     
@@ -111,6 +116,8 @@ class FavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
             
             if error == nil
             {
+                self.teamOrAthleteDeleted = true
+                
                 if let favAthletes = kUserDefaults.array(forKey: kUserFavoriteAthletesArrayKey)
                 {
                     self.favoriteAthletesArray = favAthletes
@@ -144,6 +151,10 @@ class FavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
         if (kUserDefaults .string(forKey: kUserIdKey) != kTestDriveUserId)
         {
             self.deleteUserFavoriteTeamFromDatabase(team:favoriteToDelete)
+        }
+        else
+        {
+            self.teamOrAthleteDeleted = true
         }
     }
     
@@ -692,13 +703,26 @@ class FavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
     
     @objc private func joinButtonTouched(_ button : UIButton)
     {
-        //let index = button.tag
+        let index = button.tag - 100
         
+        // Animate the roundRectView and blackBackgroundView
+        UIView.animate(withDuration: 0.24, animations:
+                        {
+                            self.roundRectView?.transform = CGAffineTransform(translationX: 0, y: (self.roundRectView?.frame.size.height)!)
+                            self.blackBackgroundView?.alpha = 0.0
+                        })
+        { (finished) in
+            
+            self.delegate?.joinButtonTouched(index: index)
+        }   
+        
+        /*
         let window = UIApplication.shared.windows[0]
         
         MiscHelper.showAlert(in: window.rootViewController, withActionNames: ["Ok"], title: "Coming Soon...", message: "This will open the team onboarding flow.", lastItemCancelType: false) { (tag) in
             
         }
+ */
     }
     
     // MARK: - Gesture Methods

@@ -126,6 +126,28 @@ class AthleteSearchView: UIView, IQActionSheetPickerViewDelegate, UITextFieldDel
         
     }
     
+    // MARK: - Reload Athlete Table
+    
+    func reloadAthleteTable()
+    {
+        // Build the favorite athlete identifier array so a star can be put next to each favorite team
+        favoriteAthletesIdentifierArray.removeAll()
+        
+        // Get the favorite athletes
+        if let favoriteAthletes = kUserDefaults.array(forKey: kUserFavoriteAthletesArrayKey)
+        {
+            for favoriteAthlete in favoriteAthletes
+            {
+                let item = favoriteAthlete  as! Dictionary<String, Any>
+                let careerProfileId = item["careerProfileId"] as! String
+                            
+                favoriteAthletesIdentifierArray.append(careerProfileId)
+            }
+        }
+        
+        searchTableView.reloadData()
+    }
+    
     // MARK: - TextField Delegates
     
     func textFieldDidBeginEditing(_ textField: UITextField)

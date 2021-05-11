@@ -12,6 +12,8 @@ class SearchViewController: UIViewController, ThreeSegmentControlViewDelegate, U
     private var teamSelectorVC: TeamSelectorViewController?
     private var localSchools = Array<School>()
     private var filteredSchools = Array<School>()
+    
+    private var athleteDetailVC: AthleteDetailViewController?
         
     @IBOutlet weak var fakeStatusBar: UIView!
     @IBOutlet weak var navView: UIView!
@@ -381,12 +383,12 @@ class SearchViewController: UIViewController, ThreeSegmentControlViewDelegate, U
     
     func athleteSearchDidSelectAthlete(selectedAthlete: Athlete, showSaveFavoriteButton: Bool, showRemoveFavoriteButton: Bool)
     {
-        let athleteDetailVC = AthleteDetailViewController(nibName: "AthleteDetailViewController", bundle: nil)
-        athleteDetailVC.selectedAthlete = selectedAthlete
-        athleteDetailVC.showSaveFavoriteButton = showSaveFavoriteButton
-        athleteDetailVC.showRemoveFavoriteButton = showRemoveFavoriteButton
+        athleteDetailVC = AthleteDetailViewController(nibName: "AthleteDetailViewController", bundle: nil)
+        athleteDetailVC!.selectedAthlete = selectedAthlete
+        athleteDetailVC!.showSaveFavoriteButton = showSaveFavoriteButton
+        athleteDetailVC!.showRemoveFavoriteButton = showRemoveFavoriteButton
         
-        self.navigationController?.pushViewController(athleteDetailVC, animated: true)
+        self.navigationController?.pushViewController(athleteDetailVC!, animated: true)
     }
     
     // MARK: - ThreeSegmentControl Delegate
@@ -504,6 +506,15 @@ class SearchViewController: UIViewController, ThreeSegmentControlViewDelegate, U
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         
         setNeedsStatusBarAppearanceUpdate()
+        
+        // Update the AthleteSearchView
+        if (athleteDetailVC != nil)
+        {
+            if (athleteDetailVC?.athleteChanged == true)
+            {
+                athleteSearchView.reloadAthleteTable()
+            }
+        }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle

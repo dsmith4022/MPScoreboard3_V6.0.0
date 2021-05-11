@@ -324,6 +324,8 @@
 		4AB0060225FC1933006D0DC0 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 4AB0050925FC1933006D0DC0 /* README.md */; };
 		4AC8B81E26459D55002AD3DE /* OverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AC8B81B26459D55002AD3DE /* OverlayView.m */; };
 		4AC8B81F26459D55002AD3DE /* OverlayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4AC8B81C26459D55002AD3DE /* OverlayView.xib */; };
+		4ACE5B21264ACEEB0004262D /* RoleSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ACE5B1F264ACEEB0004262D /* RoleSelectorViewController.swift */; };
+		4ACE5B22264ACEEB0004262D /* RoleSelectorViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4ACE5B20264ACEEB0004262D /* RoleSelectorViewController.xib */; };
 		4AD393CB25D303420070F843 /* UpdateSchoolsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD393C925D303420070F843 /* UpdateSchoolsViewController.swift */; };
 		4AD393CC25D303420070F843 /* UpdateSchoolsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4AD393CA25D303420070F843 /* UpdateSchoolsViewController.xib */; };
 		4AD393D725D30F0C0070F843 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 4AD393D625D30F0C0070F843 /* MBProgressHUD.m */; };
@@ -1042,6 +1044,8 @@
 		4AC8B81B26459D55002AD3DE /* OverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverlayView.m; sourceTree = "<group>"; };
 		4AC8B81C26459D55002AD3DE /* OverlayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OverlayView.xib; sourceTree = "<group>"; };
 		4AC8B81D26459D55002AD3DE /* OverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlayView.h; sourceTree = "<group>"; };
+		4ACE5B1F264ACEEB0004262D /* RoleSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoleSelectorViewController.swift; sourceTree = "<group>"; };
+		4ACE5B20264ACEEB0004262D /* RoleSelectorViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoleSelectorViewController.xib; sourceTree = "<group>"; };
 		4AD393C925D303420070F843 /* UpdateSchoolsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateSchoolsViewController.swift; sourceTree = "<group>"; };
 		4AD393CA25D303420070F843 /* UpdateSchoolsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UpdateSchoolsViewController.xib; sourceTree = "<group>"; };
 		4AD393D525D30F0C0070F843 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
@@ -1322,6 +1326,7 @@
 				4AEF5E0225DEDB1A0077327E /* Login */,
 				4AFB768525C9D49D00C6B6FC /* NewsVC */,
 				4AFB768725C9D4A800C6B6FC /* FavoritesVC */,
+				4ACE5B1E264ACEBA0004262D /* JoinTeamVC */,
 				4AFB768425C9D48800C6B6FC /* ScoresVC */,
 				4A47D7C925D19BFC00732DE6 /* WebVC */,
 				4A5A54A325E03D6800541097 /* ProfileVC */,
@@ -2252,6 +2257,15 @@
 			path = ObjcOverlayView;
 			sourceTree = "<group>";
 		};
+		4ACE5B1E264ACEBA0004262D /* JoinTeamVC */ = {
+			isa = PBXGroup;
+			children = (
+				4ACE5B1F264ACEEB0004262D /* RoleSelectorViewController.swift */,
+				4ACE5B20264ACEEB0004262D /* RoleSelectorViewController.xib */,
+			);
+			path = JoinTeamVC;
+			sourceTree = "<group>";
+		};
 		4AD393CE25D30ECB0070F843 /* ObjcMBProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
@@ -2504,6 +2518,7 @@
 				4AA2EC8025CA1BA100CB85BA /* LaunchScreenIcon@2x.png in Resources */,
 				4A40FB9C26125236003CEE4B /* siro-italic.otf in Resources */,
 				4AB0059025FC1933006D0DC0 /* LICENSE in Resources */,
+				4ACE5B22264ACEEB0004262D /* RoleSelectorViewController.xib in Resources */,
 				4ADD304725D4397B0097C699 /* TeamSelectorViewController.xib in Resources */,
 				4AEC3CBE261E449C00C5A4E7 /* Bowling@2x.png in Resources */,
 				4AEC3CBD261E449C00C5A4E7 /* TrackAndField@2x.png in Resources */,
@@ -2710,6 +2725,7 @@
 				4AB0058325FC1933006D0DC0 /* MPXMLParser.m in Sources */,
 				4AB0056625FC1933006D0DC0 /* MPDiskLRUCache.m in Sources */,
 				4AB005E125FC1933006D0DC0 /* MOPUBReplayView.m in Sources */,
+				4ACE5B21264ACEEB0004262D /* RoleSelectorViewController.swift in Sources */,
 				4AB0058925FC1933006D0DC0 /* MPMediationManager.m in Sources */,
 				4AB0052C25FC1933006D0DC0 /* MPNativeAd.m in Sources */,
 				4AB005C525FC1933006D0DC0 /* MPVASTVerification.m in Sources */,
@@ -2970,7 +2986,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 210510;
+				CURRENT_PROJECT_VERSION = 210511;
 				DEVELOPMENT_TEAM = DF5A7UVUA8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3016,7 +3032,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 210510;
+				CURRENT_PROJECT_VERSION = 210511;
 				DEVELOPMENT_TEAM = DF5A7UVUA8;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
