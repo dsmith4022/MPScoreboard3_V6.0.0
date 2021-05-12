@@ -110,7 +110,7 @@ class TeamDetailViewController: UIViewController, UIScrollViewDelegate, IQAction
                     MBProgressHUD.hide(for: self.view, animated: true)
                 }
                 
-                MiscHelper.showAlert(in: self, withActionNames: ["Ok"], title: "Error", message: "There was a server error when saving this team.", lastItemCancelType: false) { (tag) in
+                MiscHelper.showAlert(in: self, withActionNames: ["Ok"], title: "Error", message: "There was a server error when following this team.", lastItemCancelType: false) { (tag) in
                     
                 }
             }
@@ -617,7 +617,7 @@ class TeamDetailViewController: UIViewController, UIScrollViewDelegate, IQAction
         if (favorites!.count >= kMaxFavoriteTeamsCount)
         {
             let messageTitle = String(kMaxFavoriteTeamsCount) + " Team Limit"
-            let messageText = "The maximum number of favorites allowed is " + String(kMaxFavoriteTeamsCount) + ".  You must remove a team in order to add another."
+            let messageText = "The maximum number of teams you can follow is " + String(kMaxFavoriteTeamsCount) + ".  You must unfollow a team in order to add another."
             
             MiscHelper.showAlert(in: self, withActionNames: ["Ok"], title: messageTitle, message: messageText, lastItemCancelType: false) { (tag) in
                 
@@ -625,7 +625,7 @@ class TeamDetailViewController: UIViewController, UIScrollViewDelegate, IQAction
             return
         }
         
-        MiscHelper.showAlert(in: self, withActionNames: ["Cancel", "Ok"], title: "Save Team", message: "Do you want to save this team to your favorites?", lastItemCancelType: false) { (tag) in
+        MiscHelper.showAlert(in: self, withActionNames: ["Cancel", "Ok"], title: "Follow Team", message: "Do you want to follow this team?", lastItemCancelType: false) { (tag) in
             if (tag == 1)
             {
                 let gender = self.selectedTeam?.gender

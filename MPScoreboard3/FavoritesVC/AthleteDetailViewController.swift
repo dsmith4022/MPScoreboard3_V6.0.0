@@ -35,7 +35,7 @@ class AthleteDetailViewController: UIViewController
         if (favoriteAthletes != nil) && (favoriteAthletes!.count >= kMaxFavoriteAthletesCount)
         {
             let messageTitle = String(kMaxFavoriteTeamsCount) + " Athlete Limit"
-            let messageText = "The maximum number of favorites allowed is " + String(kMaxFavoriteAthletesCount) + ".  You must remove an athlete in order to add another."
+            let messageText = "The maximum number of followed athletes is " + String(kMaxFavoriteAthletesCount) + ".  You must remove an athlete in order to add another."
             
             MiscHelper.showAlert(in: self, withActionNames: ["Ok"], title: messageTitle, message: messageText, lastItemCancelType: false) { (tag) in
                 
@@ -43,7 +43,7 @@ class AthleteDetailViewController: UIViewController
             return
         }
         
-        MiscHelper.showAlert(in: self, withActionNames: ["Cancel", "Ok"], title: "Save Athlete", message: "Do you want to save this athlete to your favorites?", lastItemCancelType: false) { (tag) in
+        MiscHelper.showAlert(in: self, withActionNames: ["Cancel", "Ok"], title: "Follow Athlete", message: "Do you want to follow this athlete?", lastItemCancelType: false) { (tag) in
             
             if (tag == 1)
             {
@@ -98,7 +98,7 @@ class AthleteDetailViewController: UIViewController
                             MBProgressHUD.hide(for: self.view, animated: true)
                         }
                         
-                        MiscHelper.showAlert(in: self, withActionNames: ["Ok"], title: "Error", message: "There was a server error when saving this athlete.", lastItemCancelType: false) { (tag) in
+                        MiscHelper.showAlert(in: self, withActionNames: ["Ok"], title: "Error", message: "There was a server error when following this athlete.", lastItemCancelType: false) { (tag) in
                             
                         }
                     }
@@ -110,7 +110,7 @@ class AthleteDetailViewController: UIViewController
     
     @IBAction func removeFavoriteButtonTouched(_ sender: UIButton)
     {
-        MiscHelper.showAlert(in: self, withActionNames: ["Cancel", "Ok"], title: "Remove Athlete", message: "Do you want to remove this athlete from your favorites?", lastItemCancelType: false) { (tag) in
+        MiscHelper.showAlert(in: self, withActionNames: ["Cancel", "Ok"], title: "Unfollow Athlete", message: "Do you want to unfollow this athlete?", lastItemCancelType: false) { (tag) in
             
             if (tag == 1)
             {
@@ -161,7 +161,7 @@ class AthleteDetailViewController: UIViewController
                             MBProgressHUD.hide(for: self.view, animated: true)
                         }
                                                 
-                        MiscHelper.showAlert(in: self, withActionNames: ["Ok"], title: "MaxPreps App", message: "There was a problem removing this athlete from your favorites.", lastItemCancelType: false) { (tag) in
+                        MiscHelper.showAlert(in: self, withActionNames: ["Ok"], title: "Error", message: "There was a server problem when unfollowing this athlete.", lastItemCancelType: false) { (tag) in
                             
                         }
                     }

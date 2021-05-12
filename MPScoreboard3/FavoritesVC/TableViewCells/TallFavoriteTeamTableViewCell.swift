@@ -413,10 +413,11 @@ class TallFavoriteTeamTableViewCell: UITableViewCell, UICollectionViewDelegate, 
         rearPath.close()
         
         // Create a CAShapeLayer
-        let lightColor = color.lighter(by: 70.0)
+        //let lightColor = color.lighter(by: 70.0)
+        let lightColor = color.withAlphaComponent(0.3)
         let rearShapeLayer = CAShapeLayer()
         rearShapeLayer.path = rearPath.cgPath
-        rearShapeLayer.fillColor = lightColor!.cgColor
+        rearShapeLayer.fillColor = lightColor.cgColor
         rearShapeLayer.position = CGPoint(x: 0, y: 0)
 
         self.topContainerView.layer.insertSublayer(rearShapeLayer, below: self.mascotContainerView.layer)

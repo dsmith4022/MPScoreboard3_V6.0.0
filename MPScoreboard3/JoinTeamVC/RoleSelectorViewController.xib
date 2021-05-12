@@ -11,6 +11,9 @@
         <array key="siro-bold.otf">
             <string>Siro-Bold</string>
         </array>
+        <array key="siro-extrabold.otf">
+            <string>Siro-ExtraBold</string>
+        </array>
         <array key="siro-semibold.otf">
             <string>Siro-SemiBold</string>
         </array>
@@ -34,104 +37,119 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pick Your Role" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ovb-1P-bpp" userLabel="Title">
+                    <rect key="frame" x="20" y="113" width="240" height="36"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" name="Siro-ExtraBold" family="Siro" pointSize="32"/>
+                    <color key="textColor" name="MPBlackColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xx5-19-REd">
                     <rect key="frame" x="0.0" y="0.0" width="414" height="88"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pick Team Role" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ovb-1P-bpp" userLabel="Title">
-                            <rect key="frame" x="80" y="54" width="253" height="24"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                            <fontDescription key="fontDescription" name="Siro-Bold" family="Siro" pointSize="20"/>
-                            <color key="textColor" name="MPWhiteColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L6G-6B-e9C">
                             <rect key="frame" x="8" y="46" width="40" height="40"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <state key="normal" image="CloseButtonWhite"/>
+                            <state key="normal" image="CloseButtonBlack"/>
                             <connections>
                                 <action selector="closeButtonTouched:" destination="-1" eventType="touchUpInside" id="nVC-rd-YJf"/>
                             </connections>
                         </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Join a Team" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uFm-7M-UPY" userLabel="Title">
+                            <rect key="frame" x="80" y="56" width="253" height="20"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <fontDescription key="fontDescription" name="Siro-Bold" family="Siro" pointSize="19"/>
+                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kko-gV-tuf">
+                            <rect key="frame" x="0.0" y="87" width="414" height="1"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                            <color key="backgroundColor" name="MPOffWhiteColor"/>
+                        </view>
                     </subviews>
-                    <color key="backgroundColor" name="MPRedColor"/>
+                    <color key="backgroundColor" name="MPWhiteColor"/>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ita-KK-yt1">
-                    <rect key="frame" x="117" y="135" width="180" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" name="MPRedColor"/>
-                    <fontDescription key="fontDescription" name="Siro-SemiBold" family="Siro" pointSize="15"/>
+                    <rect key="frame" x="20" y="175" width="374" height="40"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" name="MPLightGrayColor"/>
+                    <fontDescription key="fontDescription" name="Siro-SemiBold" family="Siro" pointSize="17"/>
                     <state key="normal" title="Head Coach">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZWC-nL-cFR">
-                    <rect key="frame" x="117" y="190" width="180" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" name="MPRedColor"/>
-                    <fontDescription key="fontDescription" name="Siro-SemiBold" family="Siro" pointSize="15"/>
+                    <rect key="frame" x="20" y="235" width="374" height="40"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" name="MPLightGrayColor"/>
+                    <fontDescription key="fontDescription" name="Siro-SemiBold" family="Siro" pointSize="17"/>
                     <state key="normal" title="Assistant Coach">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TZY-W0-DFK">
-                    <rect key="frame" x="117" y="245" width="180" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" name="MPRedColor"/>
-                    <fontDescription key="fontDescription" name="Siro-SemiBold" family="Siro" pointSize="15"/>
+                    <rect key="frame" x="20" y="295" width="374" height="40"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" name="MPLightGrayColor"/>
+                    <fontDescription key="fontDescription" name="Siro-SemiBold" family="Siro" pointSize="17"/>
                     <state key="normal" title="Statistician">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VDT-lU-IJX">
-                    <rect key="frame" x="117" y="300" width="180" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" name="MPRedColor"/>
-                    <fontDescription key="fontDescription" name="Siro-SemiBold" family="Siro" pointSize="15"/>
+                    <rect key="frame" x="20" y="355" width="374" height="40"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" name="MPLightGrayColor"/>
+                    <fontDescription key="fontDescription" name="Siro-SemiBold" family="Siro" pointSize="17"/>
                     <state key="normal" title="Athlete">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VEa-kE-BsA">
-                    <rect key="frame" x="117" y="355" width="180" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" name="MPRedColor"/>
-                    <fontDescription key="fontDescription" name="Siro-SemiBold" family="Siro" pointSize="15"/>
+                    <rect key="frame" x="20" y="415" width="374" height="40"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" name="MPLightGrayColor"/>
+                    <fontDescription key="fontDescription" name="Siro-SemiBold" family="Siro" pointSize="17"/>
                     <state key="normal" title="Parent">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BrB-jo-CZ8">
-                    <rect key="frame" x="117" y="410" width="180" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" name="MPRedColor"/>
-                    <fontDescription key="fontDescription" name="Siro-SemiBold" family="Siro" pointSize="15"/>
+                    <rect key="frame" x="20" y="475" width="374" height="40"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" name="MPLightGrayColor"/>
+                    <fontDescription key="fontDescription" name="Siro-SemiBold" family="Siro" pointSize="17"/>
                     <state key="normal" title="Athletic Director">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l3N-nz-Yyy">
-                    <rect key="frame" x="117" y="465" width="180" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" name="MPRedColor"/>
-                    <fontDescription key="fontDescription" name="Siro-SemiBold" family="Siro" pointSize="15"/>
+                    <rect key="frame" x="20" y="535" width="374" height="40"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" name="MPLightGrayColor"/>
+                    <fontDescription key="fontDescription" name="Siro-SemiBold" family="Siro" pointSize="17"/>
                     <state key="normal" title="School Administrator">
                         <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
                 </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <color key="backgroundColor" name="MPHeaderBackgroundColor"/>
+            <color key="backgroundColor" name="MPOffWhiteColor"/>
             <point key="canvasLocation" x="-10.144927536231885" y="73.660714285714278"/>
         </view>
     </objects>
     <resources>
-        <image name="CloseButtonWhite" width="25" height="25"/>
-        <namedColor name="MPHeaderBackgroundColor">
-            <color red="0.92941176470588238" green="0.93333333333333335" blue="0.94901960784313721" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <image name="CloseButtonBlack" width="25" height="25"/>
+        <namedColor name="MPBlackColor">
+            <color red="0.12549019607843137" green="0.12941176470588237" blue="0.12941176470588237" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="MPRedColor">
-            <color red="0.88235294117647056" green="0.019607843137254902" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="MPLightGrayColor">
+            <color red="0.65098039215686276" green="0.66274509803921566" blue="0.67843137254901964" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="MPOffWhiteColor">
+            <color red="0.95999997854232788" green="0.95999997854232788" blue="0.95999997854232788" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="MPWhiteColor">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

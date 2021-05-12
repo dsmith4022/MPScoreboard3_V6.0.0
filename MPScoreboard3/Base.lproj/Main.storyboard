@@ -222,7 +222,7 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
                                         <color key="tintColor" name="MPBlackColor"/>
                                         <state key="normal">
-                                            <imageReference key="image" image="magnifyingglass" catalog="system" symbolScale="large" renderingMode="template"/>
+                                            <imageReference key="image" image="SearchIconGray" symbolScale="large" renderingMode="template"/>
                                         </state>
                                         <connections>
                                             <action selector="searchButtonTouched:" destination="zJY-xE-HtN" eventType="touchUpInside" id="VRf-24-kS6"/>
@@ -368,8 +368,8 @@
         <image name="LatestIcon" width="21" height="18"/>
         <image name="NoFavsImage" width="350" height="330"/>
         <image name="ScoresIcon" width="24" height="16"/>
+        <image name="SearchIconGray" width="22" height="22"/>
         <image name="SortIcon" width="24" height="22"/>
-        <image name="magnifyingglass" catalog="system" width="128" height="115"/>
         <namedColor name="MPBlackColor">
             <color red="0.12549019607843137" green="0.12941176470588237" blue="0.12941176470588237" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

@@ -10,6 +10,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginHomeViewController" customModule="MPScoreboard3" customModuleProvider="target">
             <connections>
+                <outlet property="daveButton1" destination="1YS-zi-moK" id="U9c-Nd-zA8"/>
+                <outlet property="daveButton2" destination="Sqk-K5-cTR" id="Wb3-AY-pwO"/>
+                <outlet property="daveButton3" destination="uQb-Z4-Zgy" id="CQd-EY-rOT"/>
                 <outlet property="emailTextField" destination="6S7-OB-7uj" id="1Jk-Ty-CVg"/>
                 <outlet property="loginButton" destination="4y7-k5-JR9" id="uKU-oi-mIo"/>
                 <outlet property="passwordTextField" destination="ZdE-jS-Rmd" id="y5l-vU-q6W"/>

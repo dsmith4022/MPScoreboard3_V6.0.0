@@ -68,7 +68,7 @@ class RoleSelectorViewController: UIViewController
     
     override var preferredStatusBarStyle: UIStatusBarStyle
     {
-        return UIStatusBarStyle.lightContent
+        return UIStatusBarStyle.default
     }
     
     override open var shouldAutorotate: Bool

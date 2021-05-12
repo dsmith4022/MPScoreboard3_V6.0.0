@@ -41,6 +41,8 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
     private var favoritesListView: FavoritesListView!
     private var roleSelectorVC: RoleSelectorViewController!
     
+    private let kMaxDetailedFavorites = 3
+    
     // MARK: - Get Team Detail Card Data
     
     private func getTeamDetailCardData()
@@ -356,8 +358,8 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
             }
         }
         
-        // Get card details if the favorite tema count is 1, 2, or 3
-        if (favoriteTeamsArray.count > 0) && (favoriteTeamsArray.count <= 3)
+        // Get card details if the favorite team count is within the maximum detailed favorites count
+        if (favoriteTeamsArray.count > 0) && (favoriteTeamsArray.count <= kMaxDetailedFavorites)
         {
             self.getTeamDetailCardData()
         }
@@ -1046,7 +1048,7 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
         let roleKey = schoolId + "_" + allSeasonId
         var userRole = "Follower"
         
-        if (adminRoles![roleKey] != nil)
+        if ((adminRoles != nil) && (adminRoles![roleKey] != nil))
         {
             let adminRole = adminRoles![roleKey] as! Dictionary<String,String>
             let roleName = adminRole[kRoleNameKey]
@@ -1209,6 +1211,76 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
 
     }
     
+    // MARK: - Initialize Data Method
+    
+    @objc private func initializeData()
+    {        
+        // Set the image to the settings icon if a Test Drive user right away
+        let userId = kUserDefaults.string(forKey: kUserIdKey)
+        
+        if (userId == kTestDriveUserId)
+        {
+            profileButton?.setImage(UIImage.init(named: "SettingsButton"), for: .normal)
+        }
+        else
+        {
+            // Load the user image
+            self.loadUserImage()
+        }
+        
+        // Load the favorites
+        favoriteTeamsArray.removeAll()
+        favoriteAthletesArray.removeAll()
+        
+        if let favTeams = kUserDefaults.array(forKey: kNewUserFavoriteTeamsArrayKey)
+        {
+            favoriteTeamsArray = favTeams
+        }
+        
+        if let favAthletes = kUserDefaults.array(forKey: kUserFavoriteAthletesArrayKey)
+        {
+            favoriteAthletesArray = favAthletes
+        }
+        
+        favoritesTableView.reloadData()
+        
+        // Hide the table if the teams count is zero
+        if (favoriteTeamsArray.count == 0)
+        {
+            noFavoriteContainerView.isHidden = false
+            editFavoritesButton.isHidden = true
+        }
+        else
+        {
+            noFavoriteContainerView.isHidden = true
+            editFavoritesButton.isHidden = false
+            
+            var contentHeight = 0
+            
+            // Disable scrolling if the content height is less than the tableView's frame
+            // If the favorites count is less, then this is calculated in the getTeamDetailCardData() method
+            if (favoriteTeamsArray.count > 3)
+            {
+                contentHeight = 50 + (favoriteTeamsArray.count * 58)
+            }
+            
+            if (contentHeight <= Int(favoritesTableView.frame.size.height))
+            {
+                favoritesTableView.isScrollEnabled = false
+            }
+            else
+            {
+                favoritesTableView.isScrollEnabled = true
+            }
+        }
+        
+        // Get card details if the favorite team count is within the maximum detailed favorites count
+        if (favoriteTeamsArray.count > 0) && (favoriteTeamsArray.count <= kMaxDetailedFavorites)
+        {
+            self.getTeamDetailCardData()
+        }
+    }
+    
     // MARK: - ScrollView Delegate
     
     func scrollViewDidScroll(_ scrollView: UIScrollView)
@@ -1347,6 +1419,9 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
         navView?.addSubview(profileButton!)
         
         navTitleLabel.alpha = 0
+        
+        // Add a notification handler to reload the viewWillAppear data
+        NotificationCenter.default.addObserver(self, selector: #selector(initializeData), name: Notification.Name("InitializeFavoriteVCData"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -1373,70 +1448,7 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
             //self.tabBarController?.reloadInputViews()
         }
         
-        // Set the image to the settings icon if a Test Drive user right away
-        let userId = kUserDefaults.string(forKey: kUserIdKey)
-        
-        if (userId == kTestDriveUserId)
-        {
-            profileButton?.setImage(UIImage.init(named: "SettingsButton"), for: .normal)
-        }
-        else
-        {
-            // Load the user image
-            self.loadUserImage()
-        }
-        
-        // Load the favorites
-        favoriteTeamsArray.removeAll()
-        favoriteAthletesArray.removeAll()
-        
-        if let favTeams = kUserDefaults.array(forKey: kNewUserFavoriteTeamsArrayKey)
-        {
-            favoriteTeamsArray = favTeams
-        }
-        
-        if let favAthletes = kUserDefaults.array(forKey: kUserFavoriteAthletesArrayKey)
-        {
-            favoriteAthletesArray = favAthletes
-        }
-        
-        favoritesTableView.reloadData()
-        
-        // Hide the table if the teams count is zero
-        if (favoriteTeamsArray.count == 0)
-        {
-            noFavoriteContainerView.isHidden = false
-            editFavoritesButton.isHidden = true
-        }
-        else
-        {
-            noFavoriteContainerView.isHidden = true
-            editFavoritesButton.isHidden = false
-            
-            var contentHeight = 0
-            
-            // Disable scrolling if the content height is less than the tableView's frame
-            // If the favorites count is less, then this is calculated in the getTeamDetailCardData() method
-            if (favoriteTeamsArray.count > 3)
-            {
-                contentHeight = 50 + (favoriteTeamsArray.count * 58)
-            }
-            
-            if (contentHeight <= Int(favoritesTableView.frame.size.height))
-            {
-                favoritesTableView.isScrollEnabled = false
-            }
-            else
-            {
-                favoritesTableView.isScrollEnabled = true
-            }
-        }
-        
-        // Get card details if the favorite tema count is 1, 2, or 3
-        if (favoriteTeamsArray.count > 0) && (favoriteTeamsArray.count <= 3)
-        {
-            self.getTeamDetailCardData()
-        }
+        self.initializeData()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle

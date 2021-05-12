@@ -269,6 +269,14 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     
     private func clearUserPrefsAndDismiss()
     {
+        /*
+        // Hide the busy indicator
+        DispatchQueue.main.async
+        {
+            MBProgressHUD.showAdded(to: self.view, animated: true)
+        }
+        */
+        
         // Clear out the user's prefs
         kUserDefaults.setValue(kEmptyGuid, forKey: kUserIdKey)
         kUserDefaults.removeObject(forKey: kNewUserFavoriteTeamsArrayKey)
@@ -283,6 +291,8 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         kUserDefaults.setValue(NSNumber(integerLiteral: 0), forKey: kSelectedFavoriteIndexKey)
         kUserDefaults.setValue(NSNumber(integerLiteral: 0), forKey: kSelectedFavoriteSectionKey)
         kUserDefaults.setValue(kDefaultSchoolLocation, forKey: kCurrentLocationKey)
+        
+        kUserDefaults.synchronize()
         
         /*
          [prefs setObject:kDefaultEmptyValue forKey:kUserObjectEmailKey];
@@ -340,6 +350,21 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         self.presentingViewController?.dismiss(animated: true, completion: {
             
         })
+        
+        /*
+        // Add some delay to allow the prefs to update
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1)
+        { [self] in
+            
+            // Hide the busy indicator
+            DispatchQueue.main.async
+            {
+                MBProgressHUD.hide(for: self.view, animated: true)
+            }
+            
+            
+        }
+        */
     }
     
     // MARK: - Logout User

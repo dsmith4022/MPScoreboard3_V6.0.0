@@ -250,6 +250,8 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate, LoginHom
         let firstVC = self.viewControllers?[0]
         firstVC?.dismiss(animated: true, completion: {
             
+            // Notify the rest of the app that login is finished
+            NotificationCenter.default.post(name: Notification.Name("InitializeFavoriteVCData"), object: nil)
         })
     }
     

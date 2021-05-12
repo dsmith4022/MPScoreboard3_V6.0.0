@@ -21,6 +21,9 @@ class LoginHomeViewController: UIViewController, UITextFieldDelegate, IQActionSh
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var daveButton1: UIButton!
+    @IBOutlet weak var daveButton2: UIButton!
+    @IBOutlet weak var daveButton3: UIButton!
     
     let branchValues = ["A", "B", "C", "D", "E", "F", "G"]
     
@@ -159,8 +162,8 @@ class LoginHomeViewController: UIViewController, UITextFieldDelegate, IQActionSh
                     
                     // Save to prefs
                     kUserDefaults.setValue(roleDictionary, forKey: kUserAdminRolesDictionaryKey)
-                    
-                    self.delegate?.loginHomeFinished()
+                        
+                    self.delegate?.loginHomeFinished()                    
                 }
                 else
                 {
@@ -261,6 +264,17 @@ class LoginHomeViewController: UIViewController, UITextFieldDelegate, IQActionSh
         closeBarButtonItem.tintColor = .black
         self.navigationItem.leftBarButtonItem  = closeBarButtonItem
          */
+        
+        daveButton1.isEnabled = false
+        daveButton2.isEnabled = false
+        daveButton3.isEnabled = false
+
+        #if DEBUG
+        daveButton1.isEnabled = true
+        daveButton2.isEnabled = true
+        daveButton3.isEnabled = true
+        #endif
+
     }
     
     override func viewWillAppear(_ animated: Bool)

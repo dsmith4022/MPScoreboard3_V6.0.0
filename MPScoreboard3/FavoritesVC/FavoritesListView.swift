@@ -97,7 +97,7 @@ class FavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
                 
                 let window = UIApplication.shared.windows[0]
                 
-                MiscHelper.showAlert(in: window.rootViewController, withActionNames: ["Ok"], title: "MaxPreps App", message: "There was a problem deleting this favorite athlete.", lastItemCancelType: false) { (tag) in
+                MiscHelper.showAlert(in: window.rootViewController, withActionNames: ["Ok"], title: "Error", message: "There was a server problem when unfollowing this athlete.", lastItemCancelType: false) { (tag) in
                     
                 }
             }
@@ -188,7 +188,7 @@ class FavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
                 
                 let window = UIApplication.shared.windows[0]
                 
-                MiscHelper.showAlert(in: window.rootViewController, withActionNames: ["Ok"], title: "MaxPreps App", message: "There was a problem deleting this favorite team.", lastItemCancelType: false) { (tag) in
+                MiscHelper.showAlert(in: window.rootViewController, withActionNames: ["Ok"], title: "Error", message: "There was a server problem when unfollowing this team.", lastItemCancelType: false) { (tag) in
                     
                 }
             }
@@ -659,6 +659,11 @@ class FavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
         }
     }
     
+    func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String?
+    {
+        return "Unfollow"
+    }
+    
     // MARK: - Button Method
     
     @objc private func editButtonTouched()
@@ -678,12 +683,12 @@ class FavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
         if (favoritesTableView?.isEditing == true)
         {
             favoritesTableView?.setEditing(false, animated: true)
-            editButton!.setTitle("EDIT", for: .normal)
+            editButton!.setTitle("Edit", for: .normal)
         }
         else
         {
             favoritesTableView?.setEditing(true, animated: true)
-            editButton!.setTitle("DONE", for: .normal)
+            editButton!.setTitle("Done", for: .normal)
         }
     }
     
@@ -913,19 +918,19 @@ class FavoritesListView: UIView, UITableViewDelegate, UITableViewDataSource
         //closeButton.addTarget(self, action: #selector(closeButtonTouched), for: .touchUpInside)
         //headerView.addSubview(closeButton)
         
-        let closeButtonHorizLine = UIView(frame: CGRect(x: (kDeviceWidth - 60) / 2.0, y: 6, width: 60, height: 6))
-        closeButtonHorizLine.backgroundColor = UIColor.mpGrayColor()
-        closeButtonHorizLine.layer.cornerRadius = 3
+        let closeButtonHorizLine = UIView(frame: CGRect(x: (kDeviceWidth - 75) / 2.0, y: 8, width: 75, height: 4))
+        closeButtonHorizLine.backgroundColor = UIColor.mpGrayButtonBorderColor()
+        closeButtonHorizLine.layer.cornerRadius = 2
         closeButtonHorizLine.clipsToBounds = true
         roundRectHeaderContainer!.addSubview(closeButtonHorizLine)
         
         // Add an edit button
-        editButton = UIButton(frame: CGRect(x: kDeviceWidth - 68, y: 18, width: 50, height: 30))
+        editButton = UIButton(frame: CGRect(x: kDeviceWidth - 68, y: 20, width: 50, height: 30))
         editButton!.backgroundColor = .clear
         editButton!.contentHorizontalAlignment = .right
-        editButton!.setTitle("EDIT", for: .normal)
-        editButton!.setTitleColor(UIColor.mpGrayColor(), for: .normal)
-        editButton!.titleLabel?.font = UIFont.mpSemiBoldFontWith(size: 14)
+        editButton!.setTitle("Edit", for: .normal)
+        editButton!.setTitleColor(UIColor.mpBlueColor(), for: .normal)
+        editButton!.titleLabel?.font = UIFont.mpRegularFontWith(size: 16)
         editButton!.addTarget(self, action: #selector(editButtonTouched), for: .touchUpInside)
         roundRectHeaderContainer!.addSubview(editButton!)
         roundRectView?.addSubview(roundRectHeaderContainer!)
