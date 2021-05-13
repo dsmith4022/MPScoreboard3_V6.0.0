@@ -449,8 +449,7 @@ class TallFavoriteTeamTableViewCell: UITableViewCell, UICollectionViewDelegate, 
     {
         super.awakeFromNib()
 
-        self.contentView.backgroundColor = UIColor.mpHeaderBackgroundColor()
-        
+        //self.contentView.backgroundColor = UIColor.mpHeaderBackgroundColor()
         
         // Round the edges
         topContainerView.layer.cornerRadius = 8

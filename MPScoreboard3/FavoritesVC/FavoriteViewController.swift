@@ -42,6 +42,7 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
     private var roleSelectorVC: RoleSelectorViewController!
     
     private let kMaxDetailedFavorites = 3
+    private let kLastCellExtraPad = 50
     
     // MARK: - Get Team Detail Card Data
     
@@ -256,12 +257,12 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
                     if (schedules.count == 1)
                     {
                         // One Contest
-                        contentHeight += 112 + 46 + 152
+                        contentHeight += 120 + 46 + 152
                     }
                     else
                     {
                         // Both contests
-                        contentHeight += 112 + 46 + 46 + 152
+                        contentHeight += 120 + 46 + 46 + 152
                     }
                 }
                 else if ((schedules.count > 0) && (latestItems.count == 0))
@@ -269,27 +270,39 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
                     if (schedules.count == 1)
                     {
                         // No Articles, one contest
-                        contentHeight += 112 + 46
+                        contentHeight += 120 + 46
                     }
                     else
                     {
                         // No Articles, both contests
-                        contentHeight += 112 + 46 + 46
+                        contentHeight += 120 + 46 + 46
                     }
                 }
                 else if ((schedules.count == 0) && (latestItems.count > 0))
                 {
                     // No Contests
-                    contentHeight += 112 + 152
+                    contentHeight += 120 + 152
                 }
                 else
                 {
                     // Just the record field is displayed
-                    contentHeight += 112
+                    contentHeight += 120
                 }
             }
             
+            // Add the header height
+            var headerHeight = 0
             lastCellPadValue = 0
+            
+            if (favoriteAthletesArray.count > 0)
+            {
+                headerHeight = 50
+            }
+            
+            contentHeight += headerHeight
+                        
+            // Table Height = 679
+            // Content Height = 672
             
             // Disable scrolling if the content height is less than the tableView's frame
             if (contentHeight <= Int(favoritesTableView.frame.size.height))
@@ -300,12 +313,12 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
             {
                 favoritesTableView.isScrollEnabled = true
                 
-                // Calculate the footer pad so the table has enough height to not oscillate
+                // Add some extra pad to the last cell to handle the bounce effect
                 let heightDifference = contentHeight - Int(favoritesTableView.frame.size.height)
                 
-                if (heightDifference < Int(titleContainerView.frame.size.height + 30))
+                if (heightDifference < Int(titleContainerView.frame.size.height) + kLastCellExtraPad)
                 {
-                    lastCellPadValue = CGFloat(heightDifference + 30) // Added a little extra to handle the bounce
+                    lastCellPadValue = CGFloat(heightDifference + kLastCellExtraPad)
                     //print("Footer Pad Value: " + String(lastCellPadValue))
                 }
             }
@@ -342,11 +355,16 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
         {
             noFavoriteContainerView.isHidden = true
             editFavoritesButton.isHidden = false
-            
-            favoritesTableView.reloadData()
-            
+                 
             // Disable scrolling if the content height is less than the tableView's frame
-            let contentHeight = (favoriteAthletesArray.count * 50) + (favoriteTeamsArray.count * 58)
+            var headerHeight = 0
+            lastCellPadValue = 0
+            
+            if (favoriteAthletesArray.count > 0)
+            {
+                headerHeight = 50
+            }
+            let contentHeight = (favoriteTeamsArray.count * 60) + headerHeight
             
             if (contentHeight < Int(favoritesTableView.frame.size.height))
             {
@@ -355,7 +373,18 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
             else
             {
                 favoritesTableView.isScrollEnabled = true
+                
+                // Add some extra pad to the last cell to handle the bounce effect
+                let heightDifference = contentHeight - Int(favoritesTableView.frame.size.height)
+                
+                if (heightDifference < Int(titleContainerView.frame.size.height) + kLastCellExtraPad)
+                {
+                    lastCellPadValue = CGFloat(heightDifference + kLastCellExtraPad)
+                    //print("Footer Pad Value: " + String(lastCellPadValue))
+                }
             }
+            
+            favoritesTableView.reloadData()
         }
         
         // Get card details if the favorite team count is within the maximum detailed favorites count
@@ -545,7 +574,15 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
     {
         if (favoriteTeamsArray.count > 3)
         {
-            return 60.0
+            // Add pad to the last cell to handle the in between case that causes jitter
+            if (favoriteTeamsArray.count - 1 == indexPath.row)
+            {
+                return 60 + lastCellPadValue
+            }
+            else
+            {
+                return 60.0
+            }
         }
         else
         {
@@ -1256,12 +1293,19 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
             editFavoritesButton.isHidden = false
             
             var contentHeight = 0
+            lastCellPadValue = 0
             
             // Disable scrolling if the content height is less than the tableView's frame
             // If the favorites count is less, then this is calculated in the getTeamDetailCardData() method
             if (favoriteTeamsArray.count > 3)
             {
-                contentHeight = 50 + (favoriteTeamsArray.count * 58)
+                var headerHeight = 0
+                if (favoriteAthletesArray.count > 0)
+                {
+                    headerHeight = 50
+                }
+                
+                contentHeight = headerHeight + (favoriteTeamsArray.count * 60)
             }
             
             if (contentHeight <= Int(favoritesTableView.frame.size.height))
@@ -1271,6 +1315,15 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
             else
             {
                 favoritesTableView.isScrollEnabled = true
+                
+                // Add some extra pad to the last cell to handle the bounce effect
+                let heightDifference = contentHeight - Int(favoritesTableView.frame.size.height)
+                
+                if (heightDifference < Int(titleContainerView.frame.size.height) + kLastCellExtraPad)
+                {
+                    lastCellPadValue = CGFloat(heightDifference + kLastCellExtraPad)
+                    //print("Footer Pad Value: " + String(lastCellPadValue))
+                }
             }
         }
         
@@ -1378,7 +1431,9 @@ class FavoriteViewController: UIViewController, UITableViewDelegate, UITableView
         
         let headerHeight = fakeStatusBarHeight + navViewHeight + titleContainerViewHeight
         
-        favoritesTableView.frame = CGRect(x: 0, y: fakeStatusBarHeight + navViewHeight + titleContainerViewHeight, width: Int(kDeviceWidth), height: Int(kDeviceHeight) - headerHeight - bottomTabBarPad - Int(SharedData.bottomSafeAreaHeight))
+        favoritesTableView.frame = CGRect(x: 0, y: headerHeight, width: Int(kDeviceWidth), height: Int(kDeviceHeight) - headerHeight - bottomTabBarPad - Int(SharedData.bottomSafeAreaHeight))
+        
+        print("Table Height: " + String(Int(favoritesTableView.frame.size.height)))
         
         // Resize the noFavoritesContainer, imageView, and move the innerContainer
         noFavoriteContainerView.frame = CGRect(x: 0, y: fakeStatusBarHeight + navViewHeight + titleContainerViewHeight, width: Int(kDeviceWidth), height: Int(kDeviceHeight) - headerHeight - bottomTabBarPad - Int(SharedData.bottomSafeAreaHeight))

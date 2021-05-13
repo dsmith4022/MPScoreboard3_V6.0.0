@@ -88,7 +88,10 @@ class TeamDetailViewController: UIViewController, UIScrollViewDelegate, IQAction
                     {
                         OverlayView.showCheckmarkOverlay(withMessage: "Success")
                         {
-                            
+                            // Hide the save button and show the date
+                            self.showSaveFavoriteButton = false
+                            self.yearSelectorButton.isHidden = false
+                            self.saveFavoriteButton.isHidden = true
                         }
                         print("Download user favorites success")
                     }

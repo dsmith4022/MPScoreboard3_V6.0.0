@@ -31,6 +31,11 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="364"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eSv-3j-JSh">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="20"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" name="MPHeaderBackgroundColor"/>
+                    </view>
                     <view contentMode="scaleToFill" id="Brk-Sx-dSQ">
                         <rect key="frame" x="0.0" y="8" width="375" height="72"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
@@ -271,7 +276,7 @@
                         <color key="backgroundColor" name="MPWhiteColor"/>
                     </view>
                 </subviews>
-                <color key="backgroundColor" name="MPHeaderBackgroundColor"/>
+                <color key="backgroundColor" name="MPWhiteColor"/>
             </tableViewCellContentView>
             <color key="backgroundColor" name="MPWhiteColor"/>
             <connections>

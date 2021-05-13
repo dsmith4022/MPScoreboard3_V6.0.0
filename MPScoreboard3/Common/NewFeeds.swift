@@ -2083,6 +2083,221 @@ class NewFeeds: NSObject
         
         task.resume()
     }
+    
+    // MARK: - User Image Feeds
+    
+    class func saveUserImage(imageData: Data, completionHandler: @escaping (_ post: Data?, _ error: Error?) -> Void)
+    {
+        var urlString : String
+        let userId = kUserDefaults.string(forKey: kUserIdKey)!
+        
+        if (kUserDefaults .string(forKey: kServerModeKey) == kServerModeBranch)
+        {
+            urlString = String(format: kSaveUserImageHostDev, userId)
+        }
+        else if (kUserDefaults .string(forKey: kServerModeKey) == kServerModeDev)
+        {
+            urlString = String(format: kSaveUserImageHostDev, userId)
+        }
+        else if (kUserDefaults .string(forKey: kServerModeKey) == kServerModeStaging)
+        {
+            urlString = String(format: kSaveUserImageHostStaging, userId)
+        }
+        else
+        {
+            urlString = String(format: kSaveUserImageHostProduction, userId)
+        }
+                
+        var urlRequest = URLRequest(url: URL(string: urlString)!)
+        urlRequest.timeoutInterval = 30
+        urlRequest.httpMethod = "POST"
+        urlRequest.addValue("iphone", forHTTPHeaderField: "appplatform")
+        
+        // Get the encrypted token
+        let encryptedUserId = FeedsHelper.encryptString(userId)
+        urlRequest.addValue(encryptedUserId, forHTTPHeaderField: "X-MP-UserToken")
+        
+        // Build the header dictionary for Exact Target Emails
+        urlRequest.addValue("MaxprepsApp_IOS", forHTTPHeaderField: "mp-sources-page-source")
+        
+        // Build the ContentType
+        let boundary = FeedsHelper.generateBoundaryString()
+        let contentType = "multipart/form-data; boundary=" + boundary
+        urlRequest.addValue(contentType, forHTTPHeaderField: "Content-Type")
+
+        var body = Data()
+        
+        // Add the delimiting starting boundary
+        let bodyPart1String = "\r\n--" + boundary + "\r\n"
+        let bodyPart1Data: Data? = bodyPart1String.data(using: .utf8)
+        body.append(bodyPart1Data!)
+        
+        //let bodyPart2String = "Content-Disposition: form-data; name=\"profilepic.jpeg\"; filename=\"picture.jpeg\"\r\n"
+        let bodyPart2String = "Content-Disposition: form-data; name=\"file\"; filename=\"picture.jpeg\"\r\n"
+        let bodyPart2Data: Data? = bodyPart2String.data(using: .utf8)
+        body.append(bodyPart2Data!)
+        
+        let bodyPart3String = "Content-Type: image/jpeg\r\n\r\n"
+        let bodyPart3Data: Data? = bodyPart3String.data(using: .utf8)
+        body.append(bodyPart3Data!)
+        
+        // Now we append the actual image data
+        body.append(imageData)
+        
+        // And the delimiting end boundary
+        let bodyPart4String = "\r\n--" + boundary + "--\r\n"
+        let bodyPart4Data: Data? = bodyPart4String.data(using: .utf8)
+        body.append(bodyPart4Data!)
+        
+        urlRequest.httpBody = body
+        
+        let session = URLSession.shared
+        let task = session.dataTask(with: urlRequest) { (data, response, connectionError) in
+            
+            print("Response: " + response!.description)
+            
+            DispatchQueue.main.async
+            {
+                if (connectionError == nil)
+                {
+                    if let httpResponse = response as? HTTPURLResponse
+                    {
+                        if (httpResponse.statusCode == 200)
+                        {
+                            if (data != nil)
+                            {
+                                let logDataReceived = String(decoding: data!, as: UTF8.self)
+                                print(logDataReceived)
+                                
+                                completionHandler(data, nil)
+                            }
+                            else
+                            {
+                                print("Data was nil")
+                                let errorDictionary = [NSLocalizedDescriptionKey : "Data was nil"]
+                                let error = NSError.init(domain: kMaxPrepsAppError, code: 999, userInfo: errorDictionary)
+                                completionHandler(nil, error)
+                            }
+                        }
+                        else
+                        {
+                            print("Status != 200")
+                            
+                            if (data != nil)
+                            {
+                                let logDataReceived = String(decoding: data!, as: UTF8.self)
+                                print(logDataReceived)
+                            }
+                            
+                            let errorDictionary = [NSLocalizedDescriptionKey : "Status != 200"]
+                            let error = NSError.init(domain: kMaxPrepsAppError, code: 999, userInfo: errorDictionary)
+                            completionHandler(nil, error)
+                        }
+                    }
+                    else
+                    {
+                        print("Response was nil")
+                        let errorDictionary = [NSLocalizedDescriptionKey : "Response was nil"]
+                        let error = NSError.init(domain: kMaxPrepsAppError, code: 999, userInfo: errorDictionary)
+                        completionHandler(nil, error)
+                    }
+                }
+                else
+                {
+                    print("Connection Error")
+                    let errorDictionary = [NSLocalizedDescriptionKey : "Connection Error"]
+                    let error = NSError.init(domain: kMaxPrepsAppError, code: 999, userInfo: errorDictionary)
+                    completionHandler(nil, error)
+                }
+            }
+        }
+        
+        task.resume()
+        
+    }
+    
+    class func deleteUserImage(completionHandler: @escaping (_ error: Error?) -> Void)
+    {
+        var urlString : String
+        let userId = kUserDefaults.string(forKey: kUserIdKey)!
+        
+        if (kUserDefaults .string(forKey: kServerModeKey) == kServerModeBranch)
+        {
+            urlString = String(format: kDeleteUserImageHostDev, userId)
+        }
+        else if (kUserDefaults .string(forKey: kServerModeKey) == kServerModeDev)
+        {
+            urlString = String(format: kDeleteUserImageHostDev, userId)
+        }
+        else if (kUserDefaults .string(forKey: kServerModeKey) == kServerModeStaging)
+        {
+            urlString = String(format: kDeleteUserImageHostStaging, userId)
+        }
+        else
+        {
+            urlString = String(format: kDeleteUserImageHostProduction, userId)
+        }
+        
+        var urlRequest = URLRequest(url: URL(string: urlString)!)
+        urlRequest.timeoutInterval = 30
+        urlRequest.httpMethod = "DELETE"
+        urlRequest.addValue("iphone", forHTTPHeaderField: "appplatform")
+        urlRequest.addValue("application/json;charset=utf-8", forHTTPHeaderField: "Content-Type")
+        
+        // Get the encrypted token
+        let encryptedUserId = FeedsHelper.encryptString(userId)
+        urlRequest.addValue(encryptedUserId, forHTTPHeaderField: "X-MP-UserToken")
+        
+        let session = URLSession.shared
+        let task = session.dataTask(with: urlRequest) { (data, response, connectionError) in
+            
+            print("Response: " + response!.description)
+            
+            DispatchQueue.main.async
+            {
+                if (connectionError == nil)
+                {
+                    if let httpResponse = response as? HTTPURLResponse
+                    {
+                        if (httpResponse.statusCode == 200)
+                        {
+                            completionHandler(nil)
+                        }
+                        else
+                        {
+                            print("Status != 200")
+                            
+                            if (data != nil)
+                            {
+                                let logDataReceived = String(decoding: data!, as: UTF8.self)
+                                print(logDataReceived)
+                            }
+                            
+                            let errorDictionary = [NSLocalizedDescriptionKey : "Status != 200"]
+                            let error = NSError.init(domain: kMaxPrepsAppError, code: 999, userInfo: errorDictionary)
+                            completionHandler(error)
+                        }
+                    }
+                    else
+                    {
+                        print("Response was nil")
+                        let errorDictionary = [NSLocalizedDescriptionKey : "Response was nil"]
+                        let error = NSError.init(domain: kMaxPrepsAppError, code: 999, userInfo: errorDictionary)
+                        completionHandler(error)
+                    }
+                }
+                else
+                {
+                    print("Connection Error")
+                    let errorDictionary = [NSLocalizedDescriptionKey : "Connection Error"]
+                    let error = NSError.init(domain: kMaxPrepsAppError, code: 999, userInfo: errorDictionary)
+                    completionHandler(error)
+                }
+            }
+        }
+        
+        task.resume()
+    }
 
     // MARK: - Test Feed
     

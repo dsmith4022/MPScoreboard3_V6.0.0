@@ -296,6 +296,8 @@ class TabBarController: UITabBarController, UITabBarControllerDelegate, LoginHom
         
         SharedData.bottomSafeAreaHeight = Int(window.safeAreaInsets.bottom)
         
+        print("Top Pad: " + String(SharedData.topNotchHeight) + ", Bottom Pad: " + String( SharedData.bottomSafeAreaHeight))
+        
         // Set the overall window background color so navigation looks better
         window.backgroundColor = UIColor.mpOffWhiteNavColor()
 

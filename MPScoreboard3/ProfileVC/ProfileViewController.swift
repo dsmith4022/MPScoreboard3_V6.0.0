@@ -35,6 +35,19 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                 self.userImageView.image = nil
             }
         }
+        /*
+        NewFeeds.deleteUserImage(completionHandler: { (error) in
+            
+            if (error == nil)
+            {
+                print("Delete User Image Success")
+            }
+            else
+            {
+                print("Delete User Image Failed")
+            }
+        })
+        */
     }
     
     // MARK: - Choose Photo from Library
@@ -224,6 +237,21 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
                     self.cameraPicker = nil;
                 })
             }
+            
+            /*
+            // Test code
+            NewFeeds.saveUserImage(imageData: data) { data, error in
+                
+                if (error == nil)
+                {
+                    print("Image Upload Success")
+                }
+                else
+                {
+                    print("Image Upload Failure")
+                }
+            }
+            */
         }
         else
         {

@@ -58,6 +58,7 @@ let kNavBarHeight = 44
 let kTabBarHeight = 49
 let kNavBarFontSize = CGFloat(19)
 let kAppIdentifierQueryParam = "brandplatformid=maxpreps_app_ios&apptype=scores&appplatform=ios"
+let kUserImageFastlyParam = "&auto=webp&format=pjpg&fit=cover&width=128&crop=1:1,smart"
 
 let kEmptyGuid = "00000000-0000-0000-0000-000000000000"
 let kTestDriveUserId = "01234567-89AB-CDEF-FEDC-BA9876543210"
@@ -304,6 +305,15 @@ let kGetTeamDetailCardHostProduction = "https://production.api.maxpreps.com/gate
 let kGetTeamDetailCardHostStaging = "https://stag.api.maxpreps.com/gateways/app/team-cards/v1?scheduleCount=2&latestCount=5"
 let kGetTeamDetailCardHostDev = "https://dev.api.maxpreps.com/gateways/app/team-cards/v1?scheduleCount=2&latestCount=5"
 
+// URL for saving user image (POST)
+let kSaveUserImageHostProduction = "https://dev.api.maxpreps.com/visualcontent/user-submitted-images/users/%@/qwixcore-profile-image/v1"
+let kSaveUserImageHostStaging = "https://dev.api.maxpreps.com/visualcontent/user-submitted-images/users/%@/qwixcore-profile-image/v1"
+let kSaveUserImageHostDev = "https://dev.api.maxpreps.com/visualcontent/user-submitted-images/users/%@/qwixcore-profile-image/v1"
+
+// URL for deleting user image (DELETE)
+let kDeleteUserImageHostProduction = "https://dev.api.maxpreps.com/visualcontent/user-submitted-images/users/%@/qwixcore-profile-image/v1"
+let kDeleteUserImageHostStaging = "https://dev.api.maxpreps.com/visualcontent/user-submitted-images/users/%@/qwixcore-profile-image/v1"
+let kDeleteUserImageHostDev = "https://dev.api.maxpreps.com/visualcontent/user-submitted-images/users/%@/qwixcore-profile-image/v1"
 
 // User Profile URLs
 let kMemberProfileHostProduction = "https://secure.maxpreps.com/m/member/default.aspx"
